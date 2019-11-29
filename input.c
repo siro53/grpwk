@@ -20,7 +20,7 @@ int main(int argc, char **argv)
     getrusage(RUSAGE_SELF, &u);
     end = u.ru_utime;
 
-    fprintf(stderr, "%lf n", (double)(end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) * 1e-6);
+    fprintf(stderr, "%lf n", (double)(end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)*1e-6);
     return (0);
 }
 
