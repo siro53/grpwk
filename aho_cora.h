@@ -6,12 +6,12 @@ typedef struct _n {
     int N;
 } aho;
 
-AHO_TYPE aho_nullitem;
+aho *aho_nullitem;
+AHO_TYPE aho_nulldata;
 
 void aho_init(void);
-// int aho_count(void);
+int aho_count(void);
 void aho_insert(AHO_TYPE);
-// aho aho_search(AHO_TYPE);
-// void aho_delete(AHO_TYPE);
-// void aho_sort(void);
-void aho_show(void);
+aho *aho_search(AHO_TYPE);
+void aho_show_data(void (*func)(AHO_TYPE));
+void aho_show_tree(void (*func)(AHO_TYPE));

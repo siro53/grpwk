@@ -1,5 +1,5 @@
 PROG = grpwk
-OBJS = template.o
+OBJS = test_aho_cora.o aho_cora.o
 CC = gcc
 CFLAGS = -W -Wall -Wextra -Wconversion -Wshadow
 LDFLAGS = 

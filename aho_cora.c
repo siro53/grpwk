@@ -15,23 +15,60 @@ aho *NEW(AHO_TYPE data, aho *l, aho *r, int N) {
 }
 
 void aho_init(void) {
-    head = (z = NEW(aho_nullitem, NULL, NULL, 0));
+    head = (z = NEW(aho_nulldata, NULL, NULL, 0));
 }
 
-void show(aho *h, int depth) {
+void show_data(aho *h, void (*print_func)(AHO_TYPE)) {
     if (h == z) return;
-    show(h->r, depth+1);
-    for (int i=0; i<depth; ++i) printf("\t");
-    printf("(%d)\n", h->data);
-    show(h->l, depth+1);
+    show_data(h->l, print_func);
+    print_func(h->data);
+    show_data(h->r, print_func);
 }
 
-void aho_show(void) {
-    show(head, 0);
+void aho_show_data(void (*print_func)(AHO_TYPE)) {
+    show_data(head, print_func);
+    printf("\n");
+}
+
+void show_tree(aho *h, int depth, void (*print_func)(AHO_TYPE)) {
+    if (h == z) return;
+    show_tree(h->r, depth+1, print_func);
+    for (int i=0; i<depth; ++i) printf("  ");
+    print_func(h->data);
+    printf("\n");
+    show_tree(h->l, depth+1, print_func);
+}
+
+void aho_show_tree(void (*print_func)(AHO_TYPE)) {
+    show_tree(head, 0, print_func);
+}
+
+void count(aho *h) {
+    if (h == z) return;
+    count(h->l);
+    if (h->data != aho_nulldata) head->N++;
+    count(h->r);
+}
+
+int aho_count(void) {
+    head->N = 0;
+    count(head);
+    return head->N;
+}
+
+aho *search(aho *h, AHO_TYPE data, int w) {
+  if (h == z) return aho_nullitem;
+  if ((h->l == z) && (h->r == z)) return (data == h->data) ? h : aho_nullitem;
+  if (digit(data, w) == 0) return search (h->l, data, w + 1);
+  else return search (h->r, data, w + 1);
+}
+
+aho *aho_search(AHO_TYPE data) {
+  return search(head, data, 0);
 }
 
 aho *split(aho *p, aho *q, int w) {
-    aho *t = NEW(aho_nullitem, z, z, 2);
+    aho *t = NEW(aho_nulldata, z, z, 2);
     switch (digit(p->data, w) * 2 + digit(q->data, w)) {
         case 0:
             t->l = split(p, q, w + 1);
