@@ -1,5 +1,5 @@
 PROG = grpwk
-OBJS = template.o
+OBJS = input.o
 CC = gcc
 CFLAGS = -W -Wall -Wextra -Wconversion -Wshadow
 LDFLAGS = 
