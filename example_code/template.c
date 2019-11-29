@@ -4,6 +4,8 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 
+// shiro
+
 int main_prg(int, char**);
 
 int main(int argc, char** argv){
