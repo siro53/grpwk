@@ -1,0 +1,80 @@
+\documentclass[uplatex]{jsarticle}
+\usepackage[dvipdfmx]{graphicx, color}
+\usepackage{ascmac} % 複数行の枠
+\usepackage{nccmath} % 複数行(数式等)左揃え
+\usepackage{amssymb} % 行列のでかい括弧など
+\usepackage{amsmath} % align, equation
+\usepackage{mathtools} % for :=, =:
+\usepackage{bm} % vector
+\usepackage{here} % tables [H]
+\usepackage{longtable}
+
+\title{アルゴリズムB\\計画書}
+\author{1W183011-7　糸井琢人\and 1W172143-0　佐藤将輝\and 1W182164-3　城武秀祐\and 1W182171-3　助川裕太\and 1W182339-5　山田啓太\and 1W183129-6　柳田侑羽}
+\date{\today}
+
+\begin{document}
+    \maketitle
+    \section{4班}
+
+    \section{メンバー}
+    \begin{itemize}
+        \item 1W183011-7 糸井琢人
+        \item 1W172143-0 佐藤将輝
+        \item 1W182164-3 城武秀祐
+        \item 1W182171-3 助川裕太
+        \item 1W182339-5 山田啓太
+        \item 1W183129-6 柳田侑羽
+    \end{itemize}
+
+    \section{作業の目的}
+    虫食いデータと刻んだデータが与えられたとき、できるだけ早く、そして精度よく元のデータを復元する。
+
+    \section{作業計画}
+    \begin{center}
+        \begin{longtable}{l|l|l}
+            Due Date&内容&補足\\\hline
+            \endfirsthead
+            %------ 2ページ以降の表の最上部 ----
+            \multicolumn{2}{c}{前ページからの続き} \\ \hline
+            Due Date&内容&補足\\\hline
+            \endhead
+            %----- ページの表の最下部 --------
+            \hline
+            \multicolumn{2}{c}{次ページに続く} \\
+            \endfoot
+            %----- 最終ページの表の最下部 --------
+            \hline
+            \multicolumn{2}{c}{以上} \\
+            \endlastfoot
+            11/29&Git垢作成&全員\\
+            &Gitレポジトリ作成&城武\\
+            &コラボレーターに追加&城武\\
+            &環境構築&全員\\\hline
+            12/6&入力実装&佐藤\\
+            &ヘッダファイル&城武(随時更新)\\
+            &Queue実装&糸井\\
+            &Aho-corasick実装&糸井\\
+            &素晴らしいアルゴリズムを考える&全員\\\hline
+            12/13&考案したものの実装・テスト&地獄\\\hline
+            12/22&中間計測&\\\hline
+            1/10&圧縮ファイル提出&\\\hline
+            1/13&発表資料提出&\\\hline
+            1/24&最終提出&\\\hline
+        \end{longtable}
+    \end{center}
+
+    \section{メンバーの役割分担}
+    \begin{itemize}
+        \item 入力実装：佐藤
+        \item アルゴリズム考える人：全員
+        \item ヘッダファイル作る人：城武
+        \item データ構造の実装：糸井、城武
+        \item コード実装班：全員
+        \item 発表する人(原稿)：糸井
+        \item 発表ポスター：糸井
+        \item コード直す人：城武
+        \item 城武のコード直す人：糸井
+        \item 随時追加…
+    \end{itemize}
+\end{document}
