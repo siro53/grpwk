@@ -1,2 +1,4 @@
 grpwk
-compile.sh
+*.sh
+*.py
+.*/
