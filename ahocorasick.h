@@ -1,17 +1,35 @@
-#define AHO_TYPE int
+#pragma once
 
-typedef struct _n {
-    AHO_TYPE data;
-    struct _n *l, *r;
-    int N;
-} aho;
+#include "ahotrie.h"
+#include "ahotext.h"
 
-aho *aho_nullitem;
-AHO_TYPE aho_nulldata;
+typedef {
+    int id, pos, len;
+} aho_match;
 
-void aho_init(void);
-int aho_count(void);
-void aho_insert(AHO_TYPE);
-aho *aho_search(AHO_TYPE);
-void aho_show_data(void (*func)(AHO_TYPE));
-void aho_show_tree(void (*func)(AHO_TYPE));
+typedef {
+    int text_id;
+    aho_text *head, *tail;
+    int text_count;
+
+    aho_trie trie;
+
+    void (*callback_match)(void *arg, aho_match *m);
+    void *callback_arg;
+} ahocorasick;
+
+void aho_init(ahocorasick * restrict aho);
+void aho_destroy(ahocorasick * restrict aho);
+
+int aho_add_match_text(ahocorasick * restrict aho, const char* text, unsigned int len);
+bool aho_del_match_text(ahocorasick * restrict aho, const int id);
+void aho_clear_match_text(ahocorasick * restrict aho);
+
+void aho_create_trie(ahocorasick * restrict aho);
+void aho_clear_trie(ahocorasick * restrict aho);
+
+unsigned int aho_search(ahocorasick * restrict aho, const char *text, int len);
+
+void aho_register_match_callback(ahocorasick * restrict aho, void (*callback_match)(void* arg, aho_match_t*), void *arg);
+
+void aho_print_match_text(ahocorasick * restrict aho);

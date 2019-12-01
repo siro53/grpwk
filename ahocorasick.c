@@ -1,101 +1,108 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "aho_cora.h"
+#include <string.h>
+#include <limits.h>
 
-#define bitsword 17
-#define digit(A, B) (((A) >> (bitsword-(B)-1)) & 1)
+#include "ahocorasick.h"
+#include "ahotrie.h"
 
-static aho *head, *z;
-
-aho *NEW(AHO_TYPE data, aho *l, aho *r, int N) {
-    aho *x = (aho *)malloc(sizeof(aho));
-    x->data = data;
-    x->l = l; x->r = r; x->N = N;
-    return x;
+void aho_init(ahocorasick * restrict aho) {
+    memset(aho, 0, sizeof(ahocorasick));
 }
 
-void aho_init(void) {
-    head = (z = NEW(aho_nulldata, NULL, NULL, 0));
+void aho_destroy(ahocorasick * restrict aho) {
+    aho_clear_match_text(aho);
+    aho_clear_trie(aho);
 }
 
-void show_data(aho *h, void (*print_func)(AHO_TYPE)) {
-    if (h == z) return;
-    show_data(h->l, print_func);
-    print_func(h->data);
-    show_data(h->r, print_func);
-}
+int aho_add_match_text(ahocorasick * restrict aho, const char data[], int len) {
+    if (aho->text_id == INT_MAX) return -1;
 
-void aho_show_data(void (*print_func)(AHO_TYPE)) {
-    show_data(head, print_func);
-    printf("\n");
-}
+    aho_text *text = text_init(aho->text_id++, data, len);
+    if (text == NULL || text->data == NULL) return -1;
 
-void show_tree(aho *h, int depth, void (*print_func)(AHO_TYPE)) {
-    if (h == z) return;
-    show_tree(h->r, depth+1, print_func);
-    for (int i=0; i<depth; ++i) printf("  ");
-    print_func(h->data);
-    printf("\n");
-    show_tree(h->l, depth+1, print_func);
-}
-
-void aho_show_tree(void (*print_func)(AHO_TYPE)) {
-    show_tree(head, 0, print_func);
-}
-
-void count(aho *h) {
-    if (h == z) return;
-    count(h->l);
-    if (h->data != aho_nulldata) head->N++;
-    count(h->r);
-}
-
-int aho_count(void) {
-    head->N = 0;
-    count(head);
-    return head->N;
-}
-
-aho *search(aho *h, AHO_TYPE data, int w) {
-  if (h == z) return aho_nullitem;
-  if ((h->l == z) && (h->r == z)) return (data == h->data) ? h : aho_nullitem;
-  if (digit(data, w) == 0) return search (h->l, data, w + 1);
-  else return search (h->r, data, w + 1);
-}
-
-aho *aho_search(AHO_TYPE data) {
-  return search(head, data, 0);
-}
-
-aho *split(aho *p, aho *q, int w) {
-    aho *t = NEW(aho_nulldata, z, z, 2);
-    switch (digit(p->data, w) * 2 + digit(q->data, w)) {
-        case 0:
-            t->l = split(p, q, w + 1);
-            break;
-        case 1:
-            t->l = p;
-            t->r = q;
-            break;
-        case 2:
-            t->r = p;
-            t->l = q;
-            break;
-        case 3:
-            t->r = split(p, q, w + 1);
-            break;
+    if (aho->head == NULL) {
+        aho->head = text;
+        aho->tail = text;
+        aho->text_count++;
+        return text->id
     }
-    return t;
+
+    aho->tail->next = text;
+    text->prev = aho->tail;
+    aho->tail = text;
+    aho->text_count++;
+    return text->id;
 }
 
-aho *insert(aho *h, AHO_TYPE data, int w) {
-    if (h == z) return NEW(data, z, z, 1);
-    if ((h->l == z) && (h->r == z)) return split(NEW(data, z, z, 1), h, w);
-    if (!digit(h->data, w)) h->l = insert(h->l, data, w + 1);
-    else h->r = insert(h->r, data, w + 1);
-    return h;
+int aho_del_match_text(ahocorasick * restrict aho, const int id) {
+    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next) {
+        if (iter->id == id) {
+            if (iter == aho->head) {
+                aho->head = iter->next;
+                free(iter->data);
+            } else if (iter == aho->tail) {
+                aho->tail = iter->prev;
+                free(iter->data);
+            } else {
+                iter->prev->next = iter->next;
+                iter->next->prev = iter->prev;
+                free(iter->data);
+            }
+            free(iter);
+            aho->text_count--;
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
-void aho_insert(AHO_TYPE data) {
-    head = insert(head, data, 0);
+void aho_clear_match_text(ahocorasick * restrict aho) {
+    for (int i=0; i<aho->text_id; i++) aho_del_match_text(aho, i);
+
+    aho->text_id = 0;
+}
+
+void aho_create_trie(ahocorasick * restrict aho) {
+    trie_init(&aho->trie);
+
+    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next) trie_add(&aho->trie, iter);
+    trie_connect(&aho->trie);
+
+    trie_print(&aho->trie);
+}
+
+void aho_clear_trie(ahocorasick * restrict aho) {
+    trie_destroy(&aho->trie);
+}
+
+int aho_search(ahocorasick * restrict aho, const char *data, int len) {
+    int counter = 0;
+    aho_node *current = &aho->trie.root;
+
+    for (int i=0; i<len; i++) {
+        aho_match match;
+        aho_text *result = trie_find(&current, data[i]);
+        if (result == NULL) continue;
+
+        match.id = result->id;
+        match.len = result->len;
+        match.pos = i - result->len + 1;
+
+        counter++;
+        if (aho->callback_match) aho->callback_match(aho->callback_arg, &match);
+    }
+
+    return counter;
+}
+
+inline void aho_register_match_callback(ahocorasick * restrict aho, void (*callback_match)(void *arg, aho_match *), void *arg) {
+    aho->callback_arg = arg;
+    aho->callback_match = callback_match;
+}
+
+void aho_print_match_text(ahocorasick * restrict aho) {
+    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next) {
+        printf("id: %d, text:%s, len:%d\n", iter->id, iter->data, iter->len);
+    }
 }

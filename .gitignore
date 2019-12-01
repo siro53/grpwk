@@ -2,3 +2,5 @@ grpwk
 *.sh
 *.py
 .*/
+
+ahocorasick/

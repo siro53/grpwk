@@ -1,22 +1,41 @@
 #include <stdio.h>
-#include "aho_cora.h"
+#include <string.h>
 
-void print_int(AHO_TYPE a) {
-    printf("(%d)", a);
+#include "ahocorasick.h"
+
+void callback_match_total(void *arg, aho_match *m) {
+    int *match_total = (int *)arg;
+    (*match_total)++;
+}
+
+void callback_match_pos(void *arg, aho_match *m) {
+    char *text = (char *)arg;
+
+    printf("match text:");
+    for (int i=m->pos; i <m->pos+m->len; i++) printf("%c", text[i]);
+
+    printf("(match id: %d position: %llu length: %d)\n", m->id, m->pos, m->len);
 }
 
 int main(void) {
-    aho_init();
-    aho_insert(10);
-    aho_insert(11);
-    aho_insert(12);
-    aho_insert(13);
-    aho_insert(14);
-    aho_insert(15);
-    aho_insert(16);
+    ahocorasick aho;
+    aho_init(&aho);
 
-    printf("N = %d\n", aho_count());
-    aho_show_data(&print_int);
-    aho_show_tree(&print_int);
+    int id[10] = {
+        aho_add_match_text(&aho, "ab", 2);
+        aho_add_match_text(&aho, "c", 1);
+        aho_add_match_text(&aho, "a", 1);
+        aho_add_match_text(&aho, "acd", 3);
+    }, match_total = 0;
+
+    aho_create_trie(&aho);
+    aho_register_match_callback(&aho, callback_match_pos, &match_total);
+
+    char test[] = "dabcacdfc";
+    printf("try: %s\n", test);
+    printf("total match: %d\n", aho_search(&aho, test, strlen(test)));
+
+    aho_destroy(&aho);
+
     return 0;
 }
