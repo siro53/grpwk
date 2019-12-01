@@ -1,6 +1,9 @@
-#define QUE_TYPE int
+#pragma once
 
-const int MAX_SIZE = 500000;
+#include "ahotrie.h"
+
+#define QUE_TYPE aho_node*
+#define MAX_SIZE 500000
 
 typedef struct
 {
@@ -11,5 +14,5 @@ typedef struct
 
 void que_init(queue *que, QUE_TYPE init_value);
 void que_push(queue *que, QUE_TYPE value);
-void que_pop(queue *que);
-QUE_TYPE que_size(queue *que);
+QUE_TYPE que_pop(queue *que);
+int que_size(queue *que);

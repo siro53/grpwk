@@ -1,6 +1,10 @@
 #pragma once
 
+#include "ahotext.h"
+
 #define MAX_NODE 5
+#define FALSE 0
+#define TRUE 1
 
 typedef struct _node {
     int data;
@@ -23,6 +27,6 @@ void trie_destroy(aho_trie * restrict t);
 int trie_add(aho_trie * restrict t, aho_text * restrict text);
 void trie_connect(aho_trie * restrict t);
 void trie_delete(aho_trie * restrict t);
-aho_text *trie_find(aho_trie ** restrict t, const unsigned char text);
+aho_text *trie_find(aho_node ** restrict t, const unsigned char text);
 
 void trie_print(aho_trie * restrict t);

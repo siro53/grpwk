@@ -3,11 +3,7 @@
 #include <string.h>
 
 #include "ahotrie.h"
-#include "ahotext.h"
 #include "queue.h"
-
-#define FALSE 0
-#define TRUE 1
 
 aho_node *node_init(int data, aho_node * restrict parent) {
     aho_node *node = (aho_node *)malloc(sizeof(aho_node));
@@ -20,7 +16,7 @@ aho_node *node_init(int data, aho_node * restrict parent) {
 
 void trie_init(aho_trie * restrict t) {
     memset(t, 0, sizeof(aho_trie));
-    init(&(t->root));
+    node_init(-1, &t->root);
 }
 
 void trie_destroy(aho_trie * restrict t) {
@@ -28,7 +24,7 @@ void trie_destroy(aho_trie * restrict t) {
 }
 
 int trie_add(aho_trie * restrict t, aho_text * restrict text) {
-    aho_node *current = &(t->root);
+    aho_node *current = &t->root;
 
     for (int i=0; i<text->len-1; i++) {
         int char_id = text->data[i] - 'a';
@@ -70,7 +66,7 @@ int connect_link(aho_node *p, aho_node *q) {
 
 void trie_connect(aho_trie * restrict t) {
     queue *que;
-    que_init(que, &(t->root));
+    que_init(que, &t->root);
 
     while (TRUE) {
         QUE_TYPE node = que_pop(que);
@@ -93,7 +89,7 @@ void trie_connect(aho_trie * restrict t) {
 
 void trie_delete(aho_trie * restrict t) {
     queue *que;
-    que_init(que, &(t->root));
+    que_init(que, &t->root);
 
     while (TRUE) {
         QUE_TYPE node = que_pop(que);
@@ -122,21 +118,21 @@ int find_node(aho_node ** restrict node, const unsigned char text) {
     return FALSE;
 }
 
-aho_text *trie_find(aho_trie ** restrict t, const unsigned char text) {
-    while (find_node(t, text) == FALSE) {
-        if (t == NULL || (*t)->parent == NULL) return NULL;
-        *t = (*t)->failure_link;
+aho_text *trie_find(aho_node ** restrict node, const unsigned char text) {
+    while (find_node(node, text) == FALSE) {
+        if (node == NULL || (*node)->parent == NULL) return NULL;
+        *node = (*node)->failure_link;
     }
 
-    if ((*t)->data == 4) return (*t)->output_text;
-    if ((*t)->output_link) return (*t)->output_link->output_text;
+    if ((*node)->data == 4) return (*node)->output_text;
+    if ((*node)->output_link) return (*node)->output_link->output_text;
 
     return NULL;
 }
 
 void trie_print(aho_trie * restrict t) {
     queue *que;
-    que_init(que, &(t->root));
+    que_init(que, &t->root);
 
     while (TRUE) {
         QUE_TYPE node = que_pop(que);

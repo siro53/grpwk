@@ -4,7 +4,6 @@
 #include <limits.h>
 
 #include "ahocorasick.h"
-#include "ahotrie.h"
 
 void aho_init(ahocorasick * restrict aho) {
     memset(aho, 0, sizeof(ahocorasick));
@@ -15,7 +14,7 @@ void aho_destroy(ahocorasick * restrict aho) {
     aho_clear_trie(aho);
 }
 
-int aho_add_match_text(ahocorasick * restrict aho, const char data[], int len) {
+int aho_add_match_text(ahocorasick * restrict aho, const char *data, int len) {
     if (aho->text_id == INT_MAX) return -1;
 
     aho_text *text = text_init(aho->text_id++, data, len);
@@ -25,7 +24,7 @@ int aho_add_match_text(ahocorasick * restrict aho, const char data[], int len) {
         aho->head = text;
         aho->tail = text;
         aho->text_count++;
-        return text->id
+        return text->id;
     }
 
     aho->tail->next = text;

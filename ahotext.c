@@ -5,7 +5,7 @@
 
 #include "ahotext.h"
 
-aho_text *text_init(int id, char data[], int len) {
+aho_text *text_init(int id, const char *data, int len) {
     aho_text *text = (aho_text *)malloc(sizeof(aho_text));
     text->id = id;
     text->data = (char *)malloc(sizeof(char) * len);

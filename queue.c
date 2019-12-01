@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <queue.h>
+#include "queue.h"
 
 void que_init(queue *que, QUE_TYPE init_value)
 {
@@ -14,7 +14,7 @@ void que_push(queue *que, QUE_TYPE value)
     
 }
 
-void que_pop(queue *que)
+QUE_TYPE que_pop(queue *que)
 {
 }
 
