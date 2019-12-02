@@ -11,7 +11,7 @@ typedef struct
     int back;
 } queue;
 
-void que_init(queue *, QUE_TYPE);
+void que_init(queue *);
 void que_push(queue *, QUE_TYPE);
 QUE_TYPE que_pop(queue *);
 int que_size(queue *);
