@@ -1,6 +1,7 @@
 grpwk
 *.sh
 *.py
+!analyze.py
 .*/
 *.o
 
