@@ -3,14 +3,14 @@
 #include "queue.h"
 #include <string.h>
 
-void que_init(queue *que)
+void que_init(queue *que, QUE_TYPE init_value)
 {
     que->front = 0;
     que->back = 0;
     int i;
     for (i = 0; i < MAX_SIZE; i++)
     {
-        que->data[i] = 0;
+        que->data[i] = init_value;
     }
 }
 

@@ -10,7 +10,7 @@ int main()
 {
     int i, a;
     queue q;
-    que_init(&q);
+    que_init(&q, -1);
     for (i = 0; i < 5; i++)
     {
         que_push(&q, i + 1);
