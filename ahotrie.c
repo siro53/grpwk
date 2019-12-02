@@ -11,6 +11,7 @@ aho_node *node_init(int data, aho_node * restrict parent) {
     node->data = data;
     node->parent = parent;
     node->ref_count = 1;
+    node->end = FALSE;
     return node;
 }
 
@@ -27,9 +28,9 @@ void trie_destroy(aho_trie * restrict t) {
 int trie_add(aho_trie * restrict t, aho_text * restrict text) {
     aho_node *current = &t->root;
 
-    for (int i=0; i<text->len-1; i++) {
+    for (int i=0; i<text->len; i++) {
         int char_id = text->data[i] - 'a';
-        if (char_id > 3 || char_id < 0) break;
+        if (char_id > 3 || char_id < 0) return FALSE;
 
         if (current->child[char_id] == NULL) current->child[char_id] = node_init(char_id, current);
         else current->child[char_id]->ref_count++;
@@ -37,8 +38,8 @@ int trie_add(aho_trie * restrict t, aho_text * restrict text) {
         current = current->child[char_id];
     }
 
-    current->child[4] = node_init(4, current);
-    current->child[4]->output_text = text;
+    current->end = TRUE;
+    current->output_text = text;
 
     return TRUE;
 }
@@ -56,7 +57,7 @@ int connect_link(aho_node *p, aho_node *q) {
         if (tmp->child[i]->data == q->data) {
             q->failure_link = tmp->child[i];
 
-            if (tmp->child[i]->data == 4) q->output_link = tmp->child[i];
+            if (tmp->child[i]->end) q->output_link = tmp->child[i];
             else q->output_link = tmp->child[i]->output_link;
 
             return TRUE;
@@ -83,8 +84,6 @@ void trie_connect(aho_trie * restrict t) {
             while (connect_link(tmp, child) == FALSE) tmp = tmp->failure_link;
         }
     }
-
-    // que_destroy(&que);
 }
 
 void trie_delete(aho_trie * restrict t) {
@@ -105,11 +104,7 @@ void trie_delete(aho_trie * restrict t) {
 int find_node(aho_node ** restrict node, const char text) {
     if (*node == NULL) return FALSE;
 
-    if (text == '\0') {
-        *node = (*node)->child[4];
-        return TRUE;
-    }
-    if ((*node)->child[text - 'a'] != NULL) {
+    if (text - 'a' <= 3 && text - 'a' >= 0 && (*node)->child[text - 'a'] != NULL) {
         *node = (*node)->child[text - 'a'];
         return TRUE;
     }
@@ -123,7 +118,7 @@ aho_text *trie_find(aho_node ** restrict node, const char text) {
         *node = (*node)->failure_link;
     }
 
-    if ((*node)->data == 4) return (*node)->output_text;
+    if ((*node)->end) return (*node)->output_text;
     if ((*node)->output_link) return (*node)->output_link->output_text;
 
     return NULL;

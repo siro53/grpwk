@@ -34,7 +34,6 @@ int test_trie(void) {
     }
     trie_print(t);
     trie_connect(t);
-    printf("test: %p\n", t);
 
     trie_print(t);
 
@@ -42,46 +41,52 @@ int test_trie(void) {
 }
 
 // outcome functions for testing
-void callback_match_total(void *arg, aho_match *m) {
-    int *match_total = (int *)arg;
-    (*match_total)++;
-}
-
-void callback_match_pos(void *arg, aho_match *m) {
+void callback_match_pos(void *arg, aho_match_t *m) {
     char *text = (char *)arg;
 
-    printf("match text:");
-    for (int i=m->pos; i <m->pos+m->len; i++) printf("%c", text[i]);
+    printf("match text(%p): ", m);
+    for (int i=m->pos; i<m->pos+m->len; i++) printf("%c", text[i]);
 
-    printf("(match id: %d position: %d length: %d)\n", m->id, m->pos, m->len);
+    printf(" (match id: %d position: %d length: %d)\n", m->id, m->pos, m->len);
 }
 
 int test_ahocora(void) {
-    ahocorasick *aho = NULL;
-    aho_init(aho);
+    ahocorasick aho;
+    aho_init(&aho);
 
-    int id[10] = {
-        aho_add_match_text(aho, "ab", 2),
-        aho_add_match_text(aho, "c", 1),
-        aho_add_match_text(aho, "a", 1),
-        aho_add_match_text(aho, "acd", 3),
-    }, match_total = 0;
+    aho_add_match_text(&aho, "ab", strlen("ab"));
+    aho_add_match_text(&aho, "abc", strlen("abc"));
+    aho_add_match_text(&aho, "aaaaabddbdaaacccaacbaabacbaadb", strlen("aaaaabddbdaaacccaacbaabacbaadb"));
+    aho_add_match_text(&aho, "aaacdbdbcbcdbdbadaacbaadbdbdaacaaaaaadacababdadddacaacbaaaabdacdadadbabbbddaaddaaaaa", strlen("aaacdbdbcbcdbdbadaacbaadbdbdaacaaaaaadacababdadddacaacbaaaabdacdadadbabbbddaaddaaaaa"));
+    aho_add_match_text(&aho, "abacbadaadbcaaabaaacbbaabadbababdbcadbd", strlen("abacbadaadbcaaabaaacbbaabadbababdbcadbd"));
+    aho_add_match_text(&aho, "dbbbdaabaaabaabab", strlen("dbbbdaabaaabaabab"));
+    aho_add_match_text(&aho, "daaadaaa", strlen("daaadaaa"));
+    aho_add_match_text(&aho, "dbaac", strlen("dbaac"));
+    aho_add_match_text(&aho, "ad", strlen("ad"));
+    aho_add_match_text(&aho, "bdadaabbaaadaabdd", strlen("bdadaabbaaadaabdd"));
+    aho_add_match_text(&aho, "ddaabdd", strlen("ddaabdd"));
+    aho_add_match_text(&aho, "bdbabb", strlen("bdbabb"));
+    aho_add_match_text(&aho, "abdb", strlen("abdb"));
+    aho_add_match_text(&aho, "adbab", strlen("adbab"));
+    aho_add_match_text(&aho, "caabaaabcadba", strlen("aaabaaabcadba"));
 
-    aho_create_trie(aho);
-    aho_register_match_callback(aho, callback_match_pos, &match_total);
+    char test[] = "abcabcabcab";
+    aho_create_trie(&aho);
+    aho_register_match_callback(&aho, callback_match_pos, (void *)test);
 
-    char test[] = "dabcacdfc";
+    // trie_print(&aho.trie);
+
     printf("try: %s\n", test);
-    printf("total match: %d\n", aho_search(aho, test, strlen(test)));
+    printf("total match: %d\n", aho_search(&aho, test, strlen(test)));
 
-    aho_destroy(aho);
+    aho_destroy(&aho);
 
     return 0;
 }
 
 int main(void) {
-    test_trie();
-    // test_ahocora();
+    // test_trie();
+    test_ahocora();
 
     return 0;
 }

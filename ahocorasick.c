@@ -65,10 +65,8 @@ void aho_clear_match_text(ahocorasick * restrict aho) {
 void aho_create_trie(ahocorasick * restrict aho) {
     trie_init(&aho->trie);
 
-    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next) trie_add(&aho->trie, iter);
+    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next) if (!trie_add(&aho->trie, iter)) printf("input exceeds [a-d]\n");
     trie_connect(&aho->trie);
-
-    trie_print(&aho->trie);
 }
 
 void aho_clear_trie(ahocorasick * restrict aho) {
@@ -80,7 +78,7 @@ int aho_search(ahocorasick * restrict aho, const char *data, int len) {
     aho_node *current = &aho->trie.root;
 
     for (int i=0; i<len; i++) {
-        aho_match match;
+        aho_match_t match;
         aho_text *result = trie_find(&current, data[i]);
         if (result == NULL) continue;
 
@@ -95,7 +93,7 @@ int aho_search(ahocorasick * restrict aho, const char *data, int len) {
     return counter;
 }
 
-inline void aho_register_match_callback(ahocorasick * restrict aho, void (*callback_match)(void *arg, aho_match *), void *arg) {
+inline void aho_register_match_callback(ahocorasick * restrict aho, void (*callback_match)(void *arg, aho_match_t *), void *arg) {
     aho->callback_arg = arg;
     aho->callback_match = callback_match;
 }

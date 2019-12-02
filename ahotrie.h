@@ -2,7 +2,7 @@
 
 #include "ahotext.h"
 
-#define MAX_NODE 5
+#define MAX_NODE 4
 #define FALSE 0
 #define TRUE 1
 
@@ -12,6 +12,7 @@ typedef struct _node {
 
     struct _node *parent, *child[MAX_NODE];
 
+    int end;
     aho_text *output_text;
 
     struct _node *failure_link, *output_link;

@@ -1,8 +1,7 @@
 PROG = grpwk
 OBJS = test_ahocorasick.o ahocorasick.o ahotrie.o ahotext.o queue.o
 CC = gcc
-# CFLAGS = -W -Wall -Wextra -Wconversion -Wshadow
-CFLAGS = 
+CFLAGS = -W -Wall -Wextra -Wconversion -Wshadow
 LDFLAGS = 
 
 .SUFFIXES: .c

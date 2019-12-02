@@ -3,9 +3,9 @@
 #include "ahotrie.h"
 #include "ahotext.h"
 
-typedef struct {
+typedef struct  {
     int id, pos, len;
-} aho_match;
+} aho_match_t;
 
 typedef struct {
     int text_id;
@@ -14,7 +14,7 @@ typedef struct {
 
     aho_trie trie;
 
-    void (*callback_match)(void *arg, aho_match *m);
+    void (*callback_match)(void *arg, aho_match_t *m);
     void *callback_arg;
 } ahocorasick;
 
@@ -30,6 +30,6 @@ void aho_clear_trie(ahocorasick * restrict aho);
 
 int aho_search(ahocorasick * restrict aho, const char *text, int len);
 
-void aho_register_match_callback(ahocorasick * restrict aho, void (*callback_match)(void* arg, aho_match* m), void *arg);
+void aho_register_match_callback(ahocorasick * restrict aho, void (*callback_match)(void* arg, aho_match_t* m), void *arg);
 
 void aho_print_match_text(ahocorasick * restrict aho);
