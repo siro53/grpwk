@@ -5,3 +5,6 @@ grpwk
 *.o
 
 ahocorasick/
+*.vscode
+*.o
+*.exe

@@ -15,6 +15,8 @@ int test_trie(void) {
         text[i] = *text_init(i, s[i], strlen(s[i]));
     }
 
+    printf("here\n");
+
     aho_trie *t = NULL;
     trie_init(t);
 

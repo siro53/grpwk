@@ -66,7 +66,8 @@ int connect_link(aho_node *p, aho_node *q) {
 
 void trie_connect(aho_trie * restrict t) {
     queue *que;
-    que_init(que, &t->root);
+    que_init(que);
+    que_push(que, &t->root);
 
     while (TRUE) {
         QUE_TYPE node = que_pop(que);
@@ -89,7 +90,8 @@ void trie_connect(aho_trie * restrict t) {
 
 void trie_delete(aho_trie * restrict t) {
     queue *que;
-    que_init(que, &t->root);
+    que_init(que);
+    que_push(que, &t->root);
 
     while (TRUE) {
         QUE_TYPE node = que_pop(que);
@@ -132,7 +134,8 @@ aho_text *trie_find(aho_node ** restrict node, const unsigned char text) {
 
 void trie_print(aho_trie * restrict t) {
     queue *que;
-    que_init(que, &t->root);
+    que_init(que);
+    que_push(que, &t->root);
 
     while (TRUE) {
         QUE_TYPE node = que_pop(que);
