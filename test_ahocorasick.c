@@ -5,19 +5,28 @@
 
 int test_trie(void) {
     char *s[] = {
-        "abs",
+        "ab",
         "abc",
-        "hoge",
-        "test",
+        "aaaaabddbdaaacccaacbaabacbaadb",
+        "aaacdbdbcbcdbdbadaacbaadbdbdaacaaaaaadacababdadddacaacbaaaabdacdadadbabbbddaaddaaaaa",
+        "abacbadaadbcaaabaaacbbaabadbababdbcadbd",
+        "dbbbdaabaaabaabab",
+        "daaadaaa",
+        "dbaac",
+        "ad",
+        "bdadaabbaaadaabdd",
+        "ddaabdd",
+        "bdbabb",
+        "abdb",
+        "adbab",
+        "aaabaaabcadba",
     };
     aho_text text[sizeof(s)/sizeof(s[0])];
     for (int i=0; i<sizeof(s)/sizeof(s[0]); i++) {
         text[i] = *text_init(i, s[i], strlen(s[i]));
     }
 
-    printf("here\n");
-
-    aho_trie *t = NULL;
+    aho_trie *t;
     trie_init(t);
 
     for (int i=0; i<sizeof(text)/sizeof(text[0]); i++) {
@@ -25,6 +34,7 @@ int test_trie(void) {
     }
     trie_print(t);
     trie_connect(t);
+    printf("test: %p\n", t);
 
     trie_print(t);
 

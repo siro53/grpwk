@@ -15,8 +15,9 @@ aho_node *node_init(int data, aho_node * restrict parent) {
 }
 
 void trie_init(aho_trie * restrict t) {
+    if (t == NULL) t = (aho_trie *)malloc(sizeof(aho_trie));
     memset(t, 0, sizeof(aho_trie));
-    node_init(-1, &t->root);
+    t->root = *node_init(-1, NULL);
 }
 
 void trie_destroy(aho_trie * restrict t) {
@@ -65,47 +66,43 @@ int connect_link(aho_node *p, aho_node *q) {
 }
 
 void trie_connect(aho_trie * restrict t) {
-    queue *que;
-    que_init(que);
-    que_push(que, &t->root);
+    queue que;
+    que_init(&que);
+    que_push(&que, &t->root);
 
     while (TRUE) {
-        QUE_TYPE node = que_pop(que);
+        QUE_TYPE node = que_pop(&que);
         if (node == NULL) break;
 
         for (int i=0; i<MAX_NODE; i++) {
             if (node->child[i] == NULL) continue;
 
             aho_node *tmp = node, *child = node->child[i];
-            que_push(que, child);
+            que_push(&que, child);
 
             while (connect_link(tmp, child) == FALSE) tmp = tmp->failure_link;
         }
-
-        free(node);
     }
 
-    // que_destroy(que);
+    // que_destroy(&que);
 }
 
 void trie_delete(aho_trie * restrict t) {
-    queue *que;
-    que_init(que);
-    que_push(que, &t->root);
+    queue que;
+    que_init(&que);
+    que_push(&que, &t->root);
 
     while (TRUE) {
-        QUE_TYPE node = que_pop(que);
+        QUE_TYPE node = que_pop(&que);
         if (node == NULL) break;
 
-        for (int i=0; i<MAX_NODE; i++) if (node->child[i] != NULL) que_push(que, node->child[i]);
+        for (int i=0; i<MAX_NODE; i++) if (node->child[i] != NULL) que_push(&que, node->child[i]);
 
         if (node->parent == NULL) continue;
-
-        free(node);
     }
 }
 
-int find_node(aho_node ** restrict node, const unsigned char text) {
+int find_node(aho_node ** restrict node, const char text) {
     if (*node == NULL) return FALSE;
 
     if (text == '\0') {
@@ -120,7 +117,7 @@ int find_node(aho_node ** restrict node, const unsigned char text) {
     return FALSE;
 }
 
-aho_text *trie_find(aho_node ** restrict node, const unsigned char text) {
+aho_text *trie_find(aho_node ** restrict node, const char text) {
     while (find_node(node, text) == FALSE) {
         if (node == NULL || (*node)->parent == NULL) return NULL;
         *node = (*node)->failure_link;
@@ -133,18 +130,16 @@ aho_text *trie_find(aho_node ** restrict node, const unsigned char text) {
 }
 
 void trie_print(aho_trie * restrict t) {
-    queue *que;
-    que_init(que);
-    que_push(que, &t->root);
+    queue que;
+    que_init(&que);
+    que_push(&que, &t->root);
 
     while (TRUE) {
-        QUE_TYPE node = que_pop(que);
+        QUE_TYPE node = que_pop(&que);
         if (node == NULL) break;
 
-        for (int i=0; i<MAX_NODE; i++) if (node->child[i] != NULL) que_push(que, node->child[i]);
+        for (int i=0; i<MAX_NODE; i++) if (node->child[i] != NULL) que_push(&que, node->child[i]);
 
         printf("%c, refs:%d, fail: %p, output:%p\n", node->data + 'a', node->ref_count, node->failure_link, node->output_link);
     }
-
-    // que_destroy(que);
 }

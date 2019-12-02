@@ -39,11 +39,11 @@ int que_size(queue *que)
 
 void printQue(queue *que)
 {
-    // int i;
-    // printf("data : ");
-    // for (i = que->front; i < que->back; i++)
-    // {
-    //     printf("%d ", que->data[i]);
-    // }
-    // printf("\n");
+    int i;
+    printf("data : ");
+    for (i = que->front; i < que->back; i++)
+    {
+        printf("%p ", que->data[i]);
+    }
+    printf("\n");
 }
