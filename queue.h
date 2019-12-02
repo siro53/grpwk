@@ -11,10 +11,10 @@ typedef struct
     int back;
 } queue;
 
-void que_init(queue *que, QUE_TYPE init_value);
-void que_push(queue *que, QUE_TYPE value);
-QUE_TYPE que_pop(queue *que);
-int que_size(queue *que);
-void printQue(queue *que);
+void que_init(queue *);
+void que_push(queue *, QUE_TYPE);
+QUE_TYPE que_pop(queue *);
+int que_size(queue *);
+void printQue(queue *);
 
 #endif

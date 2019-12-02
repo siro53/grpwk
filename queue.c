@@ -3,15 +3,10 @@
 #include "queue.h"
 #include <string.h>
 
-void que_init(queue *que, QUE_TYPE init_value)
+void que_init(queue *que)
 {
     que->front = 0;
     que->back = 0;
-    int i;
-    for (i = 0; i < MAX_SIZE; i++)
-    {
-        que->data[i] = init_value;
-    }
 }
 
 void que_push(queue *que, QUE_TYPE value)
