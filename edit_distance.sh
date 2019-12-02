@@ -1,0 +1,1 @@
+./a.out data/dat$1_in data/dat$1_ref
