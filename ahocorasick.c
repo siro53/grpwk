@@ -65,7 +65,7 @@ void aho_clear_match_text(ahocorasick * restrict aho) {
 void aho_create_trie(ahocorasick * restrict aho) {
     trie_init(&aho->trie);
 
-    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next) if (!trie_add(&aho->trie, iter)) printf("input exceeds [a-d]\n");
+    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next) if (!trie_add(&aho->trie, iter)) printf("error (unexpected input [^a-d])\n");
     trie_connect(&aho->trie);
 }
 

@@ -30,7 +30,7 @@ int test_trie(void) {
     trie_init(t);
 
     for (int i=0; i<sizeof(text)/sizeof(text[0]); i++) {
-        trie_add(t, &text[i]);
+        if (!trie_add(t, &text[i])) printf("error (unexpected input [^a-d]\n");
     }
     trie_print(t);
     trie_connect(t);
