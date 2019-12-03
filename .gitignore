@@ -2,4 +2,6 @@
 .vscode
 a.out
 submission.aux submission.dvi submission.log
-
+f.c
+edit_distance.o
+.latexmkrc.
