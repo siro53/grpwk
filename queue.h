@@ -1,15 +1,24 @@
-#define QUE_TYPE int
+#pragma once
 
-const int MAX_SIZE = 500000;
+#include "ahotrie.h"
+
+#ifndef QUEUE_H
+#define QUEUE_H
+
+#define QUE_TYPE aho_node*
+#define MAX_SIZE 50000
 
 typedef struct
 {
     QUE_TYPE data[MAX_SIZE];
-    QUE_TYPE front;
-    QUE_TYPE back;
+    int front;
+    int back;
+    int size;
 } queue;
 
-void que_init(queue *que, QUE_TYPE init_value);
-void que_push(queue *que, QUE_TYPE value);
-void que_pop(queue *que);
-QUE_TYPE que_size(queue *que);
+void que_init(queue *);
+void que_push(queue *, QUE_TYPE);
+QUE_TYPE que_pop(queue *);
+void printQue(queue *);
+
+#endif
