@@ -22,6 +22,6 @@ int main()
         printf("%d\n", a);
     }
     printQue(&q);
-    printf("%d\n", que_size(&q));
+    printf("%d\n", q.size);
     return 0;
 }
