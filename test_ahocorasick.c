@@ -5,21 +5,21 @@
 
 int test_trie(void) {
     char *s[] = {
-        // "ab",
-        // "abc",
-        // "aaaaabddbdaaacccaacbaabacbaadb",
+        "ab",
+        "abc",
+        "aaaaabddbdaaacccaacbaabacbaadb",
         "aaacdbdbcbcdbdbadaacbaadbdbdaacaaaaaadacababdadddacaacbaaaabdacdadadbabbbddaaddaaaaa",
         "abacbadaadbcaaabaaacbbaabadbababdbcadbd",
-        // "dbbbdaabaaabaabab",
-        // "daaadaaa",
-        // "dbaac",
-        // "ad",
-        // "bdadaabbaaadaabdd",
-        // "ddaabdd",
-        // "bdbabb",
-        // "abdb",
-        // "adbab",
-        // "aaabaaabcadba",
+        "dbbbdaabaaabaabab",
+        "daaadaaa",
+        "dbaac",
+        "ad",
+        "bdadaabbaaadaabdd",
+        "ddaabdd",
+        "bdbabb",
+        "abdb",
+        "adbab",
+        "aaabaaabcadba",
     };
     aho_text text[sizeof(s)/sizeof(s[0])];
     for (int i=0; i<sizeof(s)/sizeof(s[0]); i++) {
@@ -32,7 +32,7 @@ int test_trie(void) {
     for (int i=0; i<sizeof(text)/sizeof(text[0]); i++) if (!trie_add(t, &text[i])) printf("error (unexpected input [^a-d]\n");
     trie_connect(t);
 
-    // trie_print(t);
+    trie_print(t);
 
     return 0;
 }
@@ -96,8 +96,8 @@ int test_input(void) {
 
 int main(void) {
     // test_trie();
-    // test_ahocora();
-    test_input();
+    test_ahocora();
+    // test_input();
 
     return 0;
 }
