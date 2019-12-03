@@ -7,6 +7,7 @@ void que_init(queue *que)
 {
     que->front = 0;
     que->back = 0;
+    que->size = 0;
 }
 
 void que_push(queue *que, QUE_TYPE value)
@@ -17,7 +18,8 @@ void que_push(queue *que, QUE_TYPE value)
         return;
     }
     que->data[que->back] = value;
-    que->back++;
+    que->back = (que->back + 1) % MAX_SIZE;
+    que->size++;
 }
 
 QUE_TYPE que_pop(queue *que)
@@ -28,13 +30,9 @@ QUE_TYPE que_pop(queue *que)
         return NULL;
     }
     QUE_TYPE top = que->data[que->front];
-    que->front++;
+    que->front = (que->front + 1) % MAX_SIZE;
+    que->size--;
     return top;
-}
-
-int que_size(queue *que)
-{
-    return (que->back - que->front);
 }
 
 void printQue(queue *que)
