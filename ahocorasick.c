@@ -17,6 +17,7 @@ void aho_destroy(ahocorasick * restrict aho) {
 int aho_add_match_text(ahocorasick * restrict aho, const char *data, int len) {
     if (aho->text_id == INT_MAX) return -1;
 
+    // printf("%d ", len);
     aho_text *text = text_init(aho->text_id++, data, len);
     if (text == NULL || text->data == NULL) return -1;
 

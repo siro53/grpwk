@@ -72,7 +72,7 @@ void trie_connect(aho_trie * restrict t) {
     que_push(&que, &t->root);
 
     while (TRUE) {
-        QUE_TYPE node = que_pop(&que);
+        aho_node *node = que_pop(&que);
         if (node == NULL) break;
 
         for (int i=0; i<MAX_NODE; i++) {

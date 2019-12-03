@@ -5,21 +5,21 @@
 
 int test_trie(void) {
     char *s[] = {
-        "ab",
-        "abc",
-        "aaaaabddbdaaacccaacbaabacbaadb",
+        // "ab",
+        // "abc",
+        // "aaaaabddbdaaacccaacbaabacbaadb",
         "aaacdbdbcbcdbdbadaacbaadbdbdaacaaaaaadacababdadddacaacbaaaabdacdadadbabbbddaaddaaaaa",
         "abacbadaadbcaaabaaacbbaabadbababdbcadbd",
-        "dbbbdaabaaabaabab",
-        "daaadaaa",
-        "dbaac",
-        "ad",
-        "bdadaabbaaadaabdd",
-        "ddaabdd",
-        "bdbabb",
-        "abdb",
-        "adbab",
-        "aaabaaabcadba",
+        // "dbbbdaabaaabaabab",
+        // "daaadaaa",
+        // "dbaac",
+        // "ad",
+        // "bdadaabbaaadaabdd",
+        // "ddaabdd",
+        // "bdbabb",
+        // "abdb",
+        // "adbab",
+        // "aaabaaabcadba",
     };
     aho_text text[sizeof(s)/sizeof(s[0])];
     for (int i=0; i<sizeof(s)/sizeof(s[0]); i++) {
@@ -29,13 +29,10 @@ int test_trie(void) {
     aho_trie *t;
     trie_init(t);
 
-    for (int i=0; i<sizeof(text)/sizeof(text[0]); i++) {
-        if (!trie_add(t, &text[i])) printf("error (unexpected input [^a-d]\n");
-    }
-    trie_print(t);
+    for (int i=0; i<sizeof(text)/sizeof(text[0]); i++) if (!trie_add(t, &text[i])) printf("error (unexpected input [^a-d]\n");
     trie_connect(t);
 
-    trie_print(t);
+    // trie_print(t);
 
     return 0;
 }
@@ -44,7 +41,7 @@ int test_trie(void) {
 void callback_match_pos(void *arg, aho_match_t *m) {
     char *text = (char *)arg;
 
-    printf("match text(%p): ", m);
+    printf("match text: ");
     for (int i=m->pos; i<m->pos+m->len; i++) printf("%c", text[i]);
 
     printf(" (match id: %d position: %d length: %d)\n", m->id, m->pos, m->len);
@@ -56,28 +53,41 @@ int test_ahocora(void) {
 
     aho_add_match_text(&aho, "ab", strlen("ab"));
     aho_add_match_text(&aho, "abc", strlen("abc"));
-    aho_add_match_text(&aho, "aaaaabddbdaaacccaacbaabacbaadb", strlen("aaaaabddbdaaacccaacbaabacbaadb"));
-    aho_add_match_text(&aho, "aaacdbdbcbcdbdbadaacbaadbdbdaacaaaaaadacababdadddacaacbaaaabdacdadadbabbbddaaddaaaaa", strlen("aaacdbdbcbcdbdbadaacbaadbdbdaacaaaaaadacababdadddacaacbaaaabdacdadadbabbbddaaddaaaaa"));
-    aho_add_match_text(&aho, "abacbadaadbcaaabaaacbbaabadbababdbcadbd", strlen("abacbadaadbcaaabaaacbbaabadbababdbcadbd"));
-    aho_add_match_text(&aho, "dbbbdaabaaabaabab", strlen("dbbbdaabaaabaabab"));
-    aho_add_match_text(&aho, "daaadaaa", strlen("daaadaaa"));
-    aho_add_match_text(&aho, "dbaac", strlen("dbaac"));
-    aho_add_match_text(&aho, "ad", strlen("ad"));
-    aho_add_match_text(&aho, "bdadaabbaaadaabdd", strlen("bdadaabbaaadaabdd"));
-    aho_add_match_text(&aho, "ddaabdd", strlen("ddaabdd"));
-    aho_add_match_text(&aho, "bdbabb", strlen("bdbabb"));
-    aho_add_match_text(&aho, "abdb", strlen("abdb"));
-    aho_add_match_text(&aho, "adbab", strlen("adbab"));
-    aho_add_match_text(&aho, "caabaaabcadba", strlen("aaabaaabcadba"));
+    aho_add_match_text(&aho, "ca", strlen("ca"));
 
     char test[] = "abcabcabcab";
     aho_create_trie(&aho);
     aho_register_match_callback(&aho, callback_match_pos, (void *)test);
 
-    // trie_print(&aho.trie);
+    trie_print(&aho.trie);
 
     printf("try: %s\n", test);
     printf("total match: %d\n", aho_search(&aho, test, strlen(test)));
+
+    aho_destroy(&aho);
+    printf("end of func\n");
+
+    return 0;
+}
+
+int test_input(void) {
+    ahocorasick aho;
+    aho_init(&aho);
+
+    char s[500000];
+    FILE *fp = fopen("data/dat0_in", "r");
+    fscanf(fp, "%s", s);
+    while (~fscanf(fp, "%s", s))
+        printf("%d\n", aho_add_match_text(&aho, s, strlen(s)));
+    printf("here\n");
+
+    fp = fopen("data/dat0_ref", "r");
+    fscanf(fp, "%s", s);
+
+    aho_create_trie(&aho);
+    aho_register_match_callback(&aho, callback_match_pos, (void *)s);
+
+    printf("total match: %d\n", aho_search(&aho, s, strlen(s)));
 
     aho_destroy(&aho);
 
@@ -86,7 +96,8 @@ int test_ahocora(void) {
 
 int main(void) {
     // test_trie();
-    test_ahocora();
+    // test_ahocora();
+    test_input();
 
     return 0;
 }
