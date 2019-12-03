@@ -2,8 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-//#include "example/grpwk.h"
+#include "example/grpwk.h"
 
 int main_prg(int, char **);
 
@@ -28,13 +27,14 @@ int main_prg(int argc, char **argv)
     assert(fp_out != NULL);
 
     /*typedef struct
-    {
-        char str[120];
-        int len;　//Prototype_Bigram.c
-    }
+    {char str[120];
+        int len;　//Prototype_Bigram.c}
     String_S;*/
-    /*構造体*/ String_S(t, s) = from_file();
-    grpwk(t, s);
+    /*構造体*/
+
+    String_S(t, s) = from_file();
+    grpwk(const String_s t, const String_s s);
+
     //string_s とlengthの構造体 char str 120
 
     /**implement here
