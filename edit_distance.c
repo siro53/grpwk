@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     fclose(fp_in);
     fclose(fp_ref);
 
-    printf("%d\n", edit_distance);
+    printf("edit_distance = %d\n", edit_distance);
 
     return 0;
 }

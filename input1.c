@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+//#include "hoge/example.h"
 
 int main_prg(int, char **);
 
@@ -31,6 +32,11 @@ int main_prg(int argc, char **argv)
     assert(fp_in != NULL);
     FILE *fp_out = fopen(argv[2], "w");
     assert(fp_out != NULL);
+
+    /**int main_prg(argc, argv)
+    t, s[]= from-file();
+    grpwk(t, s);
+
 
     /**implement here
         *
