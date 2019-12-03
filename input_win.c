@@ -29,7 +29,7 @@ int main_prg(int argc, char **argv)
     FILE *fp_out = fopen(argv[2], "w");
     assert(fp_out != NULL);
 
-    string_s t, s[500000];
+    string_s t, s[50000];
 
     // input t
     fscanf(fp_in, "%s", t.str);
@@ -39,7 +39,7 @@ int main_prg(int argc, char **argv)
     int i = 0;
     while (~fscanf(fp_in, "%s", s[i].str)) s[i++].len = strlen(s[i].str);
 
-    fprintf(fp_out, "%s\n", "hoge");
+    fprintf(fp_out, "%s\n", grpwk(t, s, i));
 
     return 0;
 }
