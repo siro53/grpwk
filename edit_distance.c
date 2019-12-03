@@ -14,14 +14,14 @@ int main(int argc, char **argv)
 
     int i;
     int c_in, c_ref;
-    int edit_distance;
+    int edit_distance = 0;
 
     for (i = 0; i < strNum; i++)
     {
         c_in = getc(fp_in);
         c_ref = getc(fp_ref);
 
-        if (c_in == c_ref)
+        if (c_in != c_ref)
         {
             edit_distance += 1;
         }
