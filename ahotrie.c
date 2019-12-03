@@ -84,6 +84,8 @@ void trie_connect(aho_trie * restrict t) {
             while (connect_link(tmp, child) == FALSE) tmp = tmp->failure_link;
         }
     }
+
+    que_destroy(&que);
 }
 
 void trie_delete(aho_trie * restrict t) {
@@ -99,6 +101,8 @@ void trie_delete(aho_trie * restrict t) {
 
         if (node->parent == NULL) continue;
     }
+
+    que_destroy(&que);
 }
 
 int find_node(aho_node ** restrict node, const char text) {
@@ -137,4 +141,6 @@ void trie_print(aho_trie * restrict t) {
 
         printf("%c, refs:%d, fail: %p, output:%p\n", node->data + 'a', node->ref_count, node->failure_link, node->output_link);
     }
+
+    que_destroy(&que);
 }

@@ -5,21 +5,21 @@
 
 int test_trie(void) {
     char *s[] = {
-        // "ab",
-        // "abc",
-        // "aaaaabddbdaaacccaacbaabacbaadb",
+        "ab",
+        "abc",
+        "aaaaabddbdaaacccaacbaabacbaadb",
         "aaacdbdbcbcdbdbadaacbaadbdbdaacaaaaaadacababdadddacaacbaaaabdacdadadbabbbddaaddaaaaa",
         "abacbadaadbcaaabaaacbbaabadbababdbcadbd",
-        // "dbbbdaabaaabaabab",
-        // "daaadaaa",
-        // "dbaac",
-        // "ad",
-        // "bdadaabbaaadaabdd",
-        // "ddaabdd",
-        // "bdbabb",
-        // "abdb",
-        // "adbab",
-        // "aaabaaabcadba",
+        "dbbbdaabaaabaabab",
+        "daaadaaa",
+        "dbaac",
+        "ad",
+        "bdadaabbaaadaabdd",
+        "ddaabdd",
+        "bdbabb",
+        "abdb",
+        "adbab",
+        "aaabaaabcadba",
     };
     aho_text text[sizeof(s)/sizeof(s[0])];
     for (int i=0; i<sizeof(s)/sizeof(s[0]); i++) {
@@ -32,7 +32,7 @@ int test_trie(void) {
     for (int i=0; i<sizeof(text)/sizeof(text[0]); i++) if (!trie_add(t, &text[i])) printf("error (unexpected input [^a-d]\n");
     trie_connect(t);
 
-    // trie_print(t);
+    trie_print(t);
 
     return 0;
 }
@@ -65,7 +65,6 @@ int test_ahocora(void) {
     printf("total match: %d\n", aho_search(&aho, test, strlen(test)));
 
     aho_destroy(&aho);
-    printf("end of func\n");
 
     return 0;
 }
@@ -78,8 +77,8 @@ int test_input(void) {
     FILE *fp = fopen("data/dat0_in", "r");
     fscanf(fp, "%s", s);
     while (~fscanf(fp, "%s", s))
-        printf("%d\n", aho_add_match_text(&aho, s, strlen(s)));
-    printf("here\n");
+        if (strlen(s) >= 60)
+            aho_add_match_text(&aho, s, strlen(s));
 
     fp = fopen("data/dat0_ref", "r");
     fscanf(fp, "%s", s);

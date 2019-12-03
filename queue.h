@@ -10,7 +10,7 @@
 
 typedef struct
 {
-    QUE_TYPE data[MAX_SIZE];
+    QUE_TYPE *data;
     int front;
     int back;
     int size;
@@ -19,6 +19,7 @@ typedef struct
 void que_init(queue *);
 void que_push(queue *, QUE_TYPE);
 QUE_TYPE que_pop(queue *);
-void printQue(queue *);
+void que_destroy(queue *);
+// void printQue(queue *);
 
 #endif

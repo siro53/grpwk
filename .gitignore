@@ -1,4 +1,6 @@
 grpwk
+distance
+result
 *.sh
 *.py
 !analyze.py
