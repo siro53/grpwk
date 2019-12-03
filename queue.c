@@ -27,7 +27,7 @@ QUE_TYPE que_pop(queue *que)
     if (que->front >= que->back)
     {
         printf("キューの中身は空です\n");
-        return -1;
+        return NULL;
     }
     QUE_TYPE top = que->data[que->front];
     que->front = (que->front + 1) % MAX_SIZE;

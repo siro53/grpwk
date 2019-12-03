@@ -8,7 +8,8 @@ struct hoge{
 
 int main()
 {
-    int i, a;
+    int i;
+    QUE_TYPE a;
     queue q;
     que_init(&q);
     for (i = 0; i < 5; i++)

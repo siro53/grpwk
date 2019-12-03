@@ -1,5 +1,5 @@
 PROG = grpwk
-OBJS = template.o
+OBJS = test_ahocorasick.o ahocorasick.o ahotrie.o ahotext.o queue.o
 CC = gcc
 CFLAGS = -W -Wall -Wextra -Wconversion -Wshadow
 LDFLAGS = 
