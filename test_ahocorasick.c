@@ -65,7 +65,6 @@ int test_ahocora(void) {
     printf("total match: %d\n", aho_search(&aho, test, strlen(test)));
 
     aho_destroy(&aho);
-    printf("end of func\n");
 
     return 0;
 }
@@ -78,8 +77,8 @@ int test_input(void) {
     FILE *fp = fopen("data/dat0_in", "r");
     fscanf(fp, "%s", s);
     while (~fscanf(fp, "%s", s))
-        printf("%d\n", aho_add_match_text(&aho, s, strlen(s)));
-    printf("here\n");
+        if (strlen(s) >= 60)
+            aho_add_match_text(&aho, s, strlen(s));
 
     fp = fopen("data/dat0_ref", "r");
     fscanf(fp, "%s", s);
@@ -96,8 +95,8 @@ int test_input(void) {
 
 int main(void) {
     // test_trie();
-    test_ahocora();
-    // test_input();
+    // test_ahocora();
+    test_input();
 
     return 0;
 }

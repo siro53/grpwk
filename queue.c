@@ -5,6 +5,7 @@
 
 void que_init(queue *que)
 {
+    que->data = (QUE_TYPE *)malloc(sizeof(QUE_TYPE) * MAX_SIZE);
     que->front = 0;
     que->back = 0;
     que->size = 0;
@@ -12,7 +13,7 @@ void que_init(queue *que)
 
 void que_push(queue *que, QUE_TYPE value)
 {
-    if (que->back >= MAX_SIZE)
+    if (que->size >= MAX_SIZE)
     {
         printf("キューの容量がいっぱいです\n");
         return;
@@ -24,7 +25,7 @@ void que_push(queue *que, QUE_TYPE value)
 
 QUE_TYPE que_pop(queue *que)
 {
-    if (que->front >= que->back)
+    if (que->size == 0)
     {
         printf("キューの中身は空です\n");
         return NULL;
@@ -35,13 +36,17 @@ QUE_TYPE que_pop(queue *que)
     return top;
 }
 
-void printQue(queue *que)
-{
-    int i;
-    printf("data : ");
-    for (i = que->front; i < que->back; i++)
-    {
-        printf("%p ", que->data[i]);
-    }
-    printf("\n");
+void que_destroy(queue *que) {
+    free(que->data);
 }
+
+// void printQue(queue *que)
+// {
+//     int i;
+//     printf("data : ");
+//     for (i = que->front; i < que->back; i++)
+//     {
+//         printf("%p ", que->data[i]);
+//     }
+//     printf("\n");
+// }
