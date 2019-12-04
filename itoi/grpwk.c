@@ -39,7 +39,7 @@ char *ahocoralike(const char *t, const string_s s[], int len) {
 
 char *grpwk(const char *t, const string_s s[], int len) {
     int i = 0;
-    // for (; i<len; ++i) if (s[i].len <= 60) break;
+    for (; i<len; ++i) if (s[i].len <= 60) break;
 
     string_s *a = &s[i];
     char *ans = ahocoralike(t, a, len - i);

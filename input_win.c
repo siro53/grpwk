@@ -5,9 +5,9 @@
 // #include <sys/time.h>
 // #include <sys/resource.h>
 #include <time.h>
-#include "string_s.h"
+#include "string_info.h"
 
-// change here to include your files!!
+// TODO: change here to include your files!!
 #include "itoi/grpwk.h"
 
 int main_prg(int, char **);

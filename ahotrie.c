@@ -108,7 +108,7 @@ void trie_delete(aho_trie * restrict t) {
 int find_node(aho_node ** restrict node, const char text) {
     if (*node == NULL) return FALSE;
 
-    if (text - 'a' <= 3 && text - 'a' >= 0 && (*node)->child[text - 'a'] != NULL) {
+    if ((*node)->child[text - 'a'] != NULL && text - 'a' <= 3 && text - 'a' >= 0) {
         *node = (*node)->child[text - 'a'];
         return TRUE;
     }
