@@ -7,4 +7,4 @@ typedef struct _text {
     struct _text *prev, *next;
 } aho_text;
 
-aho_text *text_init(int id, const char *data, int len);
+aho_text *text_init(const int id, const char *data, const int len);

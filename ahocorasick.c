@@ -17,7 +17,6 @@ void aho_destroy(ahocorasick * restrict aho) {
 int aho_add_match_text(ahocorasick * restrict aho, const char *data, int len) {
     if (aho->text_id == INT_MAX) return -1;
 
-    // printf("%d ", len);
     aho_text *text = text_init(aho->text_id++, data, len);
     if (text == NULL || text->data == NULL) return -1;
 
@@ -66,7 +65,9 @@ void aho_clear_match_text(ahocorasick * restrict aho) {
 void aho_create_trie(ahocorasick * restrict aho) {
     trie_init(&aho->trie);
 
-    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next) if (!trie_add(&aho->trie, iter)) printf("error (unexpected input [^a-d])\n");
+    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next)
+        if (!trie_add(&aho->trie, iter))
+            printf("error (%s, %d)\n", iter->data, iter->len);
     trie_connect(&aho->trie);
 }
 

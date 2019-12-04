@@ -15,7 +15,7 @@ void que_push(queue *que, QUE_TYPE value)
 {
     if (que->size >= MAX_SIZE)
     {
-        printf("キューの容量がいっぱいです\n");
+        // printf("キューの容量がいっぱいです\n");
         return;
     }
     que->data[que->back] = value;
@@ -27,7 +27,7 @@ QUE_TYPE que_pop(queue *que)
 {
     if (que->size == 0)
     {
-        printf("キューの中身は空です\n");
+        // printf("キューの中身は空です\n");
         return NULL;
     }
     QUE_TYPE top = que->data[que->front];
