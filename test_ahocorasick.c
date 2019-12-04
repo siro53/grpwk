@@ -77,7 +77,7 @@ int test_input(void) {
     FILE *fp = fopen("data/dat0_in", "r");
     fscanf(fp, "%s", s);
     while (~fscanf(fp, "%s", s))
-        if (strlen(s) >= 60)
+        if (strlen(s) >= 50)
             aho_add_match_text(&aho, s, strlen(s));
 
     fp = fopen("data/dat0_ref", "r");

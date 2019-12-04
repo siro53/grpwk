@@ -3,11 +3,10 @@
 
 #include "ahotext.h"
 
-aho_text *text_init(const int id, const char *data, const int len) {
+aho_text *text_init(const int id, char *data, const int len) {
     aho_text *text = (aho_text *)malloc(sizeof(aho_text));
     text->id = id;
-    text->data = (char *)malloc(sizeof(char) * (len + 1));
-    strcpy(text->data, data);
+    text->data = data;
     text->len = len;
     text->prev = NULL;
     text->next = NULL;

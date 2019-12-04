@@ -47,14 +47,13 @@ int main_prg(int argc, char **argv)
 
     // input t
     fscanf(fp_in, "%s", t);
+    for (int i=0; i<T_LENGTH; i++) if (t[i] == 'x') t[i] = 'a';
 
     // input s[]
     int counter = 0;
     for (; fscanf(fp_in, "%s", s[counter].str) != EOF; ++counter) s[counter].len = strlen(s[counter].str);
     qsort(s, counter, sizeof(string_s), sort_f);
 
-    fp_in = fopen("data/dat0_ref", "r");
-    fscanf(fp_in, "%s", t);
     fprintf(fp_out, "%s\n", grpwk(t, s, counter));
 
     return 0;
