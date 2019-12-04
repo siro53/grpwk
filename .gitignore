@@ -6,6 +6,7 @@ result
 !analyze.py
 .*/
 *.o
+Makefile
 
 ahocorasick/
 *.vscode
