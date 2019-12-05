@@ -37,6 +37,19 @@ def sep_len():
 
 # sep_len()
 
+def mat():
+    import matplotlib.pyplot as plt
+    import numpy as np
+    print('matplotlib')
+    x = [i+1 for i in range(85)]
+    y = [3902, 3686, 3282, 2947, 2767, 2380, 2173, 1896, 1715, 1571, 1382, 1288, 1104, 1044, 922, 821, 716, 699, 547, 520, 492, 463, 389, 360, 332, 287, 270, 220, 193, 184, 168, 146, 140, 107, 109, 91, 84, 85, 66, 66, 57, 58, 46, 52, 37, 33, 25, 19, 22, 24, 25, 23, 13, 21, 15, 10, 6, 7, 10, 11, 8, 4, 5, 7, 1, 7, 4, 3, 3, 9, 1, 3, 1, 1, 3, 2, 2, 3, 1, 1, 3, 1, 2, 1, 3]
+    print(len(y))
+    plt.plot(np.array(x), np.array(y), label='sep_len')
+    plt.legend()
+    plt.show()
+
+# mat()
+
 def x_len():
     print('x_len')
     counter = [{} for i in range(5)]
@@ -101,4 +114,4 @@ def duplication():
             if t_count[k] != s_count[k]:
                 print(k)
 
-duplication()
+# duplication()
