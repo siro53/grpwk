@@ -7,7 +7,7 @@
 
 char *grpwk(const char *t, const string_s s[], int len) {
     int i = 0;
-    for (; i<len && s[i].len > 16; ++i);
+    for (; i<len && s[i].len > 17; ++i);
     const string_s *a = &s[i];
 
     char *ans = ahocoralike(t, a, len - i);

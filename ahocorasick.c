@@ -88,7 +88,7 @@ int aho_search(ahocorasick * restrict aho, const char *data, int len) {
         match.len = result->len;
         match.pos = i - result->len + 1;
 
-        counter++;
+        if (match.len == 16) counter++;
         if (aho->callback_match) aho->callback_match(aho->callback_arg, &match);
     }
 

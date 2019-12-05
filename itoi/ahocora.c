@@ -9,7 +9,7 @@
 void callback_match_pos(void *arg, aho_match_t *m) {
     char *text = (char *)arg;
 
-    if (m->len > 20) {
+    if (m->len >= 17) {
         printf("match text: ");
         for (int i=m->pos; i<m->pos+m->len; i++) printf("%c", text[i]);
         printf(" (match id: %d position: %d length: %d)\n", m->id, m->pos, m->len);
@@ -22,8 +22,7 @@ int bitcount(unsigned long long bits) {
     bits = (bits & 0x0f0f0f0f0f0f0f0f) + (bits >> 4 & 0x0f0f0f0f0f0f0f0f);
     bits = (bits & 0x00ff00ff00ff00ff) + (bits >> 8 & 0x00ff00ff00ff00ff);
     bits = (bits & 0x0000ffff0000ffff) + (bits >> 16 & 0x0000ffff0000ffff);
-    bits = (bits & 0x00000000ffffffff) + (bits >> 32 & 0x00000000ffffffff);
-    return bits;
+    return (bits & 0x00000000ffffffff) + (bits >> 32 & 0x00000000ffffffff);
 }
 
 const char *convert(const char *s, const int len, const unsigned long long bitcheck) {
@@ -41,8 +40,8 @@ char *ahocoralike(const char *t, const string_s s[], const int len) {
     aho_init(&aho);
 
     for (int i=0; i<len; ++i) {
-        if (s[i].len < 10) break;
-        for (unsigned long long j=0; j<=(unsigned long long)(1<<s[i].len)-1; j++) {
+        if (s[i].len < 5) break;
+        for (unsigned long long j=0; j<=((unsigned long long)1<<s[i].len)-1; j++) {
             if (bitcount(j) < s[i].len / 2)
                 aho_add_match_text(&aho, convert(s[i].str, s[i].len, j), s[i].len);
         }
