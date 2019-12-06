@@ -25,7 +25,7 @@ void trie_destroy(aho_trie * restrict t) {
     trie_delete(t);
 }
 
-int trie_add(aho_trie * restrict t, aho_text * restrict text) {
+int trie_add(aho_trie * restrict t, aho_text * restrict text, aho_text * restrict parent) {
     aho_node *current = &t->root;
 
     for (int i=0; i<text->len; i++) {
@@ -39,7 +39,7 @@ int trie_add(aho_trie * restrict t, aho_text * restrict text) {
     }
 
     current->end = TRUE;
-    current->output_text = text;
+    current->output_text = parent;
 
     return TRUE;
 }

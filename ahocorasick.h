@@ -21,11 +21,12 @@ typedef struct {
 void aho_init(ahocorasick * restrict aho);
 void aho_destroy(ahocorasick * restrict aho);
 
-int aho_add_match_text(ahocorasick * restrict aho, const char *data, int len);
+int aho_add_match_text(ahocorasick * restrict aho, const char *data, int len, aho_text * restrict parent);
 int aho_del_match_text(ahocorasick * restrict aho, const int id);
 void aho_clear_match_text(ahocorasick * restrict aho);
 
 void aho_create_trie(ahocorasick * restrict aho);
+void aho_connect_trie(ahocorasick * restrict aho);
 void aho_clear_trie(ahocorasick * restrict aho);
 
 int aho_search(ahocorasick * restrict aho, const char *text, int len);

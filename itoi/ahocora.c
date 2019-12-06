@@ -9,11 +9,8 @@
 void callback_match_pos(void *arg, aho_match_t *m) {
     char *text = (char *)arg;
 
-    if (m->len >= 17) {
-        printf("match text: ");
-        for (int i=m->pos; i<m->pos+m->len; i++) printf("%c", text[i]);
-        printf(" (match id: %d position: %d length: %d)\n", m->id, m->pos, m->len);
-    }
+    // for (int i=m->pos; i<m->pos+m->len; i++) printf("%c", text[i]);
+    // printf(" (match id: %d position: %d length: %d)\n", m->id, m->pos, m->len);
 }
 
 int bitcount(unsigned long long bits) {
@@ -38,16 +35,24 @@ const char *convert(const char *s, const int len, const unsigned long long bitch
 char *ahocoralike(const char *t, const string_s s[], const int len) {
     ahocorasick aho;
     aho_init(&aho);
+    aho_create_trie(&aho);
+
+    int pre_len = s[0].len;
 
     for (int i=0; i<len; ++i) {
-        if (s[i].len < 5) break;
-        for (unsigned long long j=0; j<=((unsigned long long)1<<s[i].len)-1; j++) {
-            if (bitcount(j) < s[i].len / 2)
-                aho_add_match_text(&aho, convert(s[i].str, s[i].len, j), s[i].len);
+        if (s[i].len != pre_len) {
+            // printf("%d\n", pre_len);
+            pre_len = s[i].len;
+        }
+        aho_text *parent = text_init(aho.text_id++, s[i].str, s[i].len);
+        trie_add(&aho.trie, parent, parent);
+        for (unsigned long long j=1; j<=((unsigned long long)1<<s[i].len)-1; j++) {
+            if (bitcount(j) < s[i].len * 2 / 5.0)
+                aho_add_match_text(&aho, convert(s[i].str, s[i].len, j), s[i].len, parent);
         }
     }
 
-    aho_create_trie(&aho);
+    aho_connect_trie(&aho);
     // trie_print(&aho.trie);
 
     char *ans = (char *)malloc(sizeof(char) * (T_LENGTH + 1));

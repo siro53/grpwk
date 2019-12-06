@@ -14,24 +14,17 @@ void aho_destroy(ahocorasick * restrict aho) {
     aho_clear_trie(aho);
 }
 
-int aho_add_match_text(ahocorasick * restrict aho, const char *data, int len) {
+int aho_add_match_text(ahocorasick * restrict aho, const char *data, int len, aho_text * restrict parent) {
     if (aho->text_id == INT_MAX) return -1;
 
-    aho_text *text = text_init(aho->text_id++, data, len);
+    aho_text *text = text_init(parent->id, data, len);
     if (text == NULL || text->data == NULL) return -1;
 
-    if (aho->head == NULL) {
-        aho->head = text;
-        aho->tail = text;
-        aho->text_count++;
-        return text->id;
-    }
+    trie_add(&aho->trie, text, parent);
+    free(text->data);
+    free(text);
 
-    aho->tail->next = text;
-    text->prev = aho->tail;
-    aho->tail = text;
-    aho->text_count++;
-    return text->id;
+    return parent->id;
 }
 
 int aho_del_match_text(ahocorasick * restrict aho, const int id) {
@@ -65,9 +58,13 @@ void aho_clear_match_text(ahocorasick * restrict aho) {
 void aho_create_trie(ahocorasick * restrict aho) {
     trie_init(&aho->trie);
 
-    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next)
-        if (!trie_add(&aho->trie, iter))
-            printf("error (%s, %d)\n", iter->data, iter->len);
+    // for (aho_text *iter = aho->head; iter != NULL; iter = iter->next)
+    //     if (!trie_add(&aho->trie, iter))
+    //         printf("error (%s, %d)\n", iter->data, iter->len);
+    // trie_connect(&aho->trie);
+}
+
+void aho_connect_trie(ahocorasick * restrict aho) {
     trie_connect(&aho->trie);
 }
 
@@ -88,7 +85,8 @@ int aho_search(ahocorasick * restrict aho, const char *data, int len) {
         match.len = result->len;
         match.pos = i - result->len + 1;
 
-        if (match.len == 16) counter++;
+        counter++;
+        // printf("substitute to %s from ", result->data);
         if (aho->callback_match) aho->callback_match(aho->callback_arg, &match);
     }
 
