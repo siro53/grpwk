@@ -5,7 +5,7 @@
 #include "grpwk.h"
 #include "ahocora.h"
 
-char *grpwk(const char *t, string_s s[], int len) {
+char *grpwk(char *t, string_s s[], int len) {
     int from, to;
     for (from = 0; from<len; ++from) if (s[from].len == AHO_FROM) break;
     for (to = from; to<len; to++) if (s[to].len == AHO_TO) break;

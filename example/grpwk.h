@@ -2,4 +2,4 @@
 
 #include "../string_info.h"
 
-char *grpwk(const char *t, const string_s s[], int len);
+char *grpwk(char *t, string_s s[], int len);

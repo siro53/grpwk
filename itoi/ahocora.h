@@ -2,4 +2,4 @@
 
 #include "../string_info.h"
 
-char *ahocoralike(const char *t, string_s s[], const int len);
+char *ahocoralike(char *t, string_s s[], int len);

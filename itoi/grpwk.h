@@ -5,4 +5,4 @@
 #define AHO_FROM 20
 #define AHO_TO 9
 
-char *grpwk(const char *t, string_s s[], int len);
+char *grpwk(char *t, string_s s[], int len);

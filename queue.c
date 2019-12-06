@@ -15,7 +15,7 @@ void que_push(queue *que, QUE_TYPE value)
 {
     if (que->size >= MAX_SIZE)
     {
-        // printf("キューの容量がいっぱいです\n");
+        printf("キューの容量がいっぱいです\n");
         return;
     }
     que->data[que->back] = value;

@@ -24,9 +24,9 @@ typedef struct {
 
 void trie_init(aho_trie * restrict t);
 
-int trie_add(aho_trie * restrict t, const string_s * restrict text, const char * restrict parent);
+int trie_add(aho_trie * restrict t, string_s * restrict text, char * restrict parent);
 void trie_connect(aho_trie * restrict t);
 void trie_delete(aho_trie * restrict t);
-string_s *trie_find(aho_node ** restrict t, const char text);
+string_s *trie_find(aho_node ** restrict t, char text);
 
 void trie_print(aho_trie * restrict t);

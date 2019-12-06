@@ -22,27 +22,27 @@ int bitcount(unsigned long long bits) {
     return (bits & 0x00000000ffffffff) + (bits >> 32 & 0x00000000ffffffff);
 }
 
-char *ahocoralike(const char *t, string_s s[], const int len) {
+void convert(char *tmp, char *s, int len, unsigned long long bitchange) {
+    for (int i=0; i<len; i++) {
+        if (bitchange >> i & 1) tmp[i] = 'a';
+        else tmp[i] = s[i];
+    }
+    tmp[len] = '\0';
+}
+
+char *ahocoralike(char *t, string_s s[], int len) {
     ahocorasick aho;
     aho_init(&aho);
     aho_create_trie(&aho);
-
     char tmp[120];
-    int pre_len = s[0].len;
 
     for (int i=0; i<len; ++i) {
-        if (s[i].len != pre_len) {
-            printf("%d\n", pre_len);
-            pre_len = s[i].len;
-        }
         aho_add_match_text(&aho, &s[i]);
-        for (unsigned long long j=1; j<=((unsigned long long)1<<s[i].len)-1; j++) {
-            if (bitcount(j) < s[i].len * 2 / 5.0) {
-                for (int v=0; v<s[i].len; v++) {
-                    if (j & ((unsigned long long)1 << v)) tmp[v] = 'a';
-                    else tmp[v] = s[i].str[v];
-                }
-                tmp[s[i].len] = '\0';
+        int max_bit = s[i].len / 2;
+        unsigned long long until = ((unsigned long long)1<<s[i].len)-1;
+        for (unsigned long long j=1; j<=until; j++) {
+            if (bitcount(j) < max_bit) {
+                convert(tmp, s[i].str, s[i].len, j);
                 aho_add_similar_text(&aho, tmp, &s[i]);
             }
         }
@@ -52,7 +52,6 @@ char *ahocoralike(const char *t, string_s s[], const int len) {
     // trie_print(&aho.trie);
 
     char *ans = (char *)malloc(sizeof(char) * (T_LENGTH + 1));
-    // printf("test case: %s\n", t);
 
     aho_register_match_callback(&aho, callback_match_pos, (void *)t);
     sprintf(ans, "total match: %d\n", aho_search(&aho, t, T_LENGTH));

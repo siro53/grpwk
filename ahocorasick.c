@@ -15,16 +15,17 @@ int aho_add_match_text(ahocorasick * restrict aho, string_s *text) {
     text->id = aho->text_id++;
     aho->list[text->id] = text;
     trie_add(&aho->trie, text, text->str);
+    // if (text->id % 1000 == 0) printf("%d (%d)\n", text->id, text->len);
 
     return TRUE;
 }
 
-int aho_add_similar_text(ahocorasick * restrict aho, const char * restrict data, const string_s * restrict original) {
+int aho_add_similar_text(ahocorasick * restrict aho, char * restrict data, string_s * restrict original) {
     trie_add(&aho->trie, original, data);
     return TRUE;
 }
 
-string_s *aho_search_match_text(ahocorasick * restrict aho, const int id) {
+string_s *aho_search_match_text(ahocorasick * restrict aho, int id) {
     return aho->list[id];
 }
 
@@ -36,7 +37,7 @@ void aho_connect_trie(ahocorasick * restrict aho) {
     trie_connect(&aho->trie);
 }
 
-int aho_search(ahocorasick * restrict aho, const char *data, int len) {
+int aho_search(ahocorasick * restrict aho, char *data, int len) {
     int counter = 0;
     aho_node *current = &aho->trie.root;
 

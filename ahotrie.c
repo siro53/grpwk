@@ -21,7 +21,7 @@ void trie_init(aho_trie * restrict t) {
     t->root = *node_init(-1, NULL);
 }
 
-int trie_add(aho_trie * restrict t, const string_s * restrict text, const char * restrict similar) {
+int trie_add(aho_trie * restrict t, string_s * restrict text, char * restrict similar) {
     aho_node *current = &t->root;
 
     for (int i=0; i<text->len; i++) {
@@ -101,7 +101,7 @@ void trie_delete(aho_trie * restrict t) {
     que_destroy(&que);
 }
 
-int find_node(aho_node ** restrict node, const char text) {
+int find_node(aho_node ** restrict node, char text) {
     if (*node == NULL) return FALSE;
 
     if ((*node)->child[text - 'a'] != NULL && text - 'a' <= 3 && text - 'a' >= 0) {
@@ -112,7 +112,7 @@ int find_node(aho_node ** restrict node, const char text) {
     return FALSE;
 }
 
-string_s *trie_find(aho_node ** restrict node, const char text) {
+string_s *trie_find(aho_node ** restrict node, char text) {
     while (find_node(node, text) == FALSE) {
         if (node == NULL || (*node)->parent == NULL) return NULL;
         *node = (*node)->failure_link;
