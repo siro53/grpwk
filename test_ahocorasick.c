@@ -21,15 +21,17 @@ int test_trie(void) {
         "adbab",
         "aaabaaabcadba",
     };
-    aho_text text[sizeof(s)/sizeof(s[0])];
-    for (int i=0; i<sizeof(s)/sizeof(s[0]); i++) {
-        text[i] = *text_init(i, s[i], strlen(s[i]));
-    }
+    string_s text[100];
 
     aho_trie *t;
     trie_init(t);
 
-    for (int i=0; i<sizeof(text)/sizeof(text[0]); i++) if (!trie_add(t, &text[i])) printf("error (unexpected input [^a-d]\n");
+    for (int i=0; i<sizeof(s)/sizeof(s[0]); i++) {
+        strcpy(text[i].str, s[i]);
+        text[i].len = strlen(s[i]);
+        if (!trie_add(t, &text[i], s[i]))
+            printf("error (unexpected input [^a-d]\n");
+    }
     trie_connect(t);
 
     trie_print(t);
@@ -51,9 +53,9 @@ int test_ahocora(void) {
     ahocorasick aho;
     aho_init(&aho);
 
-    aho_add_match_text(&aho, "ab", strlen("ab"));
-    aho_add_match_text(&aho, "abc", strlen("abc"));
-    aho_add_match_text(&aho, "ca", strlen("ca"));
+    // aho_add_match_text(&aho, "ab", strlen("ab"));
+    // aho_add_match_text(&aho, "abc", strlen("abc"));
+    // aho_add_match_text(&aho, "ca", strlen("ca"));
 
     char test[] = "abcabcabcab";
     aho_create_trie(&aho);
@@ -76,9 +78,9 @@ int test_input(void) {
     char s[500000];
     FILE *fp = fopen("data/dat0_in", "r");
     fscanf(fp, "%s", s);
-    while (~fscanf(fp, "%s", s))
-        if (strlen(s) >= 50)
-            aho_add_match_text(&aho, s, strlen(s));
+    // while (~fscanf(fp, "%s", s))
+    //     if (strlen(s) >= 50)
+    //         aho_add_match_text(&aho, s, strlen(s));
 
     fp = fopen("data/dat0_ref", "r");
     fscanf(fp, "%s", s);
@@ -96,7 +98,7 @@ int test_input(void) {
 int main(void) {
     // test_trie();
     // test_ahocora();
-    test_input();
+    // test_input();
 
     return 0;
 }

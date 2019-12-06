@@ -22,33 +22,29 @@ int bitcount(unsigned long long bits) {
     return (bits & 0x00000000ffffffff) + (bits >> 32 & 0x00000000ffffffff);
 }
 
-const char *convert(const char *s, const int len, const unsigned long long bitcheck) {
-    char *tmp = (char *)malloc(sizeof(char) * (len + 1));
-    for (int i=0; i<len; i++) {
-        if (bitcheck & (1 << i)) tmp[i] = 'a';
-        else tmp[i] = s[i];
-    }
-    tmp[len] = '\0';
-    return tmp;
-}
-
-char *ahocoralike(const char *t, const string_s s[], const int len) {
+char *ahocoralike(const char *t, string_s s[], const int len) {
     ahocorasick aho;
     aho_init(&aho);
     aho_create_trie(&aho);
 
+    char tmp[120];
     int pre_len = s[0].len;
 
     for (int i=0; i<len; ++i) {
         if (s[i].len != pre_len) {
-            // printf("%d\n", pre_len);
+            printf("%d\n", pre_len);
             pre_len = s[i].len;
         }
-        aho_text *parent = text_init(aho.text_id++, s[i].str, s[i].len);
-        trie_add(&aho.trie, parent, parent);
+        aho_add_match_text(&aho, &s[i]);
         for (unsigned long long j=1; j<=((unsigned long long)1<<s[i].len)-1; j++) {
-            if (bitcount(j) < s[i].len * 2 / 5.0)
-                aho_add_match_text(&aho, convert(s[i].str, s[i].len, j), s[i].len, parent);
+            if (bitcount(j) < s[i].len * 2 / 5.0) {
+                for (int v=0; v<s[i].len; v++) {
+                    if (j & ((unsigned long long)1 << v)) tmp[v] = 'a';
+                    else tmp[v] = s[i].str[v];
+                }
+                tmp[s[i].len] = '\0';
+                aho_add_similar_text(&aho, tmp, &s[i]);
+            }
         }
     }
 
@@ -60,8 +56,6 @@ char *ahocoralike(const char *t, const string_s s[], const int len) {
 
     aho_register_match_callback(&aho, callback_match_pos, (void *)t);
     sprintf(ans, "total match: %d\n", aho_search(&aho, t, T_LENGTH));
-
-    aho_destroy(&aho);
 
     return ans;
 }

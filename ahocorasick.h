@@ -1,7 +1,9 @@
 #pragma once
 
 #include "ahotrie.h"
-#include "ahotext.h"
+#include "string_info.h"
+
+#define AHO_SIZE 45000
 
 typedef struct  {
     int id, pos, len;
@@ -9,8 +11,7 @@ typedef struct  {
 
 typedef struct {
     int text_id;
-    aho_text *head, *tail;
-    int text_count;
+    string_s *list[AHO_SIZE];
 
     aho_trie trie;
 
@@ -21,9 +22,10 @@ typedef struct {
 void aho_init(ahocorasick * restrict aho);
 void aho_destroy(ahocorasick * restrict aho);
 
-int aho_add_match_text(ahocorasick * restrict aho, const char *data, int len, aho_text * restrict parent);
-int aho_del_match_text(ahocorasick * restrict aho, const int id);
-void aho_clear_match_text(ahocorasick * restrict aho);
+int aho_add_match_text(ahocorasick * restrict aho, string_s *text);
+int aho_add_similar_text(ahocorasick * restrict aho, const char * restrict data, const string_s * restrict original);
+
+string_s *aho_search_match_text(ahocorasick * restrict aho, const int id);
 
 void aho_create_trie(ahocorasick * restrict aho);
 void aho_connect_trie(ahocorasick * restrict aho);
@@ -32,5 +34,3 @@ void aho_clear_trie(ahocorasick * restrict aho);
 int aho_search(ahocorasick * restrict aho, const char *text, int len);
 
 void aho_register_match_callback(ahocorasick * restrict aho, void (*callback_match)(void* arg, aho_match_t* m), void *arg);
-
-void aho_print_match_text(ahocorasick * restrict aho);

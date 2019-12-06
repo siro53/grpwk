@@ -21,15 +21,11 @@ void trie_init(aho_trie * restrict t) {
     t->root = *node_init(-1, NULL);
 }
 
-void trie_destroy(aho_trie * restrict t) {
-    trie_delete(t);
-}
-
-int trie_add(aho_trie * restrict t, aho_text * restrict text, aho_text * restrict parent) {
+int trie_add(aho_trie * restrict t, const string_s * restrict text, const char * restrict similar) {
     aho_node *current = &t->root;
 
     for (int i=0; i<text->len; i++) {
-        int char_id = text->data[i] - 'a';
+        int char_id = similar[i] - 'a';
         if (char_id > 3 || char_id < 0) return FALSE;
 
         if (current->child[char_id] == NULL) current->child[char_id] = node_init(char_id, current);
@@ -39,7 +35,7 @@ int trie_add(aho_trie * restrict t, aho_text * restrict text, aho_text * restric
     }
 
     current->end = TRUE;
-    current->output_text = parent;
+    current->output_text = text;
 
     return TRUE;
 }
@@ -116,7 +112,7 @@ int find_node(aho_node ** restrict node, const char text) {
     return FALSE;
 }
 
-aho_text *trie_find(aho_node ** restrict node, const char text) {
+string_s *trie_find(aho_node ** restrict node, const char text) {
     while (find_node(node, text) == FALSE) {
         if (node == NULL || (*node)->parent == NULL) return NULL;
         *node = (*node)->failure_link;

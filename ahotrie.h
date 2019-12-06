@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ahotext.h"
+#include "string_info.h"
 
 #define MAX_NODE 4
 #define FALSE 0
@@ -13,7 +13,7 @@ typedef struct _node {
     struct _node *parent, *child[MAX_NODE];
 
     int end;
-    aho_text *output_text;
+    string_s *output_text;
 
     struct _node *failure_link, *output_link;
 } aho_node;
@@ -23,11 +23,10 @@ typedef struct {
 } aho_trie;
 
 void trie_init(aho_trie * restrict t);
-void trie_destroy(aho_trie * restrict t);
 
-int trie_add(aho_trie * restrict t, aho_text * restrict text, aho_text * restrict parent);
+int trie_add(aho_trie * restrict t, const string_s * restrict text, const char * restrict parent);
 void trie_connect(aho_trie * restrict t);
 void trie_delete(aho_trie * restrict t);
-aho_text *trie_find(aho_node ** restrict t, const char text);
+string_s *trie_find(aho_node ** restrict t, const char text);
 
 void trie_print(aho_trie * restrict t);

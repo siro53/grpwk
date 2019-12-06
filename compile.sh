@@ -13,7 +13,9 @@ usage_exit() {
 while getopts :hnd:t: OPT
 do
     case $OPT in
-        n) CFLAGS="";;
+        n) CFLAGS=""
+            echo "You are running the compiler without -Wall option !!"
+            ;;
         d) DIR=$OPTARG;;
         t) ID=$OPTARG;;
         h) usage_exit;;
