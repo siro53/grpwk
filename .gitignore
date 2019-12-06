@@ -1,0 +1,13 @@
+grpwk
+distance
+result
+*.sh
+*.py
+!analyze.py
+.*/
+*.o
+
+ahocorasick/
+*.vscode
+*.o
+*.exe
