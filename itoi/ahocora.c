@@ -50,10 +50,10 @@ char *ahocoralike(char *t, string_s s[], int len) {
 
     aho_connect_trie(&aho);
     // trie_print(&aho.trie);
+    aho_register_match_callback(&aho, callback_match_pos, (void *)t);
 
     char *ans = (char *)malloc(sizeof(char) * (T_LENGTH + 1));
 
-    aho_register_match_callback(&aho, callback_match_pos, (void *)t);
     sprintf(ans, "total match: %d\n", aho_search(&aho, t, T_LENGTH));
 
     return ans;

@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 }
 
 
-int sort_f(void *a, void *b) {
+int sort_f(const void *a, const void *b) {
     return ((string_s *)b)->len - ((string_s *)a)->len;
 }
 
