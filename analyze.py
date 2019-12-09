@@ -65,9 +65,12 @@ def x_len():
                     d.setdefault(c, 0)
                     d[c] += 1
                     c = 0
+            import matplotlib.pyplot as plt
+            plt.plot(sorted(counter[i].keys()), [counter[i][k] for k in sorted(counter[i].keys())])
+            plt.show()
     print_table(counter)
 
-# x_len()
+x_len()
 
 def t_to_s_rate():
     print('t_to_s_rate')
