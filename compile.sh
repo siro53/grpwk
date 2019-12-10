@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# 使用例
+# ./compile.sh -d example -t 0 -n
+
 # 各種設定(初期設定)
 PROG=grpwk # 実行ファイル名
 CC=gcc # コンパイラ
