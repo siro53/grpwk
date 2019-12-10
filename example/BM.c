@@ -10,13 +10,14 @@
 #include <stdio.h>
 #include <time.h>
 
+
 //文字の比較に使用　単に見栄えを良くしてるだけ
 #define ignore -1
 #define success 1
 #define failure 0
 
 //これより短いs_iは処理しない
-#define Min_len 45
+#define Min_len 35
 
 #define High(A,B) (A>B) ? A:B
 
@@ -32,7 +33,13 @@ void BM_exit(string_out * t_in, string_s *s, int s_size, int s_id, string_out *t
     //printf("BM complete: %s\n",t_out->str);
     //template_entrance(t, s, s_size, s_id, t_out);
 }
-
+/*
+double gettimeofday_sec(){
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+    return tv.tv_sec + tv.tv_usec * 1e-6
+}
+*/
 int BMcomp(char tc, char sc){
     int flag ;
     if(tc == 'x')
@@ -87,22 +94,25 @@ void makeShiftTable(int table[][4], string_s s_i){
     }
 }
 
+double shiftave=0;
+int lensum=0;
 int BM(string_out *t_in, string_s s_i, string_out *t_out) {
     //t_id:s_iの最後尾がいる場所 esc:一致した文字の個数 comp_var:何回比較したか
     int t_id = s_i.len - 1, esc = 0, comp_var = 0, point = t_id;
     int table[30][4];
+    int shiftsum = 0,count=0;
     makeShiftTable(table,s_i);
     
     while(1/*t_id <= T_LENGTH*/){
+        count++;
         //printf("sgf");
         int flag = 1;
-
         //s_xが検出済で既に挿入されている場合、挿入済箇所をスキップ
         /*----------------------DebugPrint-------------------------*/
         //printf("Whether or not already matched|character:%c\n",t_out->str[t_id]);
         /*---------------------------------------------------------*/
         if(t_out->str[t_id] != 'x'){
-
+        
             /*----------------------DebugPrint-------------------------*/
             //printf("Caution|Already matched:Character is not 'x',shifts s_i position\n");
             //printf("out:%s\n",t_out->str);
@@ -113,17 +123,16 @@ int BM(string_out *t_in, string_s s_i, string_out *t_out) {
         }else{
             //printf("Did not match\n");
         }
-            
 
         //s_iが指定位置t_idにマッチするか確認
-        while((flag == 1) && (esc < 15) && (s_i.len - 1 - comp_var >= 0 ) && (t_id < strlen(t_in->str))){
-
+        while((flag == 1) && (esc < 12) && (s_i.len - 1 - comp_var >= 0 ) && (t_id < strlen(t_in->str))){
+            
             /*----------------------DebugPrint-------------------------*/
             /*---------------------------------------------------------*/
             /*
             printf("t_s:");
             int j;
-            for(j=0;j<strlen(t_in->str);j++)
+            for(j=0;j<strlen(t_in->st1r);j++)
                 printf("%d",t_in->shift_var[j]);
             printf("\nt  :%s\n",t_in->str);
             printf("s_i:");
@@ -138,8 +147,6 @@ int BM(string_out *t_in, string_s s_i, string_out *t_out) {
             printf("t_id:%d  comp_var:%d\n",t_id,comp_var);
             /*---------------------------------------------------------*/
             /*---------------------------------------------------------*/
-            
-
             switch (BMcomp(t_in->str[t_id - comp_var], s_i.str[s_i.len - 1 - comp_var])){
                 case ignore:
                     comp_var+=t_in->shift_var[t_id - comp_var];
@@ -162,7 +169,10 @@ int BM(string_out *t_in, string_s s_i, string_out *t_out) {
         if (flag == 1){
 
             /*----------------------DebugPrint-------------------------*/
-            printf("\nDetected the exact position of s_i len:%d\n",s_i.len);
+            //printf("\nDetected the exact position of s_i len:%d ave:%.2f\n",s_i.len,(double)shiftsum/count);
+            printf(" len:%d ",s_i.len);
+            shiftave += (double)shiftsum/count;
+            lensum += s_i.len;
             //printf("Test %s\n%s\n%d\n",s_i.str,t_out.str,t_id);
             //Detect(s_i, t_out, t_id);
             //printf("Before s_i assignment:%s\n",t_out->str);
@@ -174,24 +184,20 @@ int BM(string_out *t_in, string_s s_i, string_out *t_out) {
                 //printf("t_out:%s oc:%c sc:%c\n",t_out->str,t_out->str[t_id - y],s_i.str[x]);
             }
             t_out->shift_var[t_id - y ] = s_i.len;
-
+            
             /*----------------------DebugPrint-------------------------*/
 
             //printf("After  s_i assignment:%s\n\n\n",t_out->str);
             /*----------------------DebugPrint-------------------------*/
-
             return 0 ;
-
-
         } else{
             int temp;
 
-           //printf("???:%d :%d\n",t_id - point + 1,t_in->str[point] - 'a');
-
             if(comp_var<30)
-                if((t_id - point + 1 < 30) && (t_in->str[point] - 'a' < 4))temp = High(table[t_id - point + 1][t_in->str[point] - 'a'] + 1,table[comp_var][t_in->str[t_id - comp_var] - 'a']);
+                if((t_id - point + 1 < 30) && (t_in->str[point] - 'a' < 4) && (t_in->str[point] - 'a' >= 0) && (t_id - point + 1 >= 0))temp = High(table[t_id - point + 1][t_in->str[point] - 'a'] + 1,table[comp_var][t_in->str[t_id - comp_var] - 'a']);
                 else temp = table[comp_var][t_in->str[t_id - comp_var] - 'a'];
             else temp = shift(t_in->str[t_id - comp_var], s_i, comp_var);
+            shiftsum += temp;
                 /*
             if(comp_var<30)
                 temp = table[comp_var][t_in->str[t_id - comp_var] - 'a'];
@@ -199,8 +205,6 @@ int BM(string_out *t_in, string_s s_i, string_out *t_out) {
 */
             //printf("point:%c %c\n",t_in->str[point],t_in->str[t_id]);
             //printf("t_id:%d\n",t_id);
-            
-            
             t_id+=temp;
             comp_var = 0;
             point = t_id;
@@ -225,9 +229,10 @@ void BM_main(string_out *t_in, string_s *s, int s_size, int s_id, string_out *t_
     string_s s_i;
 
     for(i = 0; s[s_id+i].len > Min_len ;i++){
-        //if(i>1)break;
+        //if(i>5)break;
         s_i = s[s_id + i];
         int temp = BM(t_in,s_i,t_out);
+        printf(" i:%d Save:%.2f Slen:%d\n",i,shiftave/i,lensum);
         if(temp == -1)
             printf("s_id:%d",s_id+i);
     }
@@ -248,7 +253,7 @@ int n=1;
 
     char t[T_LENGTH];
     FILE *fp_in;
-    char fname[] = "../data/dat0_in.txt";
+    char fname[] = "../data/dat4_in";
     fp_in = fopen(fname,"r");
     if(fp_in == NULL){
         printf("???");
