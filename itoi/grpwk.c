@@ -5,6 +5,7 @@
 #include "grpwk.h"
 #include "ahocora.h"
 
+// input_win.cから呼び出されるやつ
 char *grpwk(char *t, string_s s[], int len) {
     int from, to;
     for (from = 0; from<len; ++from) if (s[from].len == AHO_FROM) break;

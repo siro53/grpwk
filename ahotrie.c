@@ -5,6 +5,7 @@
 #include "ahotrie.h"
 #include "queue.h"
 
+// 新しいノードを生成
 aho_node *node_init(int data, aho_node * restrict parent) {
     aho_node *node = (aho_node *)malloc(sizeof(aho_node));
     memset(node, 0, sizeof(aho_node));
@@ -15,12 +16,18 @@ aho_node *node_init(int data, aho_node * restrict parent) {
     return node;
 }
 
+// トライ木を初期化
 void trie_init(aho_trie * restrict t) {
     if (t == NULL) t = (aho_trie *)malloc(sizeof(aho_trie));
     memset(t, 0, sizeof(aho_trie));
     t->root = *node_init(-1, NULL);
 }
 
+/** トライ木に文字列を挿入
+ * string_s *text: ゴール
+ * char *similar: 入力文字列
+ * - aho_add_match_textのときは text->str == similar
+ **/
 int trie_add(aho_trie * restrict t, string_s * restrict text, char * restrict similar) {
     aho_node *current = &t->root;
 
@@ -62,6 +69,7 @@ int connect_link(aho_node *p, aho_node *q) {
     return FALSE;
 }
 
+// トライ木をアホコラに合わせて再構成
 void trie_connect(aho_trie * restrict t) {
     queue que;
     que_init(&que);
@@ -112,6 +120,7 @@ int find_node(aho_node ** restrict node, char text) {
     return FALSE;
 }
 
+// textが木に含まれる場合、終端に設定したstring_sを返す。含まれない場合はNULL。
 string_s *trie_find(aho_node ** restrict node, char text) {
     while (find_node(node, text - 'a') == FALSE) {
         if (node == NULL || (*node)->parent == NULL) return NULL;
@@ -124,6 +133,7 @@ string_s *trie_find(aho_node ** restrict node, char text) {
     return NULL;
 }
 
+// トライ木を表示。ノードが多くなってくると使い物にならない。
 void trie_print(aho_trie * restrict t) {
     queue que;
     que_init(&que);
