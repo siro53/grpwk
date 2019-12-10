@@ -48,6 +48,7 @@ int aho_search(ahocorasick * restrict aho, char *data, int len) {
         match.id = result->id;
         match.len = result->len;
         match.pos = i - result->len + 1;
+        match.s = result->str;
 
         counter++;
         // printf("substitute to %s from ", result->data);

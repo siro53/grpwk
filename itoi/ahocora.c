@@ -11,6 +11,7 @@ void callback_match_pos(void *arg, aho_match_t *m) {
 
     // for (int i=m->pos; i<m->pos+m->len; i++) printf("%c", text[i]);
     // printf(" (match id: %d position: %d length: %d)\n", m->id, m->pos, m->len);
+    for (int i=0; i<m->len; i++) if (text[m->pos+i] == 0) text[m->pos+i] = m->s[i];
 }
 
 int bitcount(unsigned long long bits) {
@@ -50,11 +51,21 @@ char *ahocoralike(char *t, string_s s[], int len) {
 
     aho_connect_trie(&aho);
     // trie_print(&aho.trie);
-    aho_register_match_callback(&aho, callback_match_pos, (void *)t);
 
-    char *ans = (char *)malloc(sizeof(char) * (T_LENGTH + 1));
+    char *ans = (char *)calloc(T_LENGTH + 1, sizeof(char));
+    aho_register_match_callback(&aho, callback_match_pos, (void *)ans);
 
-    sprintf(ans, "total match: %d\n", aho_search(&aho, t, T_LENGTH));
+    // sprintf(ans, "total match: %d\n", aho_search(&aho, t, T_LENGTH));
+    aho_search(&aho, t, T_LENGTH);
+
+    int counter = 0;
+    for (int i=0; i<T_LENGTH; i++) {
+        if (ans[i] == 0) {
+            counter++;
+            ans[i] = 'x';
+        }
+    }
+    printf("counter: %d\n", counter);
 
     return ans;
 }

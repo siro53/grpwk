@@ -7,6 +7,7 @@
 
 typedef struct  {
     int id, pos, len;
+    char *s;
 } aho_match_t;
 
 typedef struct {

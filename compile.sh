@@ -38,6 +38,6 @@ echo -n "time         : "
 rm distance
 rm grpwk
 
-echo
-echo -------------output
-cat result
+# echo
+# echo -------------output
+# cat result

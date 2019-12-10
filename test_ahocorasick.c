@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
+#include "string_info.h"
 #include "ahocorasick.h"
 
 int test_trie(void) {
@@ -23,18 +25,19 @@ int test_trie(void) {
     };
     string_s text[100];
 
-    aho_trie *t;
-    trie_init(t);
+    aho_trie t;
+    trie_init(&t);
 
-    for (int i=0; i<sizeof(s)/sizeof(s[0]); i++) {
+    for (int i=0; i<15; i++) {
         strcpy(text[i].str, s[i]);
         text[i].len = strlen(s[i]);
-        if (!trie_add(t, &text[i], s[i]))
+        if (!trie_add(&t, &text[i], s[i]))
             printf("error (unexpected input [^a-d]\n");
+        printf("here\n");
     }
-    trie_connect(t);
+    trie_connect(&t);
 
-    trie_print(t);
+    trie_print(&t);
 
     return 0;
 }
@@ -49,24 +52,31 @@ void callback_match_pos(void *arg, aho_match_t *m) {
     printf(" (match id: %d position: %d length: %d)\n", m->id, m->pos, m->len);
 }
 
+string_s *new(char *s) {
+    string_s *n = (string_s *)malloc(sizeof(string_s));
+    n->len = strlen(s);
+    strcpy(n->str, s);
+    return n;
+}
+
 int test_ahocora(void) {
     ahocorasick aho;
     aho_init(&aho);
+    aho_create_trie(&aho);
 
-    // aho_add_match_text(&aho, "ab", strlen("ab"));
-    // aho_add_match_text(&aho, "abc", strlen("abc"));
-    // aho_add_match_text(&aho, "ca", strlen("ca"));
+    aho_add_match_text(&aho, new("ab"));
+    aho_add_match_text(&aho, new("abc"));
+    aho_add_match_text(&aho, new("ca"));
+
+    aho_connect_trie(&aho);
 
     char test[] = "abcabcabcab";
-    aho_create_trie(&aho);
     aho_register_match_callback(&aho, callback_match_pos, (void *)test);
 
     trie_print(&aho.trie);
 
     printf("try: %s\n", test);
     printf("total match: %d\n", aho_search(&aho, test, strlen(test)));
-
-    aho_destroy(&aho);
 
     return 0;
 }
@@ -90,15 +100,13 @@ int test_input(void) {
 
     printf("total match: %d\n", aho_search(&aho, s, strlen(s)));
 
-    aho_destroy(&aho);
-
     return 0;
 }
 
 int main(void) {
     // test_trie();
     // test_ahocora();
-    // test_input();
+    test_input();
 
     return 0;
 }

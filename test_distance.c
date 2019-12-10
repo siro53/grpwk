@@ -13,11 +13,14 @@ int main(int argc, char *argv[]) {
     fscanf(fp_in, "%s", in);
     fscanf(fp_out, "%s", out);
 
-    int counter = 0;
-    for (int i=0; i<strlen(in); i++) counter += (in[i] != out[i]);
+    int counter = 0, x = 0;
+    for (int i=0; i<strlen(in); i++) {
+        counter += (in[i] != out[i]);
+        if (in[i] == 'x') x++;
+    }
     counter += abs(strlen(in) - strlen(out));
 
-    printf("edit distance: %d\n", counter);
+    printf("edit distance: %d, strlen: %lu, ratio: %f, ratio w/o x: %f\n", counter, strlen(in), (double)counter / strlen(in), (double)(counter - x) / (strlen(in) - x));
 
     return 0;
 }
