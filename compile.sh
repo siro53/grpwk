@@ -53,3 +53,5 @@ rm grpwk
 # echo
 # echo -------------output
 # cat result
+
+echo "done"
