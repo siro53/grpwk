@@ -11,9 +11,6 @@ typedef struct  {
 } aho_match_t;
 
 typedef struct {
-    int text_id;
-    string_s *list[AHO_SIZE];
-
     aho_trie trie;
 
     void (*callback_match)(void *arg, aho_match_t *m);
@@ -25,8 +22,6 @@ void aho_destroy(ahocorasick * restrict aho);
 
 int aho_add_match_text(ahocorasick * restrict aho, string_s *text);
 int aho_add_similar_text(ahocorasick * restrict aho, char * restrict data, string_s * restrict original);
-
-string_s *aho_search_match_text(ahocorasick * restrict aho, int id);
 
 void aho_create_trie(ahocorasick * restrict aho);
 void aho_connect_trie(ahocorasick * restrict aho);

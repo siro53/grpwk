@@ -9,17 +9,11 @@ void aho_init(ahocorasick * restrict aho) {
     memset(aho, 0, sizeof(ahocorasick));
 }
 
-/** キー(string_s *s_i)を木に追加、引数のstring_s->idを変更
+/** キー(string_s *s_i)を木に追加
  * return 挿入成功：TRUE、容量を超過：FALSE
  */
 int aho_add_match_text(ahocorasick * restrict aho, string_s *text) {
-    if (aho->text_id == AHO_SIZE) return FALSE;
-
-    text->id = aho->text_id++;
-    aho->list[text->id] = text;
     trie_add(&aho->trie, text, text->str);
-    // if (text->id % 1000 == 0) printf("%d (%d)\n", text->id, text->len);
-
     return TRUE;
 }
 
@@ -30,11 +24,6 @@ int aho_add_match_text(ahocorasick * restrict aho, string_s *text) {
 int aho_add_similar_text(ahocorasick * restrict aho, char * restrict data, string_s * restrict original) {
     trie_add(&aho->trie, original, data);
     return TRUE;
-}
-
-// idに相当するstring_sを返す
-string_s *aho_search_match_text(ahocorasick * restrict aho, int id) {
-    return aho->list[id];
 }
 
 // トライ木を生成

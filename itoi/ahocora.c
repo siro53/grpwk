@@ -6,7 +6,7 @@
 #include "ahocora.h"
 
 // outcome functions for testing
-void callback_match_pos(void *arg, aho_match_t *m) {
+void callback_substitute_zeros(void *arg, aho_match_t *m) {
     char *text = (char *)arg;
 
     // for (int i=m->pos; i<m->pos+m->len; i++) printf("%c", text[i]);
@@ -15,6 +15,11 @@ void callback_match_pos(void *arg, aho_match_t *m) {
     /* もしarg(下で言うans)の該当部分が0だったときに文字を代入 */
     /* TODO: まだ正確なやり方を実装していないため、暫定的に */
     for (int i=0; i<m->len; i++) if (text[m->pos+i] == 0) text[m->pos+i] = m->s[i];
+}
+
+void callback_count_options(void *arg, aho_match_t *m) {
+    int *tmp = (int *)arg;
+    tmp[m->id] += 1;
 }
 
 // 入力されたintの中で何個のビットが立っているかを返す
@@ -50,7 +55,7 @@ char *ahocoralike(char *t, string_s s[], int len) {
 
         /* s[i]が虫食いされて生じうる文字列を木に追加 */
         int max_bit = s[i].len / 2; /* 虫食いされる個数は文字列長の半分以下に限定 */
-        unsigned long long until = ((unsigned long long)1<<s[i].len)-1; /* 文字列長文のビットを用意 */
+        unsigned long long until = ((unsigned long long)1<<s[i].len)-1; /* 文字列長分のビットを用意 */
         for (unsigned long long j=1; j<=until; j++) {
             if (bitcount(j) < max_bit) { /* 文字列長の半分以下のビットが立っているなら */
                 convert(tmp, s[i].str, s[i].len, j); /* 文字列を虫食いしてtmpに保存 */
@@ -63,10 +68,17 @@ char *ahocoralike(char *t, string_s s[], int len) {
     // trie_print(&aho.trie);
 
     char *ans = (char *)calloc(T_LENGTH + 1, sizeof(char)); /* 変換後を保存する文字列 */
-    aho_register_match_callback(&aho, callback_match_pos, (void *)ans); /* 探索成功時に実行される関数を定義。関数は上を参照 */
+    // aho_register_match_callback(&aho, callback_substitute_zeros, (void *)ans); /* 探索成功時に実行される関数を定義。関数は上を参照 */
+
+    int count[41000] = {0};
+    aho_register_match_callback(&aho, callback_count_options, (void *)count);
 
     // sprintf(ans, "total match: %d\n", aho_search(&aho, t, T_LENGTH));
     aho_search(&aho, t, T_LENGTH);
+
+    for (int i=0; i<len; i++) {
+        printf("%d ", count[i]);
+    }
 
     int counter = 0;
     for (int i=0; i<T_LENGTH; i++) {

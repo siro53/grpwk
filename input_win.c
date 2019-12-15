@@ -54,6 +54,8 @@ int main_prg(int argc, char **argv)
     for (; fscanf(fp_in, "%s", s[counter].str) != EOF; ++counter) s[counter].len = strlen(s[counter].str);
     qsort(s, counter, sizeof(string_s), sort_f);
 
+    for (int i=0; i<counter; i++) s[i].id = i;
+
     fprintf(fp_out, "%s\n", grpwk(t, s, counter));
 
     return 0;
