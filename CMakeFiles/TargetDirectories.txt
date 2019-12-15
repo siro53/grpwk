@@ -1,3 +1,0 @@
-/mnt/c/Users/world/ClionProjects/grpwk/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/world/ClionProjects/grpwk/CMakeFiles/edit_cache.dir
-/mnt/c/Users/world/ClionProjects/grpwk/CMakeFiles/grpwk.dir

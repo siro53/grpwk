@@ -1,4 +1,0 @@
-Cannot generate into \\wsl$\Ubuntu-18.04\home\udemegane\work\grpwk
-It is already used for project \mnt\c\Users\world\CLionProjects\grpwk
-
-Please either delete it manually or select another generation directory

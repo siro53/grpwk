@@ -1,1 +1,0 @@
-/usr/bin/cc    CMakeFiles/grpwk.dir/input_win.c.o CMakeFiles/grpwk.dir/example/grpwk.c.o CMakeFiles/grpwk.dir/example/Algorithm_template.c.o CMakeFiles/grpwk.dir/constructions.c.o  -o grpwk 

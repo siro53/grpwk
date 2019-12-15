@@ -1,1 +1,0 @@
-/usr/bin/cc    CMakeFiles/udemegane.dir/Prototype_Bigram.c.o CMakeFiles/udemegane.dir/Prototype_exec.c.o CMakeFiles/udemegane.dir/Prototype_Exec_Test.c.o CMakeFiles/udemegane.dir/Udemegane_Debugfunc.c.o  -o udemegane 
