@@ -84,7 +84,7 @@ char *ahocoralike(char *t, string_s s[], int len) {
     for (int i=0; i<T_LENGTH; i++) {
         if (ans[i] == 0) { /* わからない部分 */
             counter++;
-            ans[i] = 'x';
+            ans[i] = 'a';
             /* 本番はaを入れるが、今はわかったところとわからなかったところを明示的に区別するためにxを代入。詳細はtest_distance.cを参照 */
         }
     }

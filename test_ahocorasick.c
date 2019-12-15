@@ -67,9 +67,10 @@ int test_ahocora(void) {
     /* 上二つの関数は必ず実行！！ */
 
     /* キーを木に追加 */
-    aho_add_match_text(&aho, new("ab"));
+    aho_add_match_text(&aho, new("bc"));
     aho_add_match_text(&aho, new("abc"));
     aho_add_match_text(&aho, new("ca"));
+    aho_add_match_text(&aho, new("a"));
 
     /* アホコラ用にトライ木を再構成 */
     aho_connect_trie(&aho);
@@ -111,7 +112,7 @@ int test_input(void) {
 
 int main(void) {
     // test_trie();
-    // test_ahocora();
+    test_ahocora();
     // test_input();
 
     return 0;

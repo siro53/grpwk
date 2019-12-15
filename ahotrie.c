@@ -82,9 +82,9 @@ void trie_connect(aho_trie * restrict t) {
         for (int i=0; i<MAX_NODE; i++) {
             if (node->child[i] == NULL) continue;
 
-            aho_node *tmp = node, *child = node->child[i];
-            que_push(&que, child);
+            que_push(&que, node->child[i]);
 
+            aho_node *tmp = node, *child = node->child[i];
             while (connect_link(tmp, child) == FALSE) tmp = tmp->failure_link;
         }
     }
@@ -128,9 +128,8 @@ string_s *trie_find(aho_node ** restrict node, char text) {
     }
 
     if ((*node)->end) return (*node)->output_text;
-    if ((*node)->output_link) return (*node)->output_link->output_text;
-
-    return NULL;
+    else if ((*node)->output_link) return (*node)->output_link->output_text;
+    else return NULL;
 }
 
 // トライ木を表示。ノードが多くなってくると使い物にならない。
