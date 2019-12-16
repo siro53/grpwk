@@ -26,8 +26,8 @@
 #define High(A, B) (A > B) ? A : B
 #define rep(i, n) for (int i = 0; i < (int)(n); i++)
 
-
-typedef struct {
+typedef struct
+{
     string_out *t_in;
     string_s *s;
     string_out *t_out;
@@ -38,11 +38,13 @@ void BM_main(string_out *t_in, string_s *s, int s_size, int s_id, string_out *t_
 
 //int BMcomp(char tc, char sc);
 
-void BM_entrance(string_out *t_in, string_s *s, int s_size, int s_id, string_out *t_out) {
+void BM_entrance(string_out *t_in, string_s *s, int s_size, int s_id, string_out *t_out)
+{
     BM_main(t_in, s, s_size, s_id, t_out);
 }
 
-void BM_exit(string_out *t_in, string_s *s, int s_size, int s_id, string_out *t_out) {
+void BM_exit(string_out *t_in, string_s *s, int s_size, int s_id, string_out *t_out)
+{
     //printf("BM complete: %s\n",t_out->str);
     //template_entrance(t, s, s_size, s_id, t_out);
 }
@@ -85,30 +87,35 @@ void makeShiftTable(int table[][4], string_s *s_i, int len) {
 }
 */
 
-clock_t times_clock(){
+clock_t times_clock()
+{
     struct tms t;
     return times(&t);
 }
 
 // for debug
-int error = 0, g_s_id, g_s_len, g_s_lensum = 0, swiftsum = 0, swiftnum = 0;
+//int error = 0, g_s_id, g_s_len, g_s_lensum = 0;
 
-void *BM(void *Ft_in) {
-    Fthreadstructure *Ft = (Fthreadstructure*)Ft_in;
+void *BM(void *Ft_in)
+{
+    //clock_t t1,t2;
+    //t1 = times_clock();
+    Fthreadstructure *Ft = (Fthreadstructure *)Ft_in;
     string_out *t_in = Ft->t_in;
     string_s *s = Ft->s;
     string_out *t_out = Ft->t_out;
-    int skipnum;
     int i, t_id, esc, comp_var, point, lens_i;
-    //char *instr = t_in->str;
     string_s s_iBase, *s_i;
     s_i = &(s_iBase);
-    int rps = Ft->skipnum;
-    for (i = 0; 1; i++) {
-        s_i = &s[ThreadNum*i+rps];
+    int tnum = Ft->skipnum;
+    for (i = 0; 1; i++)
+    {
+        s_i = &s[ThreadNum * i + tnum];
+        /* //debugprint
         g_s_id = i;
         g_s_len = s_i->len;
         g_s_lensum += s_i->len;
+        */
 
         //t_id:s_iの最後尾がいる場所
         t_id = s_i->len - 1;
@@ -123,34 +130,45 @@ void *BM(void *Ft_in) {
 
         //makeShiftTable
         int k;
-        for (k = 0; k < lens_i - 1; k++) {
+        for (k = 0; k < lens_i - 1; k++)
+        {
             int Tcounter;
-            rep(j,120){
+            rep(j, 120)
+            {
                 Tcounter = j;
-                if ((s_i->str[s_i->len - 1 - k - j] == (0 + 'a')) || (s_i->len - 1 - k - j < 0))break;
+                if ((s_i->str[s_i->len - 1 - k - j] == (0 + 'a')) || (s_i->len - 1 - k - j < 0))
+                    break;
             }
             table[k][0] = Tcounter;
-            rep(j,120){
+            rep(j, 120)
+            {
                 Tcounter = j;
-                if ((s_i->str[s_i->len - 1 - k - j] == (1 + 'a')) || (s_i->len - 1 - k - j < 0))break;
+                if ((s_i->str[s_i->len - 1 - k - j] == (1 + 'a')) || (s_i->len - 1 - k - j < 0))
+                    break;
             }
             table[k][1] = Tcounter;
-            rep(j,120){
+            rep(j, 120)
+            {
                 Tcounter = j;
-                if ((s_i->str[s_i->len - 1 - k - j] == (2 + 'a')) || (s_i->len - 1 - k - j < 0))break;
+                if ((s_i->str[s_i->len - 1 - k - j] == (2 + 'a')) || (s_i->len - 1 - k - j < 0))
+                    break;
             }
             table[k][2] = Tcounter;
-            rep(j,120){
+            rep(j, 120)
+            {
                 Tcounter = j;
-                if ((s_i->str[s_i->len - 1 - k - j] == (3 + 'a')) || (s_i->len - 1 - k - j < 0))break;
+                if ((s_i->str[s_i->len - 1 - k - j] == (3 + 'a')) || (s_i->len - 1 - k - j < 0))
+                    break;
             }
             table[k][3] = Tcounter;
         }
 
-        while (1/*t_id - 1<= T_LENGTH*/) {
+        while (1 /*t_id - 1<= T_LENGTH*/)
+        {
             int flag = 1;
             //s_xが検出済で既に挿入されている場合、挿入済箇所をスキップ
-            if (t_out->str[t_id] != 'x') {
+            if (t_out->str[t_id] != 'x')
+            {
                 t_id += t_out->shift_var[t_id - lens_i];
                 point = t_id;
             }
@@ -158,11 +176,12 @@ void *BM(void *Ft_in) {
             int whiletest = 0;
 
             while ((flag == 1) && (esc < 21) && (lens_i - 1 - comp_var >= 0) &&
-                   (t_id < T_LENGTH/*strlen(t_in->str)*/)) {
+                   (t_id < T_LENGTH /*strlen(t_in->str)*/))
+            {
                 whiletest = 1;
                 /*----------------------DebugPrint-------------------------*/
                 /*---------------------------------------------------------*/
-/*
+                /*
             printf("t_s:");
             int j;
             for(j=0;j<strlen(t_in->str);j++)
@@ -186,32 +205,40 @@ void *BM(void *Ft_in) {
             /*---------------------------------------------------------*/
                 /*---------------------------------------------------------*/
 
-                if (t_in->str[t_id - comp_var] == 'x') {
+                if (t_in->str[t_id - comp_var] == 'x')
+                {
                     //ignore
                     comp_var += t_in->shift_var[t_id - comp_var];
                     point = t_id - comp_var;
-                } else if (t_in->str[t_id - comp_var] == s_i->str[lens_i - 1 - comp_var]) {
+                }
+                else if (t_in->str[t_id - comp_var] == s_i->str[lens_i - 1 - comp_var])
+                {
                     //success
                     esc++;
                     comp_var++;
-                } else {
+                }
+                else
+                {
                     //failware
                     flag = 0;
                     esc = 0;
                 }
-
             }
-
+            /*
             if (whiletest == 0) {
                 printf("なにかおかしいよ:%d :%d\n", g_s_id, g_s_len);
                 printf("t_id < T_LENGTH:%d\n", t_id < T_LENGTH);
             }
+            */
             //マッチした場合t_outに挿入,そうでないなら次の場所を探索
-            if (flag == 1) {
-                if (whiletest == 1) {
+            if (flag == 1)
+            {
+                if (whiletest == 1)
+                {
                     int x, y, f = 0;
 
-                    for (x = lens_i - 1, y = 0; x >= 0; x--, y++) {
+                    for (x = lens_i - 1, y = 0; x >= 0; x--, y++)
+                    {
                         t_out->str[t_id - y] = s_i->str[x];
                         t_out->shift_var[t_id - y] = lens_i - x - 1;
                     }
@@ -220,13 +247,12 @@ void *BM(void *Ft_in) {
                 }
                 esc = 0;
                 goto next;
-
-            } else {
+            }
+            else
+            {
                 int temp;
                 temp = High(table[t_id - point + 1][t_in->str[point] - 'a'] + 1,
                             table[comp_var][t_in->str[t_id - comp_var] - 'a']);
-                swiftsum += temp;
-                swiftnum++;
                 /*
                 if ((t_in->str[point] - 'a' < 4) && (t_in->str[point] - 'a' >= 0) ) {
                     temp = High(table[t_id - point + 1][t_in->str[point] - 'a'] + 1,
@@ -244,39 +270,45 @@ void *BM(void *Ft_in) {
             }
         }
 
-        next:
-        if (lens_i <= Min_len) {
+    next:
+        if (lens_i <= Min_len)
+        {
             break;
         }
     }
-    //return Ft;
+    //t2 = times_clock();
+    //printf("Thread%d|time:%lf\n",tnum, (double) (t2 - t1)/100);
 }
 
-void BM_main(string_out *t_in, string_s *s, int s_size, int s_id, string_out *t_out) {
-    printf("Start BM algorithm\n");
+void BM_main(string_out *t_in, string_s *s, int s_size, int s_id, string_out *t_out)
+{
+    //printf("Start BM algorithm\n");
     pthread_t handle[ThreadNum];
 
     Fthreadstructure *Ft[ThreadNum], Ft_Base[ThreadNum], *Ft2, Ft2_Base;
-    rep(i,ThreadNum){
+    rep(i, ThreadNum)
+    {
         Ft[i] = &(Ft_Base[i]);
         Ft[i]->t_in = t_in;
         Ft[i]->s = s;
         Ft[i]->t_out = t_out;
         Ft[i]->skipnum = i;
     }
-    rep(i,ThreadNum){
+    rep(i, ThreadNum)
+    {
         pthread_create(&handle[i], NULL, BM, Ft[i]);
     }
-    rep(i,ThreadNum){
+    rep(i, ThreadNum)
+    {
         pthread_join(handle[i], NULL);
     }
     //s_id += i;
     BM_exit(t_in, s, s_size, s_id, t_out);
 }
 
-int main(void) {
-    clock_t t1,t2;
-    //unsigned long int start, end;
+int main(void)
+{
+    clock_t t1, t2;
     t1 = times_clock();
     string_s *s;
     string_out Base, *t_out, inBase, *t_in;
@@ -293,11 +325,13 @@ int main(void) {
     //char fnameout[] = "out.txt";
     char fnameout[] = "dat0_out.txt";
     fp_in = fopen(fname, "r");
-    if (fp_in == NULL) {
+    if (fp_in == NULL)
+    {
         printf("???");
     }
     fp_out = fopen(fnameout, "w");
-    if (fp_out == NULL) {
+    if (fp_out == NULL)
+    {
         printf("???");
     }
 
@@ -306,7 +340,8 @@ int main(void) {
 
     // input s[]
     int counter = 0;
-    for (; fscanf(fp_in, "%s", s[counter].str) != EOF; ++counter) {
+    for (; fscanf(fp_in, "%s", s[counter].str) != EOF; ++counter)
+    {
         s[counter].len = strlen(s[counter].str);
     }
 
@@ -317,39 +352,44 @@ int main(void) {
 
     BM_entrance(t_in, s, 2, 0, t_out);
 
-    for (i = 0; i < T_LENGTH; i++) {
-        if (t_out->str[i] == 'x')Xcount++;
-        if (t_in->str[i] != 'x') {
+    for (i = 0; i < T_LENGTH; i++)
+    {
+        if (t_out->str[i] == 'x')
+            Xcount++;
+        if (t_in->str[i] != 'x')
+        {
             t_out->str[i] = t_in->str[i];
         }
 
-        if (t_out->str[i] == 'x') {
+        if (t_out->str[i] == 'x')
+        {
             t_out->str[i] = 'a';
             Xcount2++;
         }
-
     }
     t_out->str[T_LENGTH] = '\0';
 
-    if (t_out->str == NULL)printf("???????\n");
+    if (t_out->str == NULL)
+        printf("???????\n");
     fprintf(fp_out, "%s\n", t_out->str);
     t2 = times_clock();
 
-    printf("\ntime:%lf\n", (double) (t2 - t1)/100);
+    printf("\ntime:%lf\n", (double)(t2 - t1) / 100);
+    /* //debugprint
     printf("長さ%dまでのs_iを処理\n", Min_len + 1);
     printf("割り当てた文字|lens_iの合計:%d|%d ＊一致してなければおかしい \n復元できなかった文字:%d\n編集距離の推定値1:%.f\n編集距離の推定値2:%.f\n",
             400001 - Xcount, g_s_lensum, Xcount2, Xcount2 * 0.6, (160000 - g_s_lensum * 0.4) * 0.6);
+    */
     int dcounter = 0;
     FILE *fp_ref = fopen("../data/dat0_ref", "r");
     char ref[500000];
     fscanf(fp_ref, "%s", ref);
-    for (int i = 0; i < T_LENGTH; i++) dcounter += (ref[i] != t_out->str[i]);
-    //counter += abs(strlen(in) - strlen(out));
+    for (int i = 0; i < T_LENGTH; i++)
+        dcounter += (ref[i] != t_out->str[i]);
 
     printf("実際の編集距離: %d\n復元率:%.2f%c \n割り当てミス文字の概数:%.f\n", dcounter, (400001 - dcounter) / 4000.01, 37,
            (dcounter * 1.67) * 2.5 - Xcount > 0 ? (dcounter * 1.67) * 2.5 - Xcount : 0);
-    printf("^この３つの編集距離はほぼ同じじゃないと困る\n");
-    printf("移動量の平均値:%f \n", (double) swiftsum / swiftnum);
+    //printf("^この３つの編集距離はほぼ同じじゃないと困る\n");
 
     return 0;
 }
