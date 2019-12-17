@@ -50,11 +50,11 @@ int main(void)
     str_p = strstr(str_T, "dbabbaaaaabaaadbbdbaaacbaaaacbaddbacadabdbaaaddacdaaacbbaabbcbbdbcdbdbdbaaaaadabaacbbacacabbacba");
     //問題点１　str_p = strstr(str_T, str_S);これだとエラー printf("%s",str_S);をすると↑の文字列が出力される。
     //printf("str_T=%s\n", str_T);
-    printf("str_S=%s", str_S);
     printf("str_p=%s\n", str_p);
+    printf("str_S=%s", str_S);
     for (i = 0; i < strlen(str_S); i++)
     {
-        //+ i = 'x';先頭アドレスは判明している配列から文字列長文字列内容に'x'を代入する。
+        //+ i = 'x';先頭アドレスは判明している配列から文字列長、文字列内容に'x'を代入する。
         //str_p(アドレス)
     }
     fprintf(fp, "%p\n", str_p); //別のfileに出力する。str_pの番地を出力したい。
