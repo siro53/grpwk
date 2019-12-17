@@ -1,7 +1,7 @@
 //まずは２つのファイルを読み込む、１、文字列S_iを長さ順にソートしたファイル、２、T(完成形のファイル)、
 //また１つのファイルに書き込む用意をする("position.txt")
 //fgetsでTを配列に格納し、次に｛S_iを1行取り込み、strstrで最初に完全に一致したポインタを返す。
-//そして完全に一致したときそのポインタの番地を返して、そのポインタが指し示す場所から文字列長(strlen関数)'x'に置換する。｝この動作をループさせる。
+//そして完全に一致したときそのポインタの番地を"position.txt"にかきこみ、そのポインタが指し示す場所から文字列長分(strlen関数)'x'に置換する。｝この動作をループさせる。
 
 //Segmentation fault (core dumped)中　segmentation fault 11(core dumped)（以下、セグフォ）とは、本来はアクセスできないメモリのアドレスにアクセスする時に起こるエラーのことを言う。
 
@@ -43,7 +43,7 @@ int main(void)
 
     while (fgets(str_S, N, fp_S_i) != NULL)
     {
-        int i;
+        int i = 0;
         char *str_p;
 
         str_p = strstr(str_T, str_S); //
