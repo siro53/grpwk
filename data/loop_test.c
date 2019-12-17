@@ -51,6 +51,7 @@ int main(void)
 
         for (i = 0; i < strlen(str_S); i++)
         {
+            printf("%d", i);
             // str_T[*str_p + i] = 'x';     //アロー演算子？ここか
             // fprintf(fp, "%d", (*str_p)); //別のfileに出力する。str_pの番地を出力したい。ここ
         }
