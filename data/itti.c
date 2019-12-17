@@ -41,24 +41,28 @@ int main(void)
 
     fgets(str_T, L, fp_T); //終端文字に気をつける。Tファイルを配列に格納する(終端文字列に配慮して)
 
-    while (fgets(str_S, N, fp_S_i) != NULL)
+    // while (fgets(str_S, N, fp_S_i) != NULL)
+    // {
+    int i = 0;
+    char *str_p;
+
+    fgets(str_S, N, fp_S_i);
+    str_p = strstr(str_T, "dbabbaaaaabaaadbbdbaaacbaaaacbaddbacadabdbaaaddacdaaacbbaabbcbbdbcdbdbdbaaaaadabaacbbacacabbacba");
+    //問題点１　str_p = strstr(str_T, str_S);これだとエラー printf("%s",str_S);をすると↑の文字列が出力される。
+    //printf("str_T=%s\n", str_T);
+    printf("str_S=%s", str_S);
+    printf("str_p=%s\n", str_p);
+    for (i = 0; i < strlen(str_S); i++)
     {
-        int i = 0;
-        char *str_p;
-
-        str_p = strstr(str_T, str_S); //
-        printf("%s", str_p);
-        for (i = 0; i < strlen(str_S); i++)
-        {
-            //str_T[*str_p + i] = 'x';  //アロー演算子？
-            //str_p(アドレス)
-            fprintf(fp, "%s", str_p); //別のfileに出力する。str_pの番地を出力したい。
-        }
-
-        //S_iファイルを文字列に格納し、完全一致を調べる。とりあえず20まで？YUKIくん調べ。strstr関数 検索対象"dat1_ref",検索文字列 配列str strstr関数は検索文字列(s2)を最初に発見した位置のポインタを返す。(ここでポインタから番地を知りたい)strstrが終了したら文字列の長さ分ポインタからxに置換する
-
-        //終端文字に気をつける?
+        //+ i = 'x';先頭アドレスは判明している配列から文字列長文字列内容に'x'を代入する。
+        //str_p(アドレス)
     }
+    fprintf(fp, "%p\n", str_p); //別のfileに出力する。str_pの番地を出力したい。
+
+    //S_iファイルを文字列に格納し、完全一致を調べる。とりあえず20まで？YUKIくん調べ。strstr関数 検索対象"dat1_ref",検索文字列 配列str strstr関数は検索文字列(s2)を最初に発見した位置のポインタを返す。(ここでポインタから番地を知りたい)strstrが終了したら文字列の長さ分ポインタからxに置換する
+
+    //終端文字に気をつける?
+    //  }
     fclose(fp);
     fclose(fp_T);   // ファイルを閉じる
     fclose(fp_S_i); //同上

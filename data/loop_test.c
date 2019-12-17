@@ -48,7 +48,6 @@ int main(void)
         char *str_p;
 
         str_p = strstr(str_T, str_S); //ここか
-        printf("%s", str_p);
 
         for (i = 0; i < strlen(str_S); i++)
         {
