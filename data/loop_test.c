@@ -45,13 +45,13 @@ int main(void)
     {
         //printf("s\n");loopは回っていることを確認。
         int i = 0;
-        // char *str_p; ここか
+        char *str_p;
 
-        //str_p = strstr(str_T, str_S); //ここか
+        str_p = strstr(str_T, str_S); //ここか
+        printf("%s", str_p);
 
         for (i = 0; i < strlen(str_S); i++)
         {
-            printf("%d", i);
             // str_T[*str_p + i] = 'x';     //アロー演算子？ここか
             // fprintf(fp, "%d", (*str_p)); //別のfileに出力する。str_pの番地を出力したい。ここ
         }

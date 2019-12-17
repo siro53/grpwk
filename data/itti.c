@@ -47,11 +47,12 @@ int main(void)
         char *str_p;
 
         str_p = strstr(str_T, str_S); //
-
+        printf("%s", str_p);
         for (i = 0; i < strlen(str_S); i++)
         {
-            str_T[*str_p + i] = 'x';     //アロー演算子？
-            fprintf(fp, "%d", (*str_p)); //別のfileに出力する。str_pの番地を出力したい。
+            //str_T[*str_p + i] = 'x';  //アロー演算子？
+            //str_p(アドレス)
+            fprintf(fp, "%s", str_p); //別のfileに出力する。str_pの番地を出力したい。
         }
 
         //S_iファイルを文字列に格納し、完全一致を調べる。とりあえず20まで？YUKIくん調べ。strstr関数 検索対象"dat1_ref",検索文字列 配列str strstr関数は検索文字列(s2)を最初に発見した位置のポインタを返す。(ここでポインタから番地を知りたい)strstrが終了したら文字列の長さ分ポインタからxに置換する
