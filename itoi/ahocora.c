@@ -6,20 +6,18 @@
 #include "ahocora.h"
 
 // outcome functions for testing
-void callback_substitute_zeros(void *arg, aho_match_t *m) {
-    char *text = (char *)arg;
+void callback_add2linked_list(ahocorasick * aho, linked_list *l, int pos) {
+    linked_node *iter = l->top;
+    for (int v=0; v<l->length; v++, iter = iter->next) {
+        // s_count[i]++
+        aho->s_count[iter->data]++;
 
-    // for (int i=m->pos; i<m->pos+m->len; i++) printf("%c", text[i]);
-    // printf(" (match id: %d position: %d length: %d)\n", m->id, m->pos, m->len);
-
-    /* もしarg(下で言うans)の該当部分が0だったときに文字を代入 */
-    /* TODO: まだ正確なやり方を実装していないため、暫定的に */
-    for (int i=0; i<m->len; i++) if (text[m->pos+i] == 'x') text[m->pos+i] = m->s[i];
-}
-
-void callback_count_options(void *arg, aho_match_t *m) {
-    int *tmp = (int *)arg;
-    tmp[m->id] += 1;
+        string_s text = aho->s[iter->data];
+        // t_opt[i].append(i, place)
+        for (int i=0; i<text.len; i++) {
+            linked_push_node(&aho->t_opt[pos-text.len+1 + i], iter->data, i);
+        }
+    }
 }
 
 // 入力されたintの中で何個のビットが立っているかを返す
@@ -42,15 +40,15 @@ void convert(char *tmp, char *s, int len, unsigned long long bitchange) {
 }
 
 // アホコラを使用したあいまい検索の関数
-char *ahocoralike(char *t, string_s s[], int len) {
+char *ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, int *s_count) {
     /* おまじない */
     ahocorasick aho;
-    aho_init(&aho);
+    aho_init(&aho, s);
     aho_create_trie(&aho);
 
     char tmp[120];
 
-    for (int i=0; i<len; ++i) {
+    for (int i=from; i<to; ++i) {
         aho_add_match_text(&aho, &s[i]); /* 木にキーを追加 */
 
         /* s[i]が虫食いされて生じうる文字列を木に追加 */
@@ -65,20 +63,27 @@ char *ahocoralike(char *t, string_s s[], int len) {
     }
 
     aho_connect_trie(&aho); /* トライ木を整理 */
-    // trie_print(&aho.trie);
 
-    char *ans = (char *)calloc(T_LENGTH + 1, sizeof(char)); /* 変換後を保存する文字列 */
-    strcpy(ans, t);
-    aho_register_match_callback(&aho, callback_substitute_zeros, (void *)ans); /* 探索成功時に実行される関数を定義。関数は上を参照 */
+    char *ans = (char *)calloc(T_LENGTH + 1, sizeof(char));
+    for (int i=0; i<strlen(t); i++) {
+        ans[i] = t[i] != 'x' ? t[i] : 'a';
+    }
 
-    // int count[41000] = {0};
-    // aho_register_match_callback(&aho, callback_count_options, (void *)count);
+    aho_register_option_lists(&aho, t_opt, s_count);
+    aho_register_match_callback(&aho, callback_add2linked_list);
 
-    // sprintf(ans, "total match: %d\n", aho_search(&aho, t, T_LENGTH));
-    aho_search(&aho, t, T_LENGTH);
+    aho_search(&aho, ans, T_LENGTH);
+    aho_destroy(&aho);
 
-    // for (int i=0; i<len; i++) {
-    //     printf("%d ", count[i]);
+    /* TODO: test */
+    // for (int i=from; i<to; i++) {
+    //     if (s_count[s[i].id] > 100) printf("%d: %d, %s(%d)\n", s[i].id, s_count[s[i].id], s[i].str, s[i].len);
+    // }
+    // for (int i=0; i<T_LENGTH; i++) {
+    //     if (t_opt[i].length < 3) {
+    //         printf("%d: ", i);
+    //         linked_print(&t_opt[i]);
+    //     }
     // }
 
     int counter = 0;

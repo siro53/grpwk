@@ -1,25 +1,25 @@
 #!/bin/bash
 
 # 使用例
-# ./compile.sh -d example -t 0 -n
+# ./compile.sh -d example -t 0 -f
 
 # 各種設定(初期設定)
 PROG=grpwk # 実行ファイル名
 CC=gcc # コンパイラ
-CFLAGS="-W -Wall -Wextra -Wconversion -Wshadow" # ワーニング
+CFLAGS="-W -Wall -Wextra -Wconversion -Wshadow -O0" # ワーニング
 DIR="example" # 自分で作ったgrpwk.cがあるディレクトリ
 TCASE=0 # dat${TCASE}_inを参照(テストケースの選択)
 
 # 使い方の説明
 usage_exit() {
-    echo "Usage: $0 [-n (no warning)] [-d <dir name>] [-t <test id>]"
+    echo "Usage: $0 [-f (-fast: no warning)] [-d <dir name>] [-t <test id>]"
 }
 
 # コマンドラインオプションを設定
-while getopts :hnd:t: OPT
+while getopts :hfd:t:f OPT
 do
     case $OPT in
-        n) CFLAGS="" # コンパイルをワーニングなしで実行
+        f) CFLAGS="-fast" # コンパイルをワーニングなしで実行
             echo "You are running the compiler withOUT -Wall option!"
             ;;
         d) DIR=$OPTARG;; # grpwk.cのあるディレクトリの設定(トップディレクトリとこのディレクトリしかコンパイルされないためファイル構成には注意)

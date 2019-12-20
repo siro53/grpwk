@@ -2,7 +2,7 @@
 
 #include "../string_info.h"
 
-#define AHO_FROM 18
-#define AHO_TO 5
+#define AHO_FROM 17
+#define AHO_TO 10
 
 char *grpwk(char *t, string_s s[], int len);

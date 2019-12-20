@@ -47,7 +47,7 @@ int main_prg(int argc, char **argv)
 
     // input t
     fscanf(fp_in, "%s", t);
-    for (int i=0; i<T_LENGTH; i++) if (t[i] == 'x') t[i] = 'a';
+    // for (int i=0; i<T_LENGTH; i++) if (t[i] == 'x') t[i] = 'a';
 
     // input s[]
     int counter = 0;
