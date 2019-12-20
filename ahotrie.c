@@ -129,7 +129,7 @@ string_s *trie_find(aho_node ** restrict node, char text) {
 
     if ((*node)->end) return (*node)->output_text;
     else if ((*node)->output_link) return (*node)->output_link->output_text;
-    else return NULL;
+    else NULL;
 }
 
 // トライ木を表示。ノードが多くなってくると使い物にならない。
