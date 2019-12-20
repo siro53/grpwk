@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "../ahocorasick.h"
-#include "ahocora.h"
+#include "itoi.h"
 
 // outcome functions for testing
 void callback_add2linked_list(ahocorasick * aho, linked_list *l, int pos) {
@@ -40,11 +40,13 @@ void convert(char *tmp, char *s, int len, unsigned long long bitchange) {
 }
 
 // アホコラを使用したあいまい検索の関数
-char *ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, int *s_count) {
+void ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, int *s_count) {
     /* おまじない */
     ahocorasick aho;
     aho_init(&aho, s);
     aho_create_trie(&aho);
+    aho_register_option_lists(&aho, t_opt, s_count);
+    aho_register_match_callback(&aho, callback_add2linked_list);
 
     char tmp[120];
 
@@ -63,16 +65,7 @@ char *ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, i
     }
 
     aho_connect_trie(&aho); /* トライ木を整理 */
-
-    char *ans = (char *)calloc(T_LENGTH + 1, sizeof(char));
-    for (int i=0; i<strlen(t); i++) {
-        ans[i] = t[i] != 'x' ? t[i] : 'a';
-    }
-
-    aho_register_option_lists(&aho, t_opt, s_count);
-    aho_register_match_callback(&aho, callback_add2linked_list);
-
-    aho_search(&aho, ans, T_LENGTH);
+    aho_search(&aho, t, T_LENGTH);
     aho_destroy(&aho);
 
     /* TODO: test */
@@ -85,16 +78,4 @@ char *ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, i
     //         linked_print(&t_opt[i]);
     //     }
     // }
-
-    int counter = 0;
-    for (int i=0; i<T_LENGTH; i++) {
-        if (ans[i] == 0) { /* わからない部分 */
-            counter++;
-            ans[i] = 'x';
-            /* 本番はaを入れるが、今はわかったところとわからなかったところを明示的に区別するためにxを代入。詳細はtest_distance.cを参照 */
-        }
-    }
-    printf("unknown places: %d\n", counter);
-
-    return ans;
 }
