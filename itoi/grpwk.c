@@ -43,35 +43,13 @@ char *grpwk(char *t, string_s s[], int len) {
             }
         }
         if (s_id == -1) break; // no option found
-        // if (s_count[s_id].length == 0)
-        //     printf("id: %05d, options: %02d\n", s_id, s_count[s_id].length);
         if (s_count[s_id].length == 0) continue; // option already taken
-
-        /* delete all other s that overlaps with the option */
         // option's text and place: index of first letter within t
         string_s *text = &s[s_id];
         int s_pos = linked_pop_int(&s_count[s_id], 0);
         // TODO: maybe better way to select the index above
-        linked_destroy(&s_count[s_id]);
 
-        // discriminate other options within the substituted places
-        for (int t_index=0; t_index<text->len; t_index++) {
-            while (t_opt[t_index + s_pos].length != 0) {
-                // the other option
-                linked_node *other = linked_pop_node(&t_opt[t_index + s_pos], 0);
-                if (other->data == s_id || s_count[other->data].length == 0) { // same as the insert option
-                    free(other);
-                    continue;
-                }
-
-                // go to s_count[other.id] and delete the option to insert here
-                if (linked_delete_int(&s_count[other->data], t_index + s_pos - other->place)) {
-                    // reinsert the deleted option to s_opt
-                    s_opt_insert(s_opt, s_count[other->data].length, other->data);
-                }
-                free(other);
-            }
-        }
+        discriminate(s_id, s_pos, text, t_opt, s_opt, s_count);
 
         /* insert text to ans */
         for (int i=0; i<text->len; i++) {

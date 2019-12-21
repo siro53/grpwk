@@ -87,3 +87,27 @@ int s_opt_insert(linked_list *s_opt, int s_count, int index) {
         return 1;
     } else return 0;
 }
+
+/* delete all other s that overlaps with the option */
+void discriminate(int s_id, int s_pos, string_s *text, linked_list *t_opt, linked_list *s_opt, linked_list *s_count) {
+    linked_destroy(&s_count[s_id]);
+
+    // discriminate other options within the substituted places
+    for (int t_index=0; t_index<text->len; t_index++) {
+        while (t_opt[t_index + s_pos].length != 0) {
+            // the other option
+            linked_node *other = linked_pop_node(&t_opt[t_index + s_pos], 0);
+            if (other->data == s_id || s_count[other->data].length == 0) { // same as the insert option
+                free(other);
+                continue;
+            }
+
+            // go to s_count[other.id] and delete the option to insert here
+            if (linked_delete_int(&s_count[other->data], t_index + s_pos - other->place)) {
+                // reinsert the deleted option to s_opt
+                s_opt_insert(s_opt, s_count[other->data].length, other->data);
+            }
+            free(other);
+        }
+    }
+}
