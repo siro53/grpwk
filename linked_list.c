@@ -8,6 +8,8 @@ linked_node *linked_node_init(int data) {
     linked_node *tmp = (linked_node *)malloc(sizeof(linked_node));
     tmp->data = data;
     tmp->place = 0;
+    tmp->next = NULL;
+    tmp->prev = NULL;
     return tmp;
 }
 
@@ -98,8 +100,8 @@ int linked_pop_int(linked_list *l, int index) {
             iter = l->bottom->prev;
             for (int i=-2; i>index; i--) iter = iter->prev;
         }
-        iter->prev->next = iter->next;
-        iter->next->prev = iter->prev;
+        if (iter->prev != NULL) iter->prev->next = iter->next;
+        if (iter->next != NULL) iter->next->prev = iter->prev;
     }
     if (iter != NULL) {
         l->length--;

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #include "../linked_list.h"
 #include "grpwk.h"
@@ -40,12 +39,12 @@ char *grpwk(char *t, string_s s[], int len) {
         else for (int i=2; i<100; i++) {
             if (s_opt[i].length != 0) {
                 s_id = linked_pop_int(&s_opt[i], 0);
-                printf("i = %d, ", i);
                 break;
             }
         }
         if (s_id == -1) break; // no option found
-        printf("id: %d\n", s_id);
+        // if (s_count[s_id].length == 0)
+        //     printf("id: %05d, options: %02d\n", s_id, s_count[s_id].length);
         if (s_count[s_id].length == 0) continue; // option already taken
 
         /* delete all other s that overlaps with the option */
@@ -65,7 +64,6 @@ char *grpwk(char *t, string_s s[], int len) {
                     continue;
                 }
 
-                printf("(%d %d) ", other->data, other->place);
                 // go to s_count[other.id] and delete the option to insert here
                 if (linked_delete_int(&s_count[other->data], t_index + s_pos - other->place)) {
                     // reinsert the deleted option to s_opt
@@ -74,8 +72,6 @@ char *grpwk(char *t, string_s s[], int len) {
                 free(other);
             }
         }
-        printf("\n");
-        sleep(1);
 
         /* insert text to ans */
         for (int i=0; i<text->len; i++) {
