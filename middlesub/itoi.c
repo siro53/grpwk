@@ -68,17 +68,6 @@ void ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, li
     aho_connect_trie(&aho); /* トライ木を整理 */
     aho_search(&aho, t, T_LENGTH);
     aho_destroy(&aho);
-
-    /* TODO: test */
-    // for (int i=from; i<to; i++) {
-    //     if (s_count[s[i].id] > 100) printf("%d: %d, %s(%d)\n", s[i].id, s_count[s[i].id], s[i].str, s[i].len);
-    // }
-    // for (int i=0; i<T_LENGTH; i++) {
-    //     if (t_opt[i].length < 3) {
-    //         printf("%d: ", i);
-    //         linked_print(&t_opt[i]);
-    //     }
-    // }
 }
 
 int s_opt_insert(linked_list *s_opt, int s_count, int index) {

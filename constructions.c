@@ -49,9 +49,9 @@ void ConstructTin(string_out *t_in, char *t_temp){
 /*
 
 
-link NEW(Item item, link f, link b)
+Link NEW(Item item, Link f, Link b)
 {
-    link x = malloc(sizeof *x);
+    Link x = malloc(sizeof *x);
     x->item = item;
     x->f = f;
     x->b = b;
@@ -76,7 +76,7 @@ void ConstructDLL(char s[120], int n)
     }
 }
 
-void Assign(string_s *S_temp, link link_temp, int n)
+void Assign(string_s *S_temp, Link link_temp, int n)
 {
     if (link_temp == tail)
     {
