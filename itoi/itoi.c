@@ -9,13 +9,14 @@
 void callback_add2linked_list(ahocorasick * aho, linked_list *l, int pos) {
     linked_node *iter = l->top;
     for (int v=0; v<l->length; v++, iter = iter->next) {
-        // s_count[i]++
-        aho->s_count[iter->data]++;
+        string_s *text = &aho->s[iter->data];
 
-        string_s text = aho->s[iter->data];
+        // s_count[i].append(text.pos)
+        linked_push_int(&aho->s_count[iter->data], pos-text->len+1, 1); // <- index of first letter
+
         // t_opt[i].append(i, place)
-        for (int i=0; i<text.len; i++) {
-            linked_push_node(&aho->t_opt[pos-text.len+1 + i], iter->data, i);
+        for (int i=0; i<text->len; i++) {
+            linked_push_node(&aho->t_opt[pos-text->len+1 + i], iter->data, i, 1);
         }
     }
 }
@@ -40,7 +41,7 @@ void convert(char *tmp, char *s, int len, unsigned long long bitchange) {
 }
 
 // アホコラを使用したあいまい検索の関数
-void ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, int *s_count) {
+void ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, linked_list *s_count) {
     /* おまじない */
     ahocorasick aho;
     aho_init(&aho, s);
@@ -78,4 +79,11 @@ void ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, in
     //         linked_print(&t_opt[i]);
     //     }
     // }
+}
+
+int s_opt_insert(linked_list *s_opt, int s_count, int index) {
+    if (s_count < 100) {
+        linked_push_int(&s_opt[s_count], index, 0);
+        return 1;
+    } else return 0;
 }

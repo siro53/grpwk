@@ -48,7 +48,7 @@ int trie_add(aho_trie * t, string_s * text, char * similar) {
     }
 
     current->end = TRUE;
-    linked_push_int(&current->output_list, text->id);
+    linked_push_int(&current->output_list, text->id, 1);
 
     return TRUE;
 }

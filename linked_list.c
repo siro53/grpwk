@@ -7,6 +7,7 @@
 linked_node *linked_node_init(int data) {
     linked_node *tmp = (linked_node *)malloc(sizeof(linked_node));
     tmp->data = data;
+    tmp->place = 0;
     return tmp;
 }
 
@@ -35,8 +36,8 @@ int linked_search_node(linked_list *l, int data, int place) {
 }
 
 // insert data to bottom of list
-int linked_push_int(linked_list *l, int data) {
-    if (linked_search_int(l, data)) return 0;
+int linked_push_int(linked_list *l, int data, int search) {
+    if (search && linked_search_int(l, data)) return 0;
     linked_node *tmp = linked_node_init(data);
     if (l->length++ == 0) {
         l->top = tmp;
@@ -50,8 +51,8 @@ int linked_push_int(linked_list *l, int data) {
 }
 
 // insert data to top of list
-int linked_unshift_int(linked_list *l, int data) {
-    if (linked_search_int(l, data)) return 0;
+int linked_unshift_int(linked_list *l, int data, int search) {
+    if (search && linked_search_int(l, data)) return 0;
     linked_node *tmp = linked_node_init(data);
     if (l->length++ == 0) {
         l->top = tmp;
@@ -109,8 +110,8 @@ int linked_pop_int(linked_list *l, int index) {
 }
 
 // insert data and place to bottom of list
-int linked_push_node(linked_list *l, int data, int place) {
-    if (linked_search_node(l, data, place)) return 0;
+int linked_push_node(linked_list *l, int data, int place, int search) {
+    if (search && linked_search_node(l, data, place)) return 0;
     linked_node *tmp = linked_node_init(data);
     tmp->place = place;
     if (l->length++ == 0) {
@@ -125,8 +126,8 @@ int linked_push_node(linked_list *l, int data, int place) {
 }
 
 // insert data and place to top of list
-int linked_unshift_node(linked_list *l, int data, int place) {
-    if (linked_search_node(l, data, place)) return 0;
+int linked_unshift_node(linked_list *l, int data, int place, int search) {
+    if (search && linked_search_node(l, data, place)) return 0;
     linked_node *tmp = linked_node_init(data);
     tmp->place = place;
     if (l->length++ == 0) {
@@ -188,4 +189,15 @@ void linked_print(linked_list *l) {
         printf("(%d, %d) ", iter->data, iter->place);
     }
     printf("\n");
+}
+
+int linked_delete_int(linked_list *l, int data) {
+    linked_node *iter = l->top;
+    for (int v=0; v<l->length; v++, iter=iter->next) {
+        if (iter->data == data) {
+            linked_pop_int(l, v);
+            return 1;
+        }
+    }
+    return 0;
 }

@@ -68,7 +68,7 @@ inline void aho_register_match_callback(ahocorasick * aho, void (*callback_match
     aho->callback_match = callback_match;
 }
 
-void aho_register_option_lists(ahocorasick * aho, linked_list *t_opt, int *s_count) {
+void aho_register_option_lists(ahocorasick * aho, linked_list *t_opt, linked_list *s_count) {
     aho->t_opt = t_opt;
     aho->s_count = s_count;
 }
