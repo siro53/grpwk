@@ -32,6 +32,13 @@ char *grpwk(char *t, string_s s[], int len) {
         s_opt_insert(s_opt, s_count[i].length, i);
     }
 
+    /* delete options where t is already determined by BM */
+    for (int i=0; i<T_LENGTH; i++) {
+        if (t_out[i] != 'x') {
+            discriminate(i, t_opt, s_opt, s_count);
+        }
+    }
+
     while (1) {
         // get next s to insert into ans
         int s_id = -1;
@@ -45,11 +52,15 @@ char *grpwk(char *t, string_s s[], int len) {
         if (s_id == -1) break; // no option found
         if (s_count[s_id].length == 0) continue; // option already taken
         // option's text and place: index of first letter within t
-        string_s *text = &s[s_id];
         int s_pos = linked_pop_int(&s_count[s_id], 0);
         // TODO: maybe better way to select the index above
+        linked_destroy(&s_count[s_id]);
 
-        discriminate(s_id, s_pos, text, t_opt, s_opt, s_count);
+        /* delete other options */
+        string_s *text = &s[s_id];
+        for (int i=0; i<text->len; i++) {
+            discriminate(s_pos+i, t_opt, s_opt, s_count);
+        }
 
         /* insert text to ans */
         for (int i=0; i<text->len; i++) {
