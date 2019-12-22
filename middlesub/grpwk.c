@@ -26,7 +26,6 @@ char *grpwk(char *t, string_s *s, int len) {
     // ConstructTout(t_out, t);
     ConstructTin(t_in, t);
 
-    // for (int i=0; i<T_LENGTH; i++) if (t[i] == 'x') t[i] = 'a';
 
     // init option lists
     linked_list *t_opt = (linked_list *)malloc(sizeof(linked_list) * T_LENGTH);
@@ -40,14 +39,14 @@ char *grpwk(char *t, string_s *s, int len) {
     for (int i=0; i<T_LENGTH; i++) {
         if (t_out->str[i] != 'x') {
             if (t[i] != t_out->str[i] && t[i] != 'x') {
-                printf("error: %d\n", i);
+                // printf("error: %d\n", i);
                 // usleep(10000);
-            }
-            t[i] = t_out->str[i];
+            } else t[i] = t_out->str[i];
         }
     }
-    printf("%d\n", strlen(t_out->str));
-    return t;
+    // printf("%d\n", strlen(t_out->str));
+    // return t;
+    for (int i=0; i<T_LENGTH; i++) if (t[i] == 'x') t[i] = 'a';
     ahocoralike(t, s, bm_until, aho_until, t_opt, s_count);
     printf("ahocora done\n");
 
