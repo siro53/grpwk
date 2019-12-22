@@ -10,11 +10,6 @@
 #include "../constructions.h"
 #include "BM.h"
 
-//文字の比較に使用　単に見栄えを良くしてるだけ
-#define ignore -1
-#define success 1
-#define failure 0
-
 //これより短いs[i]は処理しない
 
 typedef struct
@@ -30,7 +25,7 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
     /*----------------------initialize-------------------------*/
     int t_id, esc, comp_var, point;
     /*---------------------------------------------------------*/
-    for (int i = 0; i<to; i++)
+    for (int i = 0; i < to; i++)
     {
         string_s *s_i = &s[i];
         //t_id:s_iの最後尾がいる場所
@@ -84,7 +79,7 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
             //s_xが検出済で既に挿入されている場合、挿入済箇所をスキップ
             if (t_out->str[t_id] != 'x')
             {
-                t_id += t_out->shift_var[t_id - s_i->len];
+                t_id += High(t_out->shift_var[t_id - lens_i], t_out->shift_var[t_id]);
                 point = t_id;
             }
 
@@ -111,6 +106,11 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
 
             while ((flag == 1) && (esc < 21) && (s_i->len - 1 - comp_var >= 0) && (t_id - comp_var != 0))
             {
+                if (t_out->str[t_id] != 'x')
+                {
+                    t_id += High(t_out->shift_var[t_id - lens_i], t_out->shift_var[t_id]);
+                    point = t_id;
+                }
                 /*----------------------DebugPrint-------------------------*/
                 /*
             printf("t_s:");
