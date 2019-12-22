@@ -36,14 +36,18 @@ int sort_f(const void *a, const void *b) {
 
 int main_prg(int argc, char **argv)
 {
+
     assert(argc == 3);
     FILE *fp_in = fopen(argv[1], "r");
     assert(fp_in != NULL);
     FILE *fp_out = fopen(argv[2], "w");
     assert(fp_out != NULL);
 
-    char t[T_LENGTH + 1];
+
+
+    char t[T_LENGTH];
     string_s s[50000];
+    //s = malloc(sizeof(string_s) * 50000);
 
     // input t
     fscanf(fp_in, "%s", t);
@@ -55,6 +59,8 @@ int main_prg(int argc, char **argv)
     qsort(s, counter, sizeof(string_s), sort_f);
 
     for (int i=0; i<counter; i++) s[i].id = i;
+
+
 
     fprintf(fp_out, "%s\n", grpwk(t, s, counter));
 

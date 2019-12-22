@@ -4,30 +4,20 @@
 #pragma GCC optimize("O3")
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-
 #include "../constructions.h"
 #include "BM.h"
-
-//これより短いs[i]は処理しない
-
-typedef struct
-{
-    string_out *t_in;
-    string_s *s;
-    string_out *t_out;
-    int skipnum;
-} Fthreadstructure;
 
 void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s_count, linked_list *t_opt)
 {
     /*----------------------initialize-------------------------*/
-    int t_id, esc, comp_var, point;
+    int t_id, esc, comp_var, point, t_len = strlen(t_in->str);
+    string_s *s_i;
+
     /*---------------------------------------------------------*/
     for (int i = 0; i < to; i++)
     {
-        string_s *s_i = &s[i];
+        s_i = &s[i];
         //t_id:s_iの最後尾がいる場所
         t_id = s_i->len - 1;
         //esc:一致した文字の個数
@@ -39,7 +29,7 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
         int table[110][4];
 
         /*---------------------makeShiftTable----------------------*/
-        for (int k = 0; k < s_i->len - 1; k++)
+        for (int k = 0; k < s_i->len- 1; k++)
         {
             int Tcounter;
             rep(j, 120)
@@ -73,7 +63,7 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
         }
         /*---------------------------------------------------------*/
 
-        while (t_id - 1 <= T_LENGTH)
+        while (t_id - 1 <= t_len)
         {
             int flag = 1;
             //s_xが検出済で既に挿入されている場合、挿入済箇所をスキップ
@@ -104,7 +94,7 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
                 point = t_id - comp_var;
             }
 
-            while ((flag == 1) && (esc < 21) && (s_i->len - 1 - comp_var >= 0) && (t_id - comp_var != 0))
+            while ((flag == 1) && (esc < 23) && (s_i->len - 1 - comp_var >= 0) && (t_id - comp_var != 0))
             {
                 if (t_out->str[t_id] != 'x')
                 {
@@ -112,7 +102,7 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
                     point = t_id;
                 }
                 /*----------------------DebugPrint-------------------------*/
-                /*
+/*
             printf("t_s:");
             int j;
             for(j=0;j<strlen(t_in->str);j++)
@@ -157,7 +147,7 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
             //マッチした場合t_outに挿入,そうでないなら次の場所を探索
             if (flag == 1)
             {
-                if (s_i->len > 24)
+                if (s_i->len > 3)
                 {
                     int x, y;
                     for (x = s_i->len - 1, y = 0; x >= 0; x--, y++)
@@ -167,33 +157,17 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
                     }
                     t_out->shift_var[t_id - y] = s_i->len;
                     esc = 0;
-                    continue;
+                    goto next;
                 }
                 else
                 {
-                    //printf("%d %d\n",s[i].id,t_id);
                     linked_push_int(&s_count[s_i->id], t_id - s_i->len + 1, 0);
-                    //printf("pushed\n");
                     for (int j = 0; j < s_i->len; j++)
                     {
-                        linked_push_node(&t_opt[t_id - s_i->len + 1 + j], s_i->id, j, 0);
+                        linked_push_node(&t_opt[t_id - s_i->len+ 1 + j], s_i->id, j, 0);
                     }
-                    //printf("completed\n");
                 }
             }
-            /*
-             if ((t_in->str[point] - 'a' < 4) && (t_in->str[point] - 'a' >= 0) ) {
-                 temp = High(table[t_id - point + 1][t_in->str[point] - 'a'] + 1,
-                             table[comp_var][t_in->str[t_id - comp_var] - 'a']);
-                 swiftsum += temp;
-                 swiftnum ++;
-             } else {
-                 elsecount++;
-                 temp = shift(t_in->str[t_id - comp_var], s_i, comp_var);
-             }
-             */
-            //int temp = High(table[t_id - point + 1][(t_id == point)&&t_in->str[t_id+1]!='x'? t_in->str[point+1] - 'a':t_in->str[point] - 'a'] + 1,
-            //                table[comp_var][t_in->str[t_id - comp_v ar] - 'a']);
             int temp = High(table[t_id - point + 1][t_in->str[point] - 'a'] + 1,
                             table[comp_var][t_in->str[t_id - comp_var] - 'a']);
 
@@ -201,5 +175,10 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
             comp_var = 0;
             point = t_id;
         }
+        next:
+        if(0){
+            printf("");
+        }
+
     }
 }
