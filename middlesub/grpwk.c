@@ -142,8 +142,7 @@ char *grpwk(char *t, string_s *s, int len)
     for (int i = 0; i < T_LENGTH; i++)
     {
         if (t_out->str[i] != 'x') {
-            if (t_copy[i] != 'x') t[i] = t_copy[i];
-            else t[i] = t_out->str[i];
+            t[i] = t_out->str[i];
         }
     }
 
