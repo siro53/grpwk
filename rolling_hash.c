@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "string_s.h"
+#include "string_info.h"
 
 #define ROLLINGHASH_MAX_SIZE 500000
 
@@ -63,4 +63,5 @@ Hashtype RollingHash_get(int l, int r, RollingHash *rl)
 
 int main(void)
 {
+    
 }
