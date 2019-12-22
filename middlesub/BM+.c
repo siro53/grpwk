@@ -23,13 +23,13 @@ typedef struct
 void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s_count, linked_list *t_opt)
 {
     /*----------------------initialize-------------------------*/
-    int t_id, esc, comp_var, point, lens_i;
+    int t_id, esc, comp_var, point;
     /*---------------------------------------------------------*/
     for (int i = 0; i < to; i++)
     {
         string_s *s_i = &s[i];
         //t_id:s_iの最後尾がいる場所
-        t_id = lens_i - 1;
+        t_id = s_i->len - 1;
         //esc:一致した文字の個数
         esc = 0;
         //comp_var:何回比較したか
@@ -39,34 +39,34 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
         int table[110][4];
 
         /*---------------------makeShiftTable----------------------*/
-        for (int k = 0; k < lens_i - 1; k++)
+        for (int k = 0; k < s_i->len - 1; k++)
         {
             int Tcounter;
             rep(j, 120)
             {
                 Tcounter = j;
-                if ((s_i->str[lens_i - 1 - k - j] == (0 + 'a')) || (lens_i - 1 - k - j < 0))
+                if ((s_i->str[s_i->len - 1 - k - j] == (0 + 'a')) || (s_i->len - 1 - k - j < 0))
                     break;
             }
             table[k][0] = Tcounter;
             rep(j, 120)
             {
                 Tcounter = j;
-                if ((s_i->str[lens_i - 1 - k - j] == (1 + 'a')) || (lens_i - 1 - k - j < 0))
+                if ((s_i->str[s_i->len - 1 - k - j] == (1 + 'a')) || (s_i->len - 1 - k - j < 0))
                     break;
             }
             table[k][1] = Tcounter;
             rep(j, 120)
             {
                 Tcounter = j;
-                if ((s_i->str[lens_i - 1 - k - j] == (2 + 'a')) || (lens_i - 1 - k - j < 0))
+                if ((s_i->str[s_i->len - 1 - k - j] == (2 + 'a')) || (s_i->len - 1 - k - j < 0))
                     break;
             }
             table[k][2] = Tcounter;
             rep(j, 120)
             {
                 Tcounter = j;
-                if ((s_i->str[lens_i - 1 - k - j] == (3 + 'a')) || (lens_i - 1 - k - j < 0))
+                if ((s_i->str[s_i->len - 1 - k - j] == (3 + 'a')) || (s_i->len - 1 - k - j < 0))
                     break;
             }
             table[k][3] = Tcounter;
@@ -79,12 +79,12 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
             //s_xが検出済で既に挿入されている場合、挿入済箇所をスキップ
             if (t_out->str[t_id] != 'x')
             {
-                t_id += High(t_out->shift_var[t_id - lens_i], t_out->shift_var[t_id]);
+                t_id += High(t_out->shift_var[t_id - s_i->len], t_out->shift_var[t_id]);
                 point = t_id;
             }
 
             //s_iが指定位置t_idにマッチするか確認
-            int branch = (t_in->str[t_id - comp_var] != s_i->str[lens_i - 1 - comp_var]);
+            int branch = (t_in->str[t_id - comp_var] != s_i->str[s_i->len - 1 - comp_var]);
             if (((t_in->str[t_id - comp_var] != 'x') && branch))
             {
                 //failware
@@ -104,11 +104,11 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
                 point = t_id - comp_var;
             }
 
-            while ((flag == 1) && (esc < 21) && (lens_i - 1 - comp_var >= 0) && (t_id - comp_var != 0))
+            while ((flag == 1) && (esc < 21) && (s_i->len - 1 - comp_var >= 0) && (t_id - comp_var != 0))
             {
                 if (t_out->str[t_id] != 'x')
                 {
-                    t_id += High(t_out->shift_var[t_id - lens_i], t_out->shift_var[t_id]);
+                    t_id += High(t_out->shift_var[t_id - s_i->len], t_out->shift_var[t_id]);
                     point = t_id;
                 }
                 /*----------------------DebugPrint-------------------------*/
@@ -121,7 +121,7 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
             printf("out:%s\n",t_out->str);
             printf("s_i:");
 
-            for(j=0;j<t_id-lens_i+1;j++)
+            for(j=0;j<t_id-s_i->len+1;j++)
                 printf(" ");
             printf("%s\n",s_i->str);
             printf("cmp:");
@@ -135,7 +135,7 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
             printf("t_id:%d  comp_var:%d\n",t_id,comp_var);
                 /*---------------------------------------------------------*/
                 /*---------------------------------------------------------*/
-                branch = (t_in->str[t_id - comp_var] != s_i->str[lens_i - 1 - comp_var]);
+                branch = (t_in->str[t_id - comp_var] != s_i->str[s_i->len - 1 - comp_var]);
                 if (((t_in->str[t_id - comp_var] != 'x') && branch))
                 {
                     //failware
@@ -157,26 +157,26 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
             //マッチした場合t_outに挿入,そうでないなら次の場所を探索
             if (flag == 1)
             {
-                if (lens_i > 24)
+                if (s_i->len > 24)
                 {
-                    int x, y, f = 0;
-                    for (x = lens_i - 1, y = 0; x >= 0; x--, y++)
+                    int x, y;
+                    for (x = s_i->len - 1, y = 0; x >= 0; x--, y++)
                     {
                         t_out->str[t_id - y] = s_i->str[x];
-                        t_out->shift_var[t_id - y] = lens_i - x - 1;
+                        t_out->shift_var[t_id - y] = s_i->len - x - 1;
                     }
-                    t_out->shift_var[t_id - y] = lens_i;
+                    t_out->shift_var[t_id - y] = s_i->len;
                     esc = 0;
                     continue;
                 }
                 else
                 {
                     //printf("%d %d\n",s[i].id,t_id);
-                    linked_push_int(&s_count[s_i->id], t_id - lens_i + 1, 0);
+                    linked_push_int(&s_count[s_i->id], t_id - s_i->len + 1, 0);
                     //printf("pushed\n");
-                    for (int j = 0; j < lens_i; j++)
+                    for (int j = 0; j < s_i->len; j++)
                     {
-                        linked_push_node(&t_opt[t_id - lens_i + 1 + j], s_i->id, j, 0);
+                        linked_push_node(&t_opt[t_id - s_i->len + 1 + j], s_i->id, j, 0);
                     }
                     //printf("completed\n");
                 }

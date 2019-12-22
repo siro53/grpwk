@@ -23,6 +23,7 @@ char *grpwk(char *t, string_s *s, int len) {
         t_out->str[i] = 'x';
     }
     t_out->str[T_LENGTH] = '\0';
+    // ConstructTout(t_out, t);
     ConstructTin(t_in, t);
 
     // for (int i=0; i<T_LENGTH; i++) if (t[i] == 'x') t[i] = 'a';
@@ -38,7 +39,7 @@ char *grpwk(char *t, string_s *s, int len) {
 
     for (int i=0; i<T_LENGTH; i++) {
         if (t_out->str[i] != 'x') {
-            if (t[i] != t_out->str[i]) {
+            if (t[i] != t_out->str[i] && t[i] != 'x') {
                 printf("error: %d\n", i);
                 // usleep(10000);
             }

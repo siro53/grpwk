@@ -42,7 +42,7 @@ int main_prg(int argc, char **argv)
     FILE *fp_out = fopen(argv[2], "w");
     assert(fp_out != NULL);
 
-    char t[T_LENGTH];
+    char t[T_LENGTH + 1];
     string_s s[50000];
 
     // input t
