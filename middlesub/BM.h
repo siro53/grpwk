@@ -3,10 +3,10 @@
 #include "../string_info.h"
 #include "../linked_list.h"
 
-typedef struct Node *link;
+typedef struct Node *Link;
 struct Node{
     int *id;
-    link b;
+    Link b;
     int *x;
     int *count;
 };
