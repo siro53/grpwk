@@ -39,7 +39,7 @@ int trie_add(aho_trie * t, string_s * text, char * similar) {
 
     for (int i=0; i<text->len; i++) {
         int char_id = similar[i] - 'a';
-        if (char_id > 3 || char_id < 0) return FALSE;
+        if (char_id > MAX_NODE - 1 || char_id < 0) return FALSE;
 
         if (current->child[char_id] == NULL) current->child[char_id] = node_init(char_id, current);
         else current->child[char_id]->ref_count++;
@@ -119,8 +119,9 @@ void trie_delete(aho_trie * t) {
 
 int find_node(aho_node ** node, int text) {
     if (*node == NULL) return FALSE;
+    if (text > MAX_NODE - 1 || text < 0) return FALSE;
 
-    if ((*node)->child[text] != NULL && text <= 3 && text >= 0) {
+    if ((*node)->child[text] != NULL) {
         *node = (*node)->child[text];
         return TRUE;
     }

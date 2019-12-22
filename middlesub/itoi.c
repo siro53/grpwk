@@ -55,7 +55,7 @@ void ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, li
         aho_add_match_text(&aho, &s[i]); /* 木にキーを追加 */
 
         /* s[i]が虫食いされて生じうる文字列を木に追加 */
-        int max_bit = s[i].len / 2; /* 虫食いされる個数は文字列長の半分以下に限定 */
+        double max_bit = s[i].len / 2; /* 虫食いされる個数は文字列長の半分以下に限定 */
         unsigned long long until = ((unsigned long long)1<<s[i].len)-1; /* 文字列長分のビットを用意 */
         for (unsigned long long j=1; j<=until; j++) {
             if (bitcount(j) < max_bit) { /* 文字列長の半分以下のビットが立っているなら */

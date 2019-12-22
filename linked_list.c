@@ -105,6 +105,10 @@ int linked_pop_int(linked_list *l, int index) {
     }
     if (iter != NULL) {
         l->length--;
+        if (l->length == 0) {
+            l->top = NULL;
+            l->bottom = NULL;
+        }
         int data = iter->data;
         free(iter);
         return data;

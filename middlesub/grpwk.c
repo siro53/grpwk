@@ -11,26 +11,24 @@
 // input_win.cから呼び出されるやつ
 char *grpwk(char *t, string_s *s, int len)
 {
-    printf("test\n");
     /* 文字数の区切りを決定 */
     int bm_until, aho_until;
     for (bm_until = 0; bm_until < len; ++bm_until)
-        if (s[bm_until].len == BM_TO)
+        if (s[bm_until].len <= BM_TO)
             break;
     for (aho_until = bm_until; aho_until < len; aho_until++)
-        if (s[aho_until].len == AHO_TO)
+        if (s[aho_until].len <= AHO_TO)
             break;
 
     /* BMはじめ */
     string_out *t_in = (string_out *)malloc(sizeof(string_out));
     string_out *t_out = (string_out *)malloc(sizeof(string_out));
-    printf("%d\n",bm_until);
 
-    for (int i = 0; i < strlen(t); i++)
+    for (int i = 0; i < T_LENGTH; i++)
     {
         t_out->str[i] = 'x';
     }
-    t_out->str[strlen(t)] = '\0';
+    t_out->str[T_LENGTH] = '\0';
     ConstructTin(t_in, t);
 
     // init option lists
@@ -42,27 +40,24 @@ char *grpwk(char *t, string_s *s, int len)
     BM(t_in, s, bm_until, t_out, s_count, t_opt);
     printf("bm done\n");
 
-    int err;
-    for (int i = 0; i < T_LENGTH; i++)
-        err += (t_in->str[i] != t_out->str[i] && t_in->str[i] != 'x' && t_out->str[i] != 'x' );
-    printf("err:%d\n",err);
-    /*
+    // int err = 0;
+    // for (int i = 0; i < T_LENGTH; i++)
+    //     err += (t_in->str[i] != t_out->str[i] && t_in->str[i] != 'x' && t_out->str[i] != 'x' );
+    // printf("err:%d\n",err);
     for (int i = 0; i < T_LENGTH; i++)
     {
         if (t_out->str[i] != 'x')
         {
-            if (t[i] != t_out->str[i])
-            {
-                printf("error: %d\n", i);
-                // usleep(10000);
-            }
+            // if (t[i] != t_out->str[i])
+            // {
+            //     printf("error: %d\n", i);
+            //     usleep(10000);
+            // }
             t[i] = t_out->str[i];
-        }
+        } else if (t[i] == 'x') t[i] = 'a';
     }
-     */
-    printf("%d\n", strlen(t_out->str));
+    // return t;
 
-    return t;
     ahocoralike(t, s, bm_until, aho_until, t_opt, s_count);
     printf("ahocora done\n");
 
@@ -82,7 +77,7 @@ char *grpwk(char *t, string_s *s, int len)
             discriminate(i, t_opt, s_opt, s_count);
         }
     }
-    printf("dicrim done\n");
+    printf("discrim done\n");
 
     /* TODO: test */
     // for (int i=0; i<aho_until; i++) {
@@ -103,7 +98,7 @@ char *grpwk(char *t, string_s *s, int len)
         if (s_opt[1].length != 0)
             s_id = linked_pop_int(&s_opt[1], 0);
         else
-            for (int i = 2; i < 100; i++)
+            for (int i = 2; i < 4; i++)
             {
                 if (s_opt[i].length != 0)
                 {
@@ -116,6 +111,7 @@ char *grpwk(char *t, string_s *s, int len)
         if (s_count[s_id].length == 0)
             continue; // option already taken
         // printf("id: %05d (%02d), opt: %d: %s\n", s_id, s[s_id].len, s_count[s_id].length, s[s_id].str);
+        // usleep(1000);
 
         // option's text and place: index of first letter within t
         int s_pos = linked_pop_int(&s_count[s_id], 0);
@@ -132,8 +128,7 @@ char *grpwk(char *t, string_s *s, int len)
         /* insert text to ans */
         for (int i = 0; i < text->len; i++)
         {
-            if (t_out->str[s_pos + i] != 'x')
-                printf("eorro\n");
+            // if (t_out->str[s_pos + i] != 'x') printf("eorro\n");
             t_out->str[s_pos + i] = text->str[i];
         }
     }
@@ -146,9 +141,12 @@ char *grpwk(char *t, string_s *s, int len)
 
     for (int i = 0; i < T_LENGTH; i++)
     {
-        if (t_out->str[i] != 'x')
-            t[i] = t_out->str[i];
+        if (t_out->str[i] != 'x') {
+            if (t_copy[i] != 'x') t[i] = t_copy[i];
+            else t[i] = t_out->str[i];
+        }
     }
+
     free(t_in);
     free(t_out);
     return t;

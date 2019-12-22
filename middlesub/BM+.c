@@ -147,7 +147,7 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
             //マッチした場合t_outに挿入,そうでないなら次の場所を探索
             if (flag == 1)
             {
-                if (s_i->len > 3)
+                if (s_i->len > 22)
                 {
                     int x, y;
                     for (x = s_i->len - 1, y = 0; x >= 0; x--, y++)
@@ -175,10 +175,6 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
             comp_var = 0;
             point = t_id;
         }
-        next:
-        if(0){
-            printf("");
-        }
-
+        next:;
     }
 }

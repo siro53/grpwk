@@ -19,7 +19,7 @@ usage_exit() {
 while getopts :hfd:t:f OPT
 do
     case $OPT in
-        f) CFLAGS="-fast" # コンパイルをワーニングなしで実行
+        f) CFLAGS="-Ofast" # コンパイルをワーニングなしで実行
             echo "You are running the compiler withOUT -Wall option!"
             ;;
         d) DIR=$OPTARG;; # grpwk.cのあるディレクトリの設定(トップディレクトリとこのディレクトリしかコンパイルされないためファイル構成には注意)
