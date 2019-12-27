@@ -12,7 +12,7 @@ TCASE=0 # dat${TCASE}_inを参照(テストケースの選択)
 
 # 使い方の説明
 usage_exit() {
-    echo "Usage: $0 [-f (-fast: no warning)] [-d <dir name>] [-t <test id>]"
+    echo "Usage: $0 [-f (-Ofast: no warning)] [-d <dir name>] [-t <test id>]"
 }
 
 # コマンドラインオプションを設定

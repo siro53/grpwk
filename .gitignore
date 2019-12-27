@@ -1,15 +1,18 @@
+# exec files
 grpwk
 distance
 result
-*.sh
-!compile.sh
-*.py
-!analyze.py
-.*/
 *.o
 Makefile
-
-ahocorasick/
-*.vscode
-*.o
 *.exe
+*.out
+
+# analyze and others
+*.py
+
+# shell scripts
+*.sh
+!compile.sh
+
+# for vscode users
+*.vscode
