@@ -1,0 +1,3 @@
+C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/CMakeFiles/grpwk_.dir
+C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/CMakeFiles/rebuild_cache.dir

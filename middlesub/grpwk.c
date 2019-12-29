@@ -8,6 +8,7 @@
 #include "BM.h"
 #include <unistd.h>
 
+#pragma GCC optimize("O3")
 // input_win.cから呼び出されるやつ
 char *grpwk(char *t, string_s *s, int len)
 {
@@ -144,12 +145,26 @@ char *grpwk(char *t, string_s *s, int len)
 
     for (int i = 0; i < T_LENGTH; i++)
     {
-        if (t_out->str[i] != 'x' && t_in->str[i] == 'x')
+        if (t_in->str[i] != 'x')
         {
+            t[i] = t_in->str[i];
+        }else{
             t[i] = t_out->str[i];
         }
+        if(t[i] == 'x')
+            t[i] ='a';
     }
 
+    FILE *fp_ref = fopen("./data/dat0_ref", "r");
+    char ref[T_LENGTH];
+    // input ref
+    fscanf(fp_ref, "%s", ref);
+    int counter = 0, Max = strlen(t_in->str);
+    for (int i=0; i<Max; i++) {
+        counter += (t[i] != ref[i]);
+    }
+
+    printf("edit distance: %d,  ratio: %f%%\n", counter,(double)100*(T_LENGTH-counter)/T_LENGTH);
     free(t_in);
     free(t_out);
     return t;

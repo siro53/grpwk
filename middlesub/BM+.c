@@ -10,10 +10,10 @@
 
 void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s_count, linked_list *t_opt)
 {
+
     /*----------------------initialize-------------------------*/
     int t_id, esc, comp_var, point, t_len = strlen(t_in->str);
     string_s *s_i;
-
     /*---------------------------------------------------------*/
     for (int i = 0; i < to; i++)
     {
@@ -147,7 +147,7 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
             //マッチした場合t_outに挿入,そうでないなら次の場所を探索
             if (flag == 1)
             {
-                if (s_i->len > 22)
+                if (s_i->len > 24)
                 {
                     int x, y;
                     for (x = s_i->len - 1, y = 0; x >= 0; x--, y++)
@@ -161,6 +161,7 @@ void BM(string_out *t_in, string_s *s, int to, string_out *t_out, linked_list *s
                 }
                 else
                 {
+
                     linked_push_int(&s_count[s_i->id], t_id - s_i->len + 1, 0);
                     for (int j = 0; j < s_i->len; j++)
                     {

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "queue.h"
 #include <string.h>
+#pragma GCC optimize("O3")
 
 void que_init(queue *que)
 {

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="grpwk_"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/world/CLionProjects/grpwk_/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="grpwk_">
+				<Option output="C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/grpwk_.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/world/CLionProjects/grpwk_/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/8.2.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/8.2.0/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/8.2.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 grpwk_"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="grpwk_/fast">
+				<Option output="C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/grpwk_.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/world/CLionProjects/grpwk_/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/8.2.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/8.2.0/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/8.2.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 grpwk_/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/world/CLionProjects/grpwk_/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/Users/world/CLionProjects/grpwk_/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/world/CLionProjects/grpwk_/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/ahocorasick.c">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/ahocorasick.h">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/ahotrie.c">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/ahotrie.h">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/constructions.c">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/constructions.h">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/input_win.c">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/linked_list.c">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/linked_list.h">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/middlesub/BM+.c">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/middlesub/BM.h">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/middlesub/grpwk.c">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/middlesub/grpwk.h">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/middlesub/itoi.c">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/middlesub/itoi.h">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/string_info.h">
+			<Option target="grpwk_"/>
+		</Unit>
+		<Unit filename="C:/Users/world/CLionProjects/grpwk_/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

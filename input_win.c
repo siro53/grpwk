@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-// #include <sys/time.h>
-// #include <sys/resource.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 #include <time.h>
 #include "string_info.h"
+#pragma GCC optimize("O3")
 
 // TODO: change here to include your files!!
 #include "itoi/grpwk.h"
@@ -15,18 +16,19 @@ void test_instant(void);
 
 int main(int argc, char **argv)
 {
-    // struct rusage u;
-    // getrusage(RUSAGE_SELF, &u);
-    // struct timeval start = u.ru_utime;
+    struct rusage u;
+    struct timeval start,end;
+    getrusage(RUSAGE_SELF, &u);
+    start = u.ru_utime;
 
-    clock_t c_start = clock(), c_end;
+    //clock_t c_start = clock(), c_end;
     main_prg(argc, argv);
 
-    // struct timeval end = u.ru_utime;
-    c_end = clock();
+    end = u.ru_utime;
+    //c_end = clock();
 
-    printf("%f\n", (double)(c_end - c_start) / CLOCKS_PER_SEC);
-    // fprintf(stderr, "%lf\n", (double)(end.tv_sec - start.tv_sec) + (double)(end.tv_usec - start.tv_usec) * 1e-6);
+    //printf("%f\n", (double)(c_end - c_start) / CLOCKS_PER_SEC);
+    printf("%lf\n", (double)(end.tv_sec - start.tv_sec) + (double)(end.tv_usec - start.tv_usec) * 1e-6);
     return 0;
 }
 

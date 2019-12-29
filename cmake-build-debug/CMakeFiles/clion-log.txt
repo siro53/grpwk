@@ -1,4 +1,4 @@
-Cannot generate into C:\Users\world\CLionProjects\grpwk
-It is already used for unknown project
-
-Please either delete it manually or select another generation directory
+C:\Users\world\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\193.5233.144\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" C:\Users\world\CLionProjects\grpwk_
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/world/CLionProjects/grpwk_/cmake-build-debug

@@ -4,7 +4,7 @@
 
 #include "../ahocorasick.h"
 #include "itoi.h"
-
+#pragma GCC optimize("O3")
 // outcome functions for testing
 void callback_add2linked_list(ahocorasick * aho, linked_list *l, int pos) {
     linked_node *iter = l->top;

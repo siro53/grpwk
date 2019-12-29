@@ -4,6 +4,7 @@
 
 #include "ahotrie.h"
 #include "queue.h"
+#pragma GCC optimize("O3")
 
 // 新しいノードを生成
 aho_node *node_init(int data, aho_node * parent) {

@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "linked_list.h"
+#pragma GCC optimize("O3")
 
 linked_node *linked_node_init(int data) {
     linked_node *tmp = (linked_node *)malloc(sizeof(linked_node));

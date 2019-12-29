@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "ahocorasick.h"
+#pragma GCC optimize("O3")
 
 // ahocorasick型の変数の初期化
 void aho_init(ahocorasick * aho, string_s *s) {

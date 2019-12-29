@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "constructions.h"
+#pragma GCC optimize("O3")
 
 int comp(const void *p, const void *q)
 {
