@@ -11,7 +11,6 @@
 #include "itoi/grpwk.h"
 
 int main_prg(int, char **);
-void test_instant(void);
 
 int main(int argc, char **argv)
 {
@@ -30,8 +29,8 @@ int main(int argc, char **argv)
     return 0;
 }
 
-int sort_f(const void *a, const void *b)
-{
+
+int sort_f(const void *a, const void *b) {
     return ((string_s *)b)->len - ((string_s *)a)->len;
 }
 
@@ -44,6 +43,8 @@ int main_prg(int argc, char **argv)
     FILE *fp_out = fopen(argv[2], "w");
     assert(fp_out != NULL);
 
+
+
     char t[T_LENGTH];
     string_s s[50000];
     //s = malloc(sizeof(string_s) * 50000);
@@ -54,12 +55,12 @@ int main_prg(int argc, char **argv)
 
     // input s[]
     int counter = 0;
-    for (; fscanf(fp_in, "%s", s[counter].str) != EOF; ++counter)
-        s[counter].len = strlen(s[counter].str);
+    for (; fscanf(fp_in, "%s", s[counter].str) != EOF; ++counter) s[counter].len = strlen(s[counter].str);
     qsort(s, counter, sizeof(string_s), sort_f);
 
-    for (int i = 0; i < counter; i++)
-        s[i].id = i;
+    for (int i=0; i<counter; i++) s[i].id = i;
+
+
 
     fprintf(fp_out, "%s\n", grpwk(t, s, counter));
 

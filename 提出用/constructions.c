@@ -11,43 +11,36 @@ int comp(const void *p, const void *q)
     return ((string_s *)q)->len - ((string_s *)p)->len;
 }
 
-void ConstructSMatrix(string_s *s_i, int matsize)
+void ConstructSMatrix(string_s * s_i,int matsize)
 {
     printf("Accepted input text\n");
     qsort(s_i, matsize, sizeof(string_s), comp);
     printf("s_i sort complete\n");
 }
 
-void ConstructTout(string_out *t_out, char *t_temp)
-{
+void ConstructTout(string_out *t_out, char *t_temp){
     strcpy(t_out->str, t_temp);
     int i;
-    for (i = 0; t_temp[i] != '\0'; i++)
-    {
+    for(i=0; t_temp[i] != '\0'; i++){
         t_out->str[i] = 'x';
     }
     //printf("Preparing output text structure\n");
 }
 
-void ConstructTin(string_out *t_in, char *t_temp)
-{
+void ConstructTin(string_out *t_in, char *t_temp){
     strcpy(t_in->str, t_temp);
-    int i, j, start = 0, temp_id = -1;
-    if (t_temp[0] == 'x')
-    {
-        for (i = 0; t_temp[i] == 'x'; i++)
-            start = i;
+    int i,j,start=0,temp_id=-1;
+    if(t_temp[0] == 'x'){
+        for(i=0;t_temp[i]=='x';i++)
+        start = i;
     }
-    for (i = start; t_temp[i] != '\0'; i++)
-    {
-        if (t_temp[i] == 'x')
-        {
-            temp_id = i - 1;
-            for (j = 1; t_temp[i - 1 + j] == 'x'; j++)
-            {
-                t_in->shift_var[i - 1 + j] = j;
+    for(i=start; t_temp[i] != '\0'; i++){
+        if(t_temp[i] == 'x'){
+            temp_id = i-1;
+            for(j=1;t_temp[i - 1 + j]=='x'; j++){
+                t_in->shift_var[i-1 + j] = j;
             }
-            i += j - 1;
+            i+=j-1;
         }
     }
     //printf("Preparing input text structure\n");

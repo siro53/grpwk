@@ -1,12 +1,20 @@
 #define index_N 16
 
 typedef struct Node *link;
-struct Node{
-    int id[index_N];
+struct Node
+{
+    int *id;
     link b;
-    int x[index_N];
+    int *x;
+    int *count;
 };
+#define Min_len 14
+#define ThreadNum 1
 
+#define High(A, B) (A > B) ? A : B
+#define rep(i, n) for (int i = 0; i < (int)(n); i++)
+
+#define idvar(A, B) (A - 'a') * 4 + (B - 'a')
 #define aa 0
 #define ab 1
 #define ac 2

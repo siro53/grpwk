@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
+#include "string_info.h"
 #include "ahocorasick.h"
 
 int test_trie(void) {
@@ -21,23 +23,26 @@ int test_trie(void) {
         "adbab",
         "aaabaaabcadba",
     };
-    aho_text text[sizeof(s)/sizeof(s[0])];
-    for (int i=0; i<sizeof(s)/sizeof(s[0]); i++) {
-        text[i] = *text_init(i, s[i], strlen(s[i]));
+    string_s text[100];
+
+    aho_trie t;
+    trie_init(&t); /* トライ木を初期化 */
+
+    for (int i=0; i<15; i++) {
+        strcpy(text[i].str, s[i]);
+        text[i].len = strlen(s[i]);
+        if (!trie_add(&t, &text[i], s[i])) /* トライ木にキーを挿入 */
+            printf("error (unexpected input [^a-d]\n");
+        printf("here\n");
     }
+    trie_connect(&t); /* 再構成 */
 
-    aho_trie *t;
-    trie_init(t);
-
-    for (int i=0; i<sizeof(text)/sizeof(text[0]); i++) if (!trie_add(t, &text[i])) printf("error (unexpected input [^a-d]\n");
-    trie_connect(t);
-
-    trie_print(t);
+    trie_print(&t);
 
     return 0;
 }
 
-// outcome functions for testing
+// 検索成功時に実行される関数(あらかじめahoにセットしておく)
 void callback_match_pos(void *arg, aho_match_t *m) {
     char *text = (char *)arg;
 
@@ -47,16 +52,31 @@ void callback_match_pos(void *arg, aho_match_t *m) {
     printf(" (match id: %d position: %d length: %d)\n", m->id, m->pos, m->len);
 }
 
+// char *sからそれに相当するstring_sを生成
+string_s *new(char *s) {
+    string_s *n = (string_s *)malloc(sizeof(string_s));
+    n->len = strlen(s);
+    strcpy(n->str, s);
+    return n;
+}
+
 int test_ahocora(void) {
     ahocorasick aho;
-    aho_init(&aho);
+    aho_init(&aho); /* aho初期化 */
+    aho_create_trie(&aho); /* トライ木初期化 */
+    /* 上二つの関数は必ず実行！！ */
 
-    aho_add_match_text(&aho, "ab", strlen("ab"));
-    aho_add_match_text(&aho, "abc", strlen("abc"));
-    aho_add_match_text(&aho, "ca", strlen("ca"));
+    /* キーを木に追加 */
+    aho_add_match_text(&aho, new("bc"));
+    aho_add_match_text(&aho, new("abc"));
+    aho_add_match_text(&aho, new("ca"));
+    aho_add_match_text(&aho, new("a"));
+
+    /* アホコラ用にトライ木を再構成 */
+    aho_connect_trie(&aho);
 
     char test[] = "abcabcabcab";
-    aho_create_trie(&aho);
+    /* 探索成功時に実行される関数をセットする */
     aho_register_match_callback(&aho, callback_match_pos, (void *)test);
 
     trie_print(&aho.trie);
@@ -64,39 +84,36 @@ int test_ahocora(void) {
     printf("try: %s\n", test);
     printf("total match: %d\n", aho_search(&aho, test, strlen(test)));
 
-    aho_destroy(&aho);
-
     return 0;
 }
 
 int test_input(void) {
     ahocorasick aho;
     aho_init(&aho);
+    aho_create_trie(&aho);
 
     char s[500000];
     FILE *fp = fopen("data/dat0_in", "r");
     fscanf(fp, "%s", s);
-    while (~fscanf(fp, "%s", s))
-        if (strlen(s) >= 60)
-            aho_add_match_text(&aho, s, strlen(s));
+    // while (~fscanf(fp, "%s", s))
+    //     if (strlen(s) >= 50)
+    //         aho_add_match_text(&aho, s, strlen(s));
 
     fp = fopen("data/dat0_ref", "r");
     fscanf(fp, "%s", s);
 
-    aho_create_trie(&aho);
+    aho_connect_trie(&aho);
     aho_register_match_callback(&aho, callback_match_pos, (void *)s);
 
     printf("total match: %d\n", aho_search(&aho, s, strlen(s)));
-
-    aho_destroy(&aho);
 
     return 0;
 }
 
 int main(void) {
     // test_trie();
-    // test_ahocora();
-    test_input();
+    test_ahocora();
+    // test_input();
 
     return 0;
 }
