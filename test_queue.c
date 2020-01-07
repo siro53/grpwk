@@ -15,14 +15,14 @@ int main()
     for (i = 0; i < 5; i++)
     {
         que_push(&q, i + 1);
-        printQue(&q);
+        // printQue(&q);
     }
     for (i = 0; i < 3; i++)
     {
         a = que_pop(&q);
         printf("%d\n", a);
     }
-    printQue(&q);
+    // printQue(&q);
     printf("%d\n", q.size);
     return 0;
 }
