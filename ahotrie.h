@@ -4,8 +4,8 @@
 #include "linked_list.h"
 
 #define MAX_NODE 4
-#define FALSE 0
 #define TRUE 1
+#define FALSE 0
 
 typedef struct _node {
     int data;
@@ -26,7 +26,7 @@ typedef struct {
 void trie_init(aho_trie * t);
 void trie_destroy(aho_trie * t);
 
-int trie_add(aho_trie * t, string_s * text, char * parent);
+int trie_add(aho_trie * t, string_s * text, char * parent, int convert);
 void trie_connect(aho_trie * t);
 void trie_delete(aho_trie * t);
 linked_list *trie_find(aho_node ** t, char text);

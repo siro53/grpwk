@@ -34,7 +34,7 @@ void trie_destroy(aho_trie * t) {
  * char *similar: 入力文字列
  * - aho_add_match_textのときは text->str == similar
  **/
-int trie_add(aho_trie * t, string_s * text, char * similar) {
+int trie_add(aho_trie * t, string_s * text, char * similar, int convert) {
     aho_node *current = &t->root;
 
     for (int i=0; i<text->len; i++) {
@@ -48,7 +48,7 @@ int trie_add(aho_trie * t, string_s * text, char * similar) {
     }
 
     current->end = TRUE;
-    linked_push_int(&current->output_list, text->id, 1);
+    linked_push_node(&current->output_list, text->id, convert, 1);
 
     return TRUE;
 }

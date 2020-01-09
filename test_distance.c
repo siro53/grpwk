@@ -16,12 +16,12 @@ int main(int argc, char *argv[]) {
     int counter = 0, x = 0;
     for (int i=0; i<strlen(in); i++) {
         counter += (in[i] != out[i]);
-        counter += (in[i] == 'x') & (out[i] == 'a');
-        if (in[i] == 'x') x++;
+        counter -= (in[i] == 'x') & (out[i] == 'a');
+        x += in[i] == 'x';
     }
     counter += abs(strlen(in) - strlen(out));
 
-    printf("edit distance: %d, strlen: %lu, ratio: %f%%, ratio w/o x: %f%%\n", counter, strlen(in), (1 - (double)counter / strlen(in)) * 100, (1 - (double)(counter - x) / (strlen(in) - x)) * 100);
+    printf("edit distance: %d, strlen: %lu, ratio: %f%%, x: %d\n", counter, strlen(in), 100 - (double)counter / strlen(in) * 100, x);
 
     return 0;
 }
