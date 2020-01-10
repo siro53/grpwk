@@ -3,7 +3,6 @@
 #include <string.h>
 #include <limits.h>
 
-//#include "../string_info.h"
 #include "bitap.h"
 
 //#define T_LEN 17
@@ -18,19 +17,12 @@ int bitap_bitwise_search(const char *text, const char *pattern)
  
     if (pattern[0] == '\0')
         return 0;
-    /*
-    if (pattern_len > 31)
-        return "The pattern is too long!";
-  
+
     /* Initialize the bit array R */
     R = ~1UL;
 
     /* Initialize the pattern bitmasks */
-    /*
-    for (i = 0; i <= CHAR_MAX; ++i) {
-        pattern_mask[i] = ~0ULL; // pattern masks = binary 1
-    }
-    */
+    
     pattern_mask['a'] = ~0UL;
     pattern_mask['b'] = ~0UL;
     pattern_mask['c'] = ~0UL;
@@ -39,12 +31,10 @@ int bitap_bitwise_search(const char *text, const char *pattern)
     pattern_mask['x'] = 0UL;
     pattern_mask['z'] = ~0UL;
 
-    //printf("%s\n", "=====pattern_mask of each char of the pattern=====");
     for (i = 0; i < pattern_len; ++i) {
         pattern_mask[pattern[i]] &= ~(1UL << i);
     }
 
-    //printf("\n%s\n", "=====finding a match=====");
     for (i = 0; text[i] != '\0'; ++i) {
 
         /* Update the bit array */
