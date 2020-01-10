@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -6,9 +5,7 @@
 #include "../linked_list.h"
 #include "grpwk.h"
 #include "itoi.h"
-#include "BM.h"
 #include "sunday.h"
-#include <unistd.h>
 
 // input_win.cから呼び出されるやつ
 char *grpwk(char *t, string_s *s, int len)
@@ -23,13 +20,11 @@ char *grpwk(char *t, string_s *s, int len)
             break;
 
     /* BMはじめ */
-    string_out *t_in = (string_out *)malloc(sizeof(string_out));
     string_out *t_out = (string_out *)malloc(sizeof(string_out));
 
     // output str init
     for (int i = 0; i < T_LENGTH; i++) t_out->str[i] = 'x';
     t_out->str[T_LENGTH] = '\0';
-    ConstructTin(t_in, t);
 
     // init option lists
     linked_list *t_opt = (linked_list *)malloc(sizeof(linked_list) * T_LENGTH);
@@ -37,23 +32,14 @@ char *grpwk(char *t, string_s *s, int len)
     linked_list s_count[len];
     memset(s_count, 0, sizeof(linked_list) * len);
 
-    // BM(t_in, s, bm_until, t_out, s_count, t_opt);
-    // printf("bm done\n");
-    // return t_out->str;
     sunday(t, s, bm_until, t_opt, s_count);
-    printf("sunday done\n");
-
-    // ahocoralike(t, s, bm_until, aho_until, t_opt, s_count);
-    // printf("ahocora done\n");
 
     linked_list s_opt[S_OPT_LEN];
     memset(s_opt, 0, sizeof(linked_list) * S_OPT_LEN);
+
     // s_opt init
     for (int i = 50; i < aho_until; i++) {
         s_opt_insert(s_opt, s_count[i].length, &s[i]);
-        // if (s_count[i].length == 0)
-        //     printf("%d(%d): %d\n", i, s[i].len, s_count[i].length);
-        // usleep(1000);
     }
 
     /* delete options where t is already determined by BM */
@@ -62,7 +48,6 @@ char *grpwk(char *t, string_s *s, int len)
             eliminate(i, t_opt, s_opt, s_count, s);
         }
     }
-    printf("eli done\n");
 
     for (;;) {
         // get next s to insert into ans
@@ -79,12 +64,9 @@ char *grpwk(char *t, string_s *s, int len)
         if (s_id == -1) break; // no option found
         if (s_count[s_id].length == 0) continue; // option already taken
 
-        // printf("id: %05d (%02d), opt: %d: %s\n", s_id, s[s_id].len, s_count[s_id].length, s[s_id].str);
-        // usleep(1000);
 
         // option's text and place: index of first letter within t
         int s_pos = linked_pop_int(&s_count[s_id], 0);
-        // TODO: maybe better way to select the index above
         linked_init(&s_count[s_id]);
         // s_count[s_id].length = 0;
 
@@ -97,17 +79,11 @@ char *grpwk(char *t, string_s *s, int len)
         }
     }
 
-    for (int i = 0; i < S_OPT_LEN; i++) linked_init(&s_opt[i]);
-    for (int i = 0; i < T_LENGTH; i++) linked_init(&t_opt[i]);
-    free(t_opt);
-
     for (int i = 0; i < T_LENGTH; i++) {
-        if (t_out->str[i] != 'x' && t_in->str[i] == 'x') {
+        if (t_out->str[i] != 'x') {
             t[i] = t_out->str[i];
         }
     }
 
-    free(t_in);
-    free(t_out);
     return t;
 }
