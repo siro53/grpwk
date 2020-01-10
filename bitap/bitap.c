@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <assert.h>
 
 #include "bitap.h"
 
@@ -48,23 +49,33 @@ int bitap_bitwise_search(const char *text, const char *pattern)
     return -1;
 }
 
-/** t: 虫食い, s: バラ, num: バラの数, startNum: バラの開始位置, out: 回答
- * 回答をreturn
+/** t: 虫食い, s: バラ, num: バラの数, startNum: バラの開始位置, out: 回答, check: 埋めたかのチェック
+ * 回答をreturnする
  * バラが32文字以上だとバグる
+ * t_outの使い方が違うかもしれない
  */
-char* bitap(char* t, string_s* s, int num, int startNum, char* out){
-    char sheet[T_LENGTH];
-    strcpy(sheet, t);
+char* bitap(char* t, string_s* s, int num, int startNum, char* out, string_out* t_out){
     int i,j;
     int pos;
 
+    char check[T_LENGTH+1];
+
+    for(i=0;i<T_LENGTH;i++){
+        if(t_out->str[i]!='x') check[i]='z';
+        else check[i] = t[i];
+    }
+    check[T_LENGTH] = '\0';
+
+
     for(i=startNum;i<num;i++){
-        pos = bitap_bitwise_search(sheet, s[i].str);
+        if(s[i].len==1) break;
+        pos = bitap_bitwise_search(check, s[i].str);
         for(j=0;j<s[i].len;j++){
             out[pos+j] = s[i].str[j];
-            sheet[pos+j] = 'z';
+            check[pos+j] = 'z';
         }
     }
+
 
     for(i=0;i<T_LENGTH;i++){
         if(out[i]=='x') out[i] = 'a';
@@ -93,6 +104,44 @@ int main(int argc, char const *argv[])
     printf("%s\n", output);
     output = bitap(input, str, 2, 0, output);
     printf("%s\n", output);
+    return 0;
+}
+*/
+
+/*
+int sort_f(const void *a, const void *b) {
+    return ((string_s *)b)->len - ((string_s *)a)->len;
+}
+
+int main(int argc, char **argv) {
+    printf("start");
+    assert(argc == 3);
+    FILE *fp_in = fopen(argv[1], "r");
+    assert(fp_in != NULL);
+    FILE *fp_out = fopen(argv[2], "w");
+    assert(fp_out != NULL);
+
+    char t[T_LENGTH];
+    string_s s[45000];
+
+    // input t
+    fscanf(fp_in, "%s", t);
+    // for (int i=0; i<T_LENGTH; i++) if (t[i] == 'x') t[i] = 'a';
+
+    // input s[]
+    int counter = 0;
+    for (; fscanf(fp_in, "%s", s[counter].str) != EOF; ++counter) s[counter].len = strlen(s[counter].str);
+    qsort(s, counter, sizeof(string_s), sort_f);
+
+    for (int i=0; i<counter; i++) s[i].id = i;
+
+    char out[T_LENGTH+1];
+    strcpy(out, t);
+
+    fprintf(fp_out, "%s\n", bitap(t, s, counter, 0, out));
+
+    fclose(fp_in);
+    fclose(fp_out);
     return 0;
 }
 */
