@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../constructions.h"
 #include "../linked_list.h"
 #include "grpwk.h"
 #include "itoi.h"
