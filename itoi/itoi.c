@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "../ahocorasick.h"
+#include "grpwk.h"
 #include "itoi.h"
 
 int strsim(char *t, int convert, int length) {
@@ -84,14 +85,15 @@ void ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, li
     aho_destroy(&aho);
 }
 
-void s_opt_insert(linked_list *s_opt, int s_count, int index) {
+void s_opt_insert(linked_list *s_opt, int s_count, string_s *s_i) {
     if (s_count < S_OPT_LEN) {
-        linked_push_int(&s_opt[s_count], index, 0);
+        if (s_i->len >= BM_TO) linked_unshift_int(&s_opt[s_count], s_i->id, 0);
+        else linked_push_int(&s_opt[s_count], s_i->id, 0);
     }
 }
 
 /* delete all other s that overlaps with the option */
-void eliminate(int t_index, linked_list *t_opt, linked_list *s_opt, linked_list *s_count) {
+void eliminate(int t_index, linked_list *t_opt, linked_list *s_opt, linked_list *s_count, string_s *s) {
     // eliminate other options within the substituted places
     while (t_opt[t_index].length != 0) {
         // the other option
@@ -104,7 +106,7 @@ void eliminate(int t_index, linked_list *t_opt, linked_list *s_opt, linked_list 
         // go to s_count[other.id] and delete the option to insert here
         if (linked_delete_int(&s_count[other->data], t_index - other->place)) {
             // reinsert the deleted option to s_opt
-            s_opt_insert(s_opt, s_count[other->data].length, other->data);
+            s_opt_insert(s_opt, s_count[other->data].length, &s[other->data]);
         }
         free(other);
     }

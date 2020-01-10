@@ -46,13 +46,16 @@ char *grpwk(char *t, string_s *s, int len)
     memset(s_opt, 0, sizeof(linked_list) * S_OPT_LEN);
     // s_opt init
     for (int i = 0; i < aho_until; i++) {
-        s_opt_insert(s_opt, s_count[i].length, i);
+        s_opt_insert(s_opt, s_count[i].length, &s[i]);
+        if (s_count[i].length == 0)
+        printf("%d(%d): %d\n", i, s[i].len, s_count[i].length);
+        usleep(1000);
     }
 
     /* delete options where t is already determined by BM */
     for (int i = 0; i < T_LENGTH; i++) {
         if (t_out->str[i] != 'x') {
-            eliminate(i, t_opt, s_opt, s_count);
+            eliminate(i, t_opt, s_opt, s_count, s);
         }
     }
     printf("eli done\n");
@@ -65,6 +68,7 @@ char *grpwk(char *t, string_s *s, int len)
             for (int i = 2; i < S_OPT_LEN; i++) {
                 if (s_opt[i].length != 0) {
                     s_id = linked_pop_int(&s_opt[i], 0);
+                    if (s[s_id].len < BM_TO) linked_destroy(&s_count[s_id]);
                     break;
                 }
             }
@@ -72,8 +76,8 @@ char *grpwk(char *t, string_s *s, int len)
         if (s_id == -1) break; // no option found
         if (s_count[s_id].length == 0) continue; // option already taken
 
-        // printf("id: %05d (%02d), opt: %d: %s\n", s_id, s[s_id].len, s_count[s_id].length, s[s_id].str);
-        // usleep(1000);
+        printf("id: %05d (%02d), opt: %d: %s\n", s_id, s[s_id].len, s_count[s_id].length, s[s_id].str);
+        usleep(1000);
 
         // option's text and place: index of first letter within t
         int s_pos = linked_pop_int(&s_count[s_id], 0);
@@ -84,7 +88,7 @@ char *grpwk(char *t, string_s *s, int len)
         /* delete other options */
         string_s *text = &s[s_id];
         for (int i = 0; i < text->len; i++) {
-            eliminate(s_pos + i, t_opt, s_opt, s_count);
+            eliminate(s_pos + i, t_opt, s_opt, s_count, s);
         }
 
         /* insert text to ans */
