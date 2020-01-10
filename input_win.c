@@ -8,7 +8,7 @@
 #include "string_info.h"
 
 // TODO: change here to include your files!!
-#include "itoi/grpwk.h"
+#include "submit/grpwk.h"
 
 int main_prg(int, char **);
 

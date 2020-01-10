@@ -8,7 +8,6 @@
 #include "itoi.h"
 #include "BM.h"
 #include "sunday.h"
-#include <unistd.h>
 
 // input_win.cから呼び出されるやつ
 char *grpwk(char *t, string_s *s, int len)
@@ -106,6 +105,9 @@ char *grpwk(char *t, string_s *s, int len)
             t[i] = t_out->str[i];
         }
     }
+    // for (int i=0; i<T_LENGTH; i++) {
+    //     if (t[i] == 'x') t[i] = 'a';
+    // }
 
     free(t_in);
     free(t_out);

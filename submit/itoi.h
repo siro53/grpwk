@@ -3,7 +3,7 @@
 #include "../string_info.h"
 #include "../linked_list.h"
 
-#define S_OPT_LEN 3
+#define S_OPT_LEN 2
 
 void ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, linked_list *s_count);
 

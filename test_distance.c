@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
     int counter = 0, x = 0, ok = 0;
     for (int i=0; i<strlen(in); i++) {
         counter += (in[i] != out[i] && in[i] != 'x');
-        ok += (in[i] == 'x' && out[i] == 'a');
+        ok += (in[i] == 'x' && out[i] != 'a');
         x += in[i] == 'x';
     }
     counter += abs(strlen(in) - strlen(out));
