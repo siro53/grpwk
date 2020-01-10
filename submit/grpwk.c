@@ -81,7 +81,7 @@ char *grpwk(char *t, string_s *s, int len)
     for (int i = 0; i < T_LENGTH; i++) {
         if (t_out->str[i] != 'x') {
             t[i] = t_out->str[i];
-        }
+        } else if (t[i] == 'x') t[i] = 'a';
     }
 
     return t;
