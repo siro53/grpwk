@@ -2,10 +2,12 @@ grpwk
 distance
 result
 *.sh
+!compile.sh
 *.py
 !analyze.py
 .*/
 *.o
+Makefile
 
 ahocorasick/
 *.vscode

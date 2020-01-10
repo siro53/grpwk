@@ -1,106 +1,67 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
 
 #include "ahocorasick.h"
 
-void aho_init(ahocorasick * restrict aho) {
+// ahocorasick型の変数の初期化
+void aho_init(ahocorasick * aho, char *t, string_s *s) {
     memset(aho, 0, sizeof(ahocorasick));
+    aho->t = t;
+    aho->s = s;
 }
 
-void aho_destroy(ahocorasick * restrict aho) {
-    aho_clear_match_text(aho);
+void aho_destroy(ahocorasick * aho) {
     aho_clear_trie(aho);
 }
 
-int aho_add_match_text(ahocorasick * restrict aho, const char *data, int len) {
-    if (aho->text_id == INT_MAX) return -1;
-
-    // printf("%d ", len);
-    aho_text *text = text_init(aho->text_id++, data, len);
-    if (text == NULL || text->data == NULL) return -1;
-
-    if (aho->head == NULL) {
-        aho->head = text;
-        aho->tail = text;
-        aho->text_count++;
-        return text->id;
-    }
-
-    aho->tail->next = text;
-    text->prev = aho->tail;
-    aho->tail = text;
-    aho->text_count++;
-    return text->id;
+// キー(string_s *s_i)を木に追加
+void aho_add_match_text(ahocorasick * aho, string_s *text) {
+    trie_add(&aho->trie, text, text->str, 0);
 }
 
-int aho_del_match_text(ahocorasick * restrict aho, const int id) {
-    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next) {
-        if (iter->id == id) {
-            if (iter == aho->head) {
-                aho->head = iter->next;
-                free(iter->data);
-            } else if (iter == aho->tail) {
-                aho->tail = iter->prev;
-                free(iter->data);
-            } else {
-                iter->prev->next = iter->next;
-                iter->next->prev = iter->prev;
-                free(iter->data);
-            }
-            free(iter);
-            aho->text_count--;
-            return TRUE;
-        }
-    }
-    return FALSE;
+/** 曖昧検索用文字列挿入用(木に挿入する文字列と探索成功時の返す文字列が違う場合に使用)
+ * 木に挿入する文字列をメモリに保存せずに済む
+ * data：曖昧の文字列、original：虫食い前のデータ
+ */
+void aho_add_similar_text(ahocorasick * aho, char * data, string_s * original, int convert) {
+    trie_add(&aho->trie, original, data, convert);
 }
 
-void aho_clear_match_text(ahocorasick * restrict aho) {
-    for (int i=0; i<aho->text_id; i++) aho_del_match_text(aho, i);
-
-    aho->text_id = 0;
-}
-
-void aho_create_trie(ahocorasick * restrict aho) {
+// トライ木を生成
+void aho_create_trie(ahocorasick * aho) {
     trie_init(&aho->trie);
+}
 
-    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next) if (!trie_add(&aho->trie, iter)) printf("error (unexpected input [^a-d])\n");
+// トライ木からアホコラを作る
+void aho_connect_trie(ahocorasick * aho) {
     trie_connect(&aho->trie);
 }
 
-void aho_clear_trie(ahocorasick * restrict aho) {
+void aho_clear_trie(ahocorasick * aho) {
     trie_destroy(&aho->trie);
 }
 
-int aho_search(ahocorasick * restrict aho, const char *data, int len) {
-    int counter = 0;
+/** 検索関数(data：t'、len：len(t'))
+ * return マッチしたキーの数
+ */
+void aho_search(ahocorasick * aho, char *data, int len) {
     aho_node *current = &aho->trie.root;
 
     for (int i=0; i<len; i++) {
-        aho_match_t match;
-        aho_text *result = trie_find(&current, data[i]);
+        linked_list *result = trie_find(&current, data[i] == 'x' ? 'a' : data[i]);
         if (result == NULL) continue;
-
-        match.id = result->id;
-        match.len = result->len;
-        match.pos = i - result->len + 1;
-
-        counter++;
-        if (aho->callback_match) aho->callback_match(aho->callback_arg, &match);
+        // printf("substitute to %s from ", result->data);
+        aho->callback_match(aho, result, i);
     }
-
-    return counter;
 }
 
-inline void aho_register_match_callback(ahocorasick * restrict aho, void (*callback_match)(void *arg, aho_match_t *), void *arg) {
-    aho->callback_arg = arg;
+// 探索が成功した際に実行される関数を設定する関数
+inline void aho_register_match_callback(ahocorasick * aho, void (*callback_match)(ahocorasick * aho, linked_list* l, int pos)) {
     aho->callback_match = callback_match;
 }
 
-void aho_print_match_text(ahocorasick * restrict aho) {
-    for (aho_text *iter = aho->head; iter != NULL; iter = iter->next) {
-        printf("id: %d, text:%s, len:%d\n", iter->id, iter->data, iter->len);
-    }
+void aho_register_option_lists(ahocorasick * aho, linked_list *t_opt, linked_list *s_count) {
+    aho->t_opt = t_opt;
+    aho->s_count = s_count;
 }

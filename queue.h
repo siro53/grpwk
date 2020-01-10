@@ -6,7 +6,7 @@
 #define QUEUE_H
 
 #define QUE_TYPE aho_node*
-#define MAX_SIZE 50000
+#define MAX_SIZE 80000000
 
 typedef struct
 {
