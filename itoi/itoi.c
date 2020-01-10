@@ -9,13 +9,14 @@
 int strsim(char *t, int convert, int length) {
     for (int i=0; i<length; i++) {
         if (t[i] == 'a' && (convert >> i & 1)) return 0;
-        // if (t[i] == 'x' && (convert >> i & 1) == 0) return 0;
+        if (t[i] == 'x' && (convert >> i & 1) == 0) return 0;
     }
     return 1;
 }
 
 // outcome functions for testing
 void callback_add2linked_list(ahocorasick * aho, linked_list *l, int pos) {
+    printf("%d\n", l->length);
     linked_node *iter = l->top;
     for (int v=0; v<l->length; v++, iter = iter->next) {
         int text_len = aho->s[iter->data].len;
@@ -45,11 +46,11 @@ int bitcount(int bits) {
 // bitchangeにおいて立っているビットの場所の文字を'a'に置換する
 int convert(char *tmp, char *s, int length, int bitchange) {
     for (int i=0; i<length; i++) {
-        if (bitchange >> i & 1) {
-            if (s[i] == 'a') return 0;
-            else tmp[i] = 'a';
-        } else tmp[i] = s[i];
-        // tmp[i] = bitchange >> i & 1 ? 'a' : s[i];
+        // if (bitchange >> i & 1) {
+        //     if (s[i] == 'a') return 0;
+        //     else tmp[i] = 'a';
+        // } else tmp[i] = s[i];
+        tmp[i] = bitchange >> i & 1 ? 'a' : s[i];
     }
     tmp[length] = '\0';
     return 1;
@@ -81,7 +82,9 @@ void ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, li
     }
 
     aho_connect_trie(&aho); /* トライ木を整理 */
+    printf("connect done\n");
     aho_search(&aho, t, T_LENGTH);
+    printf("search done\n");
     aho_destroy(&aho);
 }
 

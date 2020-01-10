@@ -23,6 +23,8 @@ int linked_unshift_node(linked_list *l, int data, int place, int search);
 linked_node *linked_seek_node(linked_list *l, int index);
 linked_node *linked_pop_node(linked_list *l, int index);
 
+void linked_extend(linked_list *a, linked_list *b);
+
 int linked_delete_int(linked_list *l, int data);
 
 void linked_print(linked_list *l);

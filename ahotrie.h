@@ -9,7 +9,6 @@
 
 typedef struct _node {
     int data;
-    unsigned int ref_count;
 
     struct _node *parent, *child[MAX_NODE];
 

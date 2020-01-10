@@ -11,7 +11,6 @@ aho_node *node_init(int data, aho_node * parent) {
     memset(node, 0, sizeof(aho_node));
     node->data = data;
     node->parent = parent;
-    node->ref_count = 1;
     node->end = FALSE;
     linked_init(&node->output_list);
     return node;
@@ -42,7 +41,6 @@ int trie_add(aho_trie * t, string_s * text, char * similar, int convert) {
         if (char_id > MAX_NODE - 1 || char_id < 0) return FALSE;
 
         if (current->child[char_id] == NULL) current->child[char_id] = node_init(char_id, current);
-        else current->child[char_id]->ref_count++;
 
         current = current->child[char_id];
     }
@@ -59,15 +57,15 @@ int connect_link(aho_node *p, aho_node *q) {
         return TRUE;
     }
 
-    aho_node *tmp = p->failure_link;
+    aho_node *fail = p->failure_link;
     for (int i=0; i<MAX_NODE; i++) {
-        if (tmp->child[i] == NULL) continue;
+        if (fail->child[i] == NULL) continue;
 
-        if (tmp->child[i]->data == q->data) {
-            q->failure_link = tmp->child[i];
+        if (fail->child[i]->data == q->data) {
+            q->failure_link = fail->child[i];
 
-            if (tmp->child[i]->end) q->output_link = tmp->child[i];
-            else q->output_link = tmp->child[i]->output_link;
+            if (fail->child[i]->end) q->output_link = fail->child[i];
+            else q->output_link = fail->child[i]->output_link;
 
             return TRUE;
         }
@@ -92,6 +90,8 @@ void trie_connect(aho_trie * t) {
 
             aho_node *tmp = node, *child = node->child[i];
             while (connect_link(tmp, child) == FALSE) tmp = tmp->failure_link;
+
+            if (child->end && child->output_link != NULL) linked_extend(&child->output_list, &child->output_link->output_list);
         }
     }
 
@@ -153,7 +153,7 @@ void trie_print(aho_trie * t) {
 
         for (int i=0; i<MAX_NODE; i++) if (node->child[i] != NULL) que_push(&que, node->child[i]);
 
-        printf("%c, refs:%d, fail: %p, output:%p\n", node->data + 'a', node->ref_count, node->failure_link, node->output_link);
+        printf("%c, fail: %p, output:%p\n", node->data + 'a', node->failure_link, node->output_link);
     }
 
     que_destroy(&que);

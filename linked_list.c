@@ -18,7 +18,8 @@ void linked_init(linked_list *l) {
 }
 
 void linked_destroy(linked_list *l) {
-    while (l->length != 0) free(linked_pop_node(l, 0));
+    while (l->length != 0 && l->top != NULL) free(linked_pop_node(l, 0));
+    l->length = 0;
 }
 
 int linked_search_int(linked_list *l, int data) {
@@ -206,4 +207,11 @@ int linked_delete_int(linked_list *l, int data) {
         }
     }
     return 0;
+}
+
+void linked_extend(linked_list *a, linked_list *b) {
+    a->bottom->next = b->top;
+    b->top->prev = a->bottom;
+    a->length += b->length;
+    a->bottom = b->bottom;
 }
