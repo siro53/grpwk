@@ -7,6 +7,7 @@
 #include "grpwk.h"
 #include "itoi.h"
 #include "BM.h"
+#include "sunday.h"
 #include <unistd.h>
 
 // input_win.cから呼び出されるやつ
@@ -36,11 +37,14 @@ char *grpwk(char *t, string_s *s, int len)
     linked_list s_count[len];
     memset(s_count, 0, sizeof(linked_list) * len);
 
-    BM(t_in, s, bm_until, t_out, s_count, t_opt);
-    printf("bm done\n");
+    // BM(t_in, s, bm_until, t_out, s_count, t_opt);
+    // printf("bm done\n");
+    // return t_out->str;
+    sunday(t, s, bm_until, t_opt, s_count);
+    printf("sunday done\n");
 
-    ahocoralike(t, s, bm_until, aho_until, t_opt, s_count);
-    printf("ahocora done\n");
+    // ahocoralike(t, s, bm_until, aho_until, t_opt, s_count);
+    // printf("ahocora done\n");
 
     linked_list s_opt[S_OPT_LEN];
     memset(s_opt, 0, sizeof(linked_list) * S_OPT_LEN);
@@ -68,7 +72,6 @@ char *grpwk(char *t, string_s *s, int len)
             for (int i = 2; i < S_OPT_LEN; i++) {
                 if (s_opt[i].length != 0) {
                     s_id = linked_pop_int(&s_opt[i], 0);
-                    if (s[s_id].len < BM_TO) linked_destroy(&s_count[s_id]);
                     break;
                 }
             }
@@ -76,24 +79,21 @@ char *grpwk(char *t, string_s *s, int len)
         if (s_id == -1) break; // no option found
         if (s_count[s_id].length == 0) continue; // option already taken
 
-        printf("id: %05d (%02d), opt: %d: %s\n", s_id, s[s_id].len, s_count[s_id].length, s[s_id].str);
-        usleep(1000);
+        // printf("id: %05d (%02d), opt: %d: %s\n", s_id, s[s_id].len, s_count[s_id].length, s[s_id].str);
+        // usleep(1000);
 
         // option's text and place: index of first letter within t
         int s_pos = linked_pop_int(&s_count[s_id], 0);
         // TODO: maybe better way to select the index above
-        linked_destroy(&s_count[s_id]);
+        linked_init(&s_count[s_id]);
         // s_count[s_id].length = 0;
 
         /* delete other options */
         string_s *text = &s[s_id];
-        for (int i = 0; i < text->len; i++) {
-            eliminate(s_pos + i, t_opt, s_opt, s_count, s);
-        }
 
-        /* insert text to ans */
         for (int i = 0; i < text->len; i++) {
             t_out->str[s_pos + i] = text->str[i];
+            eliminate(s_pos + i, t_opt, s_opt, s_count, s);
         }
     }
 

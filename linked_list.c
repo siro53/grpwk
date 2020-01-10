@@ -15,11 +15,12 @@ linked_node *linked_node_init(int data) {
 
 void linked_init(linked_list *l) {
     l->length = 0;
+    l->top = NULL;
+    l->bottom = NULL;
 }
 
 void linked_destroy(linked_list *l) {
-    // while (l->length != 0 && l->top != NULL) free(linked_pop_node(l, 0));
-    l->length = 0;
+    // while (l->length != 0) free(linked_pop_node(l, 0));
 }
 
 int linked_search_int(linked_list *l, int data) {
@@ -105,8 +106,7 @@ int linked_pop_int(linked_list *l, int index) {
         if (iter->next != NULL) iter->next->prev = iter->prev;
     }
     if (iter != NULL) {
-        l->length--;
-        if (l->length == 0) {
+        if (--l->length == 0) {
             l->top = NULL;
             l->bottom = NULL;
         }
@@ -181,11 +181,14 @@ linked_node *linked_pop_node(linked_list *l, int index) {
             iter = l->bottom->prev;
             for (int i=-2; i>index; i--) iter = iter->prev;
         }
-        iter->prev->next = iter->next;
-        iter->next->prev = iter->prev;
+        if (iter->prev != NULL) iter->prev->next = iter->next;
+        if (iter->next != NULL) iter->next->prev = iter->prev;
     }
     if (iter != NULL) {
-        l->length--;
+        if (--l->length == 0) {
+            l->top = NULL;
+            l->bottom = NULL;
+        }
         return iter;
     } else return NULL;
 }
@@ -210,11 +213,8 @@ int linked_delete_int(linked_list *l, int data) {
 }
 
 void linked_extend(linked_list *a, linked_list *b) {
-    linked_print(a);
-    linked_print(b);
     a->bottom->next = b->top;
     b->top->prev = a->bottom;
     a->length += b->length;
     a->bottom = b->bottom;
-    linked_print(a);
 }
