@@ -19,10 +19,6 @@ void linked_init(linked_list *l) {
     l->bottom = NULL;
 }
 
-void linked_destroy(linked_list *l) {
-    // while (l->length != 0) free(linked_pop_node(l, 0));
-}
-
 int linked_search_int(linked_list *l, int data) {
     linked_node *iter = l->top;
     for (int v=0; v<l->length; v++, iter=iter->next) {

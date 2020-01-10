@@ -11,7 +11,6 @@ typedef struct {
 } linked_list;
 
 void linked_init(linked_list *l);
-void linked_destroy(linked_list *l);
 
 int linked_push_int(linked_list *l, int data, int search);
 int linked_unshift_int(linked_list *l, int data, int search);

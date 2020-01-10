@@ -108,7 +108,7 @@ void trie_delete(aho_trie * t) {
         if (node == NULL) break;
 
         for (int i=0; i<MAX_NODE; i++) if (node->child[i] != NULL) que_push(&que, node->child[i]);
-        linked_destroy(&node->output_list);
+        linked_init(&node->output_list);
 
         if (node->parent == NULL) continue;
         free(node);

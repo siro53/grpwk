@@ -79,6 +79,7 @@ void ahocoralike(char *t, string_s s[], int from, int to, linked_list *t_opt, li
             }
         }
     }
+    printf("insert done\n");
 
     aho_connect_trie(&aho); /* トライ木を整理 */
     printf("connect done\n");

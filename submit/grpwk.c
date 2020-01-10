@@ -97,8 +97,8 @@ char *grpwk(char *t, string_s *s, int len)
         }
     }
 
-    for (int i = 0; i < S_OPT_LEN; i++) linked_destroy(&s_opt[i]);
-    for (int i = 0; i < T_LENGTH; i++) linked_destroy(&t_opt[i]);
+    for (int i = 0; i < S_OPT_LEN; i++) linked_init(&s_opt[i]);
+    for (int i = 0; i < T_LENGTH; i++) linked_init(&t_opt[i]);
     free(t_opt);
 
     for (int i = 0; i < T_LENGTH; i++) {
