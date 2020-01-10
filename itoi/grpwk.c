@@ -45,11 +45,11 @@ char *grpwk(char *t, string_s *s, int len)
     linked_list s_opt[S_OPT_LEN];
     memset(s_opt, 0, sizeof(linked_list) * S_OPT_LEN);
     // s_opt init
-    for (int i = 0; i < aho_until; i++) {
+    for (int i = 50; i < aho_until; i++) {
         s_opt_insert(s_opt, s_count[i].length, &s[i]);
-        if (s_count[i].length == 0)
-        printf("%d(%d): %d\n", i, s[i].len, s_count[i].length);
-        usleep(1000);
+        // if (s_count[i].length == 0)
+        //     printf("%d(%d): %d\n", i, s[i].len, s_count[i].length);
+        // usleep(1000);
     }
 
     /* delete options where t is already determined by BM */

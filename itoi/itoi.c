@@ -16,7 +16,6 @@ int strsim(char *t, int convert, int length) {
 
 // outcome functions for testing
 void callback_add2linked_list(ahocorasick * aho, linked_list *l, int pos) {
-    printf("%d\n", l->length);
     linked_node *iter = l->top;
     for (int v=0; v<l->length; v++, iter = iter->next) {
         int text_len = aho->s[iter->data].len;
