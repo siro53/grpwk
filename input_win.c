@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     // c_end = clock();
 
     // printf("%f\n", (double)(c_end - c_start) / CLOCKS_PER_SEC);
-    fprintf(stdout, "%lf\n", (double)(end.tv_sec - start.tv_sec) + (double)(end.tv_usec - start.tv_usec) * 1e-6);
+    fprintf(stderr, "%lf\n", (double)(end.tv_sec - start.tv_sec) + (double)(end.tv_usec - start.tv_usec) * 1e-6);
     return 0;
 }
 
