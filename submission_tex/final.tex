@@ -1,0 +1,99 @@
+\documentclass[uplatex]{jsarticle}
+\usepackage[dvipdfmx]{graphicx, color}
+\usepackage{ascmac} % 複数行の枠
+\usepackage{nccmath} % 複数行(数式等)左揃え
+\usepackage{amssymb} % 行列のでかい括弧など
+\usepackage{amsmath} % align, equation
+\usepackage{mathtools} % for :=, =:
+\usepackage{bm} % vector
+\usepackage{here} % tables [H]
+\usepackage{longtable}
+
+\title{アルゴリズムB\\報告書}
+\author{1W183011-7　糸井琢人\and 1W172143-0　佐藤将輝\and 1W182164-3　城武秀祐\and 1W182171-3　助川裕太\and 1W182339-5　山田啓太\and 1W183129-6　柳田侑羽}
+\date{\today}
+
+\begin{document}
+    \maketitle
+    \section{4班}
+
+    \section{メンバー}
+    \begin{itemize}
+        \item 1W183011-7 糸井琢人
+        \item 1W172143-0 佐藤将輝
+        \item 1W182164-3 城武秀祐
+        \item 1W182171-3 助川裕太
+        \item 1W182339-5 山田啓太
+        \item 1W183129-6 柳田侑羽
+    \end{itemize}
+
+    \section{作業の目的と結果}
+    \subsection{目的}
+    虫食いデータと刻んだデータが与えられたとき、できるだけ早く、そして精度よく元のデータを復元する。
+
+    \subsection{結果}
+    4班の最終提出の結果は以下のとおりとなった。
+    \begin{table}[H]
+        \centering
+        \caption{最終結果}
+        \label{results}
+        \begin{tabular}{c|c|c|c}\hline\hline
+            班&計算時間($\mathrm{s+1}$)&編集距離&スコア\\\hline
+            4&20.1413&51193&14\\\hline
+        \end{tabular}
+    \end{table}
+    よって、我々の計算時間は19.1413 $\mathrm{[s]}$であり、編集距離は51193であった。つまり精度が87.10 $\mathrm{[\%]}$となった。
+
+    \section{実際に行なった作業}
+    \begin{center}
+        \begin{longtable}{l|l|l}
+            Date&内容&補足\\\hline
+            \endfirsthead
+            %------ 2ページ以降の表の最上部 ----
+            \multicolumn{2}{c}{前ページからの続き} \\ \hline
+            Date&内容&補足\\\hline
+            \endhead
+            %----- ページの表の最下部 --------
+            \hline
+            \multicolumn{2}{c}{次ページに続く} \\
+            \endfoot
+            %----- 最終ページの表の最下部 --------
+            \hline
+            \multicolumn{2}{c}{以上} \\
+            \endlastfoot
+            11/29&Git垢作成&全員\\
+            &Gitレポジトリ作成&城武\\
+            &コラボレーターに追加&城武\\
+            &環境構築&全員\\\hline
+            12/6&入力実装&佐藤\\
+            &ヘッダファイル&随時更新\\
+            &Queue実装&\\
+            &Trie木実装&\\
+            &Aho-Corasick実装&\\\hline
+            毎火曜日&ディスカッション&\\\hline
+            12/22&自作アルゴリズムの実装&一つのファイルにまとめる\\
+            &中間計測&\\\hline
+            &結果を受けて改良できる場所を考える&\\
+            1/10&
+            &最終ファイル提出&\\\hline
+            1/13&発表資料提出&\\\hline
+            1/24&最終提出&\\\hline
+        \end{longtable}
+    \end{center}
+
+    \section{メンバーが実際に分担した役割}
+    \begin{itemize}
+        \item 入力実装：佐藤
+        \item アルゴリズム考える人：全員
+        \item ヘッダファイル作る人：城武
+        \item データ構造の実装：糸井、城武
+        \item コード実装班：全員
+        \item 発表する人(原稿)：糸井
+        \item 発表ポスター：糸井
+        \item コード直す人：城武
+        \item 城武のコード直す人：糸井
+        \item 随時追加…
+    \end{itemize}
+
+    \section{ディスカッションの議事録要約}
+\end{document}
